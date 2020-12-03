@@ -2,23 +2,45 @@
 
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.control.Button?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
-   <left>
-      <VBox fx:id="sideLeft" prefHeight="400.0" prefWidth="500.0" BorderPane.alignment="CENTER">
-      </VBox>
-   </left>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <right>
-      <VBox fx:id="sideRight" alignment="TOP_RIGHT" prefHeight="400.0" prefWidth="500.0" BorderPane.alignment="CENTER" />
+      <VBox fx:id="sideRight" alignment="CENTER" prefHeight="400.0" prefWidth="500.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" text="Label">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <TextArea maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="380.0" />
+         </children></VBox>
    </right>
+   <left>
+      <Pane prefHeight="400.0" prefWidth="500.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button layoutX="30.0" layoutY="92.0" mnemonicParsing="false" text="Button" />
+            <Button layoutX="100.0" layoutY="92.0" mnemonicParsing="false" text="Button" />
+         </children>
+      </Pane>
+   </left>
    <center>
-      <Canvas fx:id="canvas" height="799.0" onMouseClicked="#mouseClicked" width="731.0" BorderPane.alignment="CENTER">
-         <cursor>
-            <Cursor fx:constant="MOVE" />
-         </cursor>
-      </Canvas>
+      <Pane prefHeight="1000.0" prefWidth="950.0" BorderPane.alignment="CENTER">
+         <children>
+            <Canvas fx:id="canvas" height="1000.0" onMouseClicked="#mouseClicked" width="950.0">
+               <cursor>
+                  <Cursor fx:constant="CROSSHAIR" />
+               </cursor>
+            </Canvas>
+            <Button alignment="CENTER" layoutX="413.0" layoutY="594.0" mnemonicParsing="false" text="Button" />
+            <Button layoutX="485.0" layoutY="594.0" mnemonicParsing="false" text="Button" />
+         </children>
+      </Pane>
    </center>
 </BorderPane>
