@@ -4,6 +4,7 @@ import com.sun.glass.ui.Cursor;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.ImageCursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -11,8 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.ArcType;
@@ -24,6 +24,9 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable {
 
 
+    public VBox vboxLeft;
+    public AnchorPane midPane;
+    public VBox vboxRight;
     @FXML
     private VBox sideRight;
     @FXML
@@ -40,7 +43,7 @@ public class Controller implements Initializable {
 
     int r1 =(int) Math.round(Math.random()*1000000000);
     int r2 =(int) Math.round(Math.random()*1000000000);
-    int tableSize=20;
+    int tableSize=40;
     double step = 0;
     String[] T1 = new String[tableSize];
     String[] T2 = new String[tableSize];
@@ -50,13 +53,24 @@ public class Controller implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-
-
-
+        canvasLeft.heightProperty().bind(midPane.heightProperty());
+        for(int i =1;i<tableSize;i++){
+            vboxLeft.getChildren().add(new Label("Labela: "+i));
+        }
+        ((Label)vboxLeft.getChildren().get(1)).setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(5.0), null)));
+        ((Label)vboxLeft.getChildren().get(1)).setPrefWidth(100);
+        ((Label)vboxLeft.getChildren().get(1)).setMaxHeight(400);
+        ((Label)vboxLeft.getChildren().get(3)).setPrefWidth(150);
+        ((Label)vboxLeft.getChildren().get(3)).setMaxHeight(400);
+        ((Label)vboxLeft.getChildren().get(3)).setText("01234567891234567890");
+        ((Label)vboxLeft.getChildren().get(3)).setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(5.0), null)));
         context1 = canvasLeft.getGraphicsContext2D();
-        context2 = canvasRight.getGraphicsContext2D();
 
+        context1.clearRect(0, 0, canvasLeft.getWidth(), canvasLeft.getHeight());
+        context1.setFill(Color.TOMATO);
+        context1.fillRect(0, 0, canvasLeft.getWidth(), canvasLeft.getHeight());}
+        //context2 = canvasRight.getGraphicsContext2D();
+/*
 
 
         
@@ -68,7 +82,7 @@ public class Controller implements Initializable {
         T2[hash("TEST2",2)] = "TEST2";
 // clear canvas
         context1.clearRect(0, 0, canvasLeft.getWidth(), canvasLeft.getHeight());
-        context1.setFill(Color.AZURE);
+        context1.setFill(Color.TOMATO);
         context1.fillRect(0, 0, canvasLeft.getWidth(), canvasLeft.getHeight());
 
         context2.clearRect(0, 0, canvasRight.getWidth(), canvasRight.getHeight());
@@ -105,7 +119,7 @@ public class Controller implements Initializable {
         context2.setFill(Color.color(0,0,0));
         //context2.font='25px Georgia';
         context2.fillText("T2",195,460);*/
-
+/*
         disparrays();
     }
 
@@ -370,8 +384,25 @@ public class Controller implements Initializable {
     }
 
 
+    public void mouseClicked(MouseEvent mouseEvent) {context1.clearRect(0, 0, canvasLeft.getWidth(), canvasLeft.getHeight());
+        context1.setFill(Color.TOMATO);
+        context1.fillRect(0, 0, canvasLeft.getWidth(), canvasLeft.getHeight());
+        System.out.println(canvasLeft.getHeight()+"     "+canvasLeft.getWidth());
+        System.out.println(vboxLeft.getHeight()+"     "+vboxLeft.getWidth());
+    }
 
+    public void delHalf(ActionEvent actionEvent) {
+        tableSize*=2;
+        for(int i =tableSize/2;i<tableSize;i++){
+            vboxLeft.getChildren().add(new Label("Labela nova: "+i));
+        }
 
+       /* try {
+            //Thread.sleep(1000);
 
-
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
+        this.mouseClicked(null);
+    }
 }

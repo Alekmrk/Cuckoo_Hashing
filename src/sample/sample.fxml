@@ -3,15 +3,20 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <children>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
    <right>
       <VBox fx:id="sideRight" alignment="CENTER" prefHeight="400.0" prefWidth="500.0" BorderPane.alignment="CENTER">
          <children>
@@ -32,22 +37,38 @@
       </Pane>
    </left>
    <center>
-      <Pane prefHeight="1000.0" prefWidth="950.0" BorderPane.alignment="CENTER">
+      <ScrollPane prefHeight="1000.0" prefWidth="950.0" BorderPane.alignment="CENTER">
+         <content>
+            <AnchorPane fx:id="midPane" prefHeight="1000.0" prefWidth="950.0" BorderPane.alignment="CENTER">
          <children>
-            <Canvas fx:id="canvasLeft" height="1000.0" layoutY="-14.0" width="475.0">
+            <Canvas fx:id="canvasLeft" height="1000.0" onMouseClicked="#mouseClicked" width="950.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <cursor>
                   <Cursor fx:constant="CROSSHAIR" />
                </cursor>
             </Canvas>
-            <Canvas fx:id="canvasRight" height="1000.0" layoutX="475.0" layoutY="-14.0" width="475.0">
-               <cursor>
-                  <Cursor fx:constant="CROSSHAIR" />
-               </cursor>
-            </Canvas>
-            <Button alignment="CENTER" layoutX="413.0" layoutY="594.0" mnemonicParsing="false" text="Button" />
-            <Button layoutX="485.0" layoutY="594.0" mnemonicParsing="false" text="Button" />
-            <TextField layoutX="401.0" layoutY="561.0" />
-         </children>
-      </Pane>
+                  <TextField editable="false" layoutX="375.0" layoutY="565.0" prefWidth="200.0" visible="false" />
+                  <ButtonBar disable="true" layoutX="332.0" layoutY="602.0" prefHeight="40.0" prefWidth="200.0" visible="false">
+                  <buttons>
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Find" />
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Add" />
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#delHalf" text="Delete" />
+                  </buttons>
+                  </ButtonBar>
+                  <VBox fx:id="vboxLeft" layoutY="7.0" prefHeight="1000.0" prefWidth="300.0" AnchorPane.bottomAnchor="-7.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="660.0" AnchorPane.topAnchor="7.0" />
+                        <VBox fx:id="vboxRight" layoutX="636.0" layoutY="7.0" prefHeight="1000.0" prefWidth="300.0" />
+           </children>
+            </AnchorPane>
+         </content>
+      </ScrollPane>
    </center>
 </BorderPane>
+      <TextField layoutX="876.0" layoutY="566.0" prefWidth="200.0" />
+      <ButtonBar layoutX="833.0" layoutY="603.0" prefHeight="40.0" prefWidth="200.0">
+         <buttons>
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Find" />
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Add" />
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#delHalf" text="Delete" />
+         </buttons>
+      </ButtonBar>
+   </children>
+</Pane>
