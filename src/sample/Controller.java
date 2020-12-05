@@ -59,6 +59,12 @@ public class Controller implements Initializable {
         canvasLeft.heightProperty().bind(midPane.heightProperty());
         for(int i =1;i<tableSize;i++){
             Label label=new Label("Labela: "+i);
+            label.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-wrap-text:true; -fx-border-color:black;");
+            label.setPadding(new Insets(5));
+            label.setAlignment(Pos.CENTER);
+            label.setMaxWidth(Double.MAX_VALUE);
+
+
             label.setTextAlignment(TextAlignment.CENTER);
             vboxLeft.getChildren().add(label);
         }
