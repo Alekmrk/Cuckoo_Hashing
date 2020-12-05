@@ -5,7 +5,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.ImageCursor;
+import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
@@ -17,6 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.ArcType;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -43,7 +46,7 @@ public class Controller implements Initializable {
 
     int r1 =(int) Math.round(Math.random()*1000000000);
     int r2 =(int) Math.round(Math.random()*1000000000);
-    int tableSize=40;
+    int tableSize=15;
     double step = 0;
     String[] T1 = new String[tableSize];
     String[] T2 = new String[tableSize];
@@ -55,7 +58,9 @@ public class Controller implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         canvasLeft.heightProperty().bind(midPane.heightProperty());
         for(int i =1;i<tableSize;i++){
-            vboxLeft.getChildren().add(new Label("Labela: "+i));
+            Label label=new Label("Labela: "+i);
+            label.setTextAlignment(TextAlignment.CENTER);
+            vboxLeft.getChildren().add(label);
         }
         ((Label)vboxLeft.getChildren().get(1)).setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(5.0), null)));
         ((Label)vboxLeft.getChildren().get(1)).setPrefWidth(100);
@@ -64,6 +69,25 @@ public class Controller implements Initializable {
         ((Label)vboxLeft.getChildren().get(3)).setMaxHeight(400);
         ((Label)vboxLeft.getChildren().get(3)).setText("01234567891234567890");
         ((Label)vboxLeft.getChildren().get(3)).setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(5.0), null)));
+        canvasLeft.heightProperty().bind(midPane.heightProperty());
+        for(int i =1;i<tableSize;i++){
+            Label label=new Label("Labela: "+i);
+            label.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-wrap-text:true; -fx-border-color:black;");
+            label.setPadding(new Insets(5));
+            label.setAlignment(Pos.CENTER);
+            label.setMaxWidth(Double.MAX_VALUE);
+
+
+            label.setTextAlignment(TextAlignment.CENTER);
+            vboxRight.getChildren().add(label);
+        }
+        ((Label)vboxRight.getChildren().get(1)).setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(5.0), null)));
+        ((Label)vboxRight.getChildren().get(1)).setPrefWidth(100);
+        ((Label)vboxRight.getChildren().get(1)).setMaxHeight(400);
+        ((Label)vboxRight.getChildren().get(3)).setPrefWidth(150);
+        ((Label)vboxRight.getChildren().get(3)).setMaxHeight(400);
+        ((Label)vboxRight.getChildren().get(3)).setText("01234567891234567890");
+        ((Label)vboxRight.getChildren().get(3)).setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(5.0), null)));
         context1 = canvasLeft.getGraphicsContext2D();
 
         context1.clearRect(0, 0, canvasLeft.getWidth(), canvasLeft.getHeight());

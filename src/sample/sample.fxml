@@ -37,7 +37,7 @@
       </Pane>
    </left>
    <center>
-      <ScrollPane prefHeight="1000.0" prefWidth="950.0" BorderPane.alignment="CENTER">
+      <ScrollPane prefHeight="1000.0" prefWidth="965.0" BorderPane.alignment="CENTER_LEFT">
          <content>
             <AnchorPane fx:id="midPane" prefHeight="1000.0" prefWidth="950.0" BorderPane.alignment="CENTER">
          <children>
@@ -54,8 +54,8 @@
                   <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#delHalf" text="Delete" />
                   </buttons>
                   </ButtonBar>
-                  <VBox fx:id="vboxLeft" layoutY="7.0" prefHeight="1000.0" prefWidth="300.0" AnchorPane.bottomAnchor="-7.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="660.0" AnchorPane.topAnchor="7.0" />
-                        <VBox fx:id="vboxRight" layoutX="636.0" layoutY="7.0" prefHeight="1000.0" prefWidth="300.0" />
+                  <VBox fx:id="vboxLeft" layoutY="7.0" prefHeight="1000.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="660.0" AnchorPane.topAnchor="0.0" />
+                        <VBox fx:id="vboxRight" layoutX="630.0" prefHeight="1000.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
            </children>
             </AnchorPane>
          </content>
