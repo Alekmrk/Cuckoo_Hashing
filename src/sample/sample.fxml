@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
 <ScrollPane fitToWidth="true" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
@@ -59,13 +60,15 @@
                                     <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#delHalf" text="Delete" />
                                  </buttons>
                               </ButtonBar>
+                              <Line fx:id="lineBato" endX="443.0" endY="467.0" />
                  </children>
                   </AnchorPane>
                </content>
             </ScrollPane>
          </center>
       </BorderPane>
-            <TextField layoutX="858.0" layoutY="467.0" prefWidth="200.0" />
+
+            <TextField fx:id="inputField" layoutX="858.0" layoutY="467.0" prefWidth="200.0" />
             <ButtonBar layoutX="816.0" layoutY="501.0" prefHeight="40.0" prefWidth="200.0">
                <buttons>
                   <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Find" />

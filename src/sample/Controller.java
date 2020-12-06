@@ -12,12 +12,14 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.ArcType;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
@@ -30,11 +32,14 @@ public class Controller implements Initializable {
     public VBox vboxLeft;
     public AnchorPane midPane;
     public VBox vboxRight;
+    public TextField inputField;
+    public Line lineBato;
     @FXML
     private VBox sideRight;
     @FXML
     private VBox sideLeft;
-
+    private final double inputXStart=443.0;
+    private final double inputYStart=466.0;
 
     @FXML
     private Canvas canvasLeft;
@@ -98,7 +103,11 @@ public class Controller implements Initializable {
 
         context1.clearRect(0, 0, canvasLeft.getWidth(), canvasLeft.getHeight());
         context1.setFill(Color.TOMATO);
-        context1.fillRect(0, 0, canvasLeft.getWidth(), canvasLeft.getHeight());}
+        context1.fillRect(0, 0, canvasLeft.getWidth(), canvasLeft.getHeight());
+
+
+
+    }
         //context2 = canvasRight.getGraphicsContext2D();
 /*
 
@@ -419,6 +428,13 @@ public class Controller implements Initializable {
         context1.fillRect(0, 0, canvasLeft.getWidth(), canvasLeft.getHeight());
         System.out.println(canvasLeft.getHeight()+"     "+canvasLeft.getWidth());
         System.out.println(vboxLeft.getHeight()+"     "+vboxLeft.getWidth());
+
+        lineBato.setStartX(((Label) vboxLeft.getChildren().get(0)).getWidth());
+        lineBato.setStartY(((Label) vboxLeft.getChildren().get(0)).getHeight()*(0.5+3));
+        lineBato.setEndX(inputXStart);
+        lineBato.setEndY(inputYStart+inputField.getHeight()*0.5);
+
+
     }
 
     public void delHalf(ActionEvent actionEvent) {
