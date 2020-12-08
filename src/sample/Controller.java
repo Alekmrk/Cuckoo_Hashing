@@ -47,10 +47,6 @@ public class Controller implements Initializable {
     private final double inputXStart=443.0;
     private double inputYStart=466.0;
 
-    @FXML
-    private Canvas canvasLeft;
-    @FXML
-    private Canvas canvasRight;
 
     GraphicsContext context1;
     GraphicsContext context2;
@@ -61,7 +57,6 @@ public class Controller implements Initializable {
     double step = 0;
     ArrayList<String> T1 = new ArrayList<>();
     ArrayList<String> T2 = new ArrayList<>();
-    String x="";
 
 
     public void initializeTables(double times){
@@ -123,13 +118,34 @@ public class Controller implements Initializable {
 
         return oldKey;
     }
+
+    public String removeKey(String key){
+
+            int x1 = hash(key, 1);
+            int x2 = hash(key, 2);
+            //draw arrows
+            //arrow(x1, 1, 0, 1);
+            //arrow(x2, 2, 0, 1);
+
+            //obrisi sve hajlajtovano
+            refreshArrays();
+            if(T1.get(x1).equals(key)){
+                vboxLeft.getChildren().remove(x1);
+                return T1.remove(x1);
+            }
+            if(T2.get(x2).equals(key)){
+                vboxRight.getChildren().remove(x2);
+                return T2.remove(x2);
+            }
+            return null;
+        }
     // process change in input box
     public void inputChange() {
-        String x = inputField.getText();
+        String input = inputField.getText();
         //clearfield(); just disable arrows
-        if (x.length() > 0) {
-            int x1 = hash(x, 1);
-            int x2 = hash(x, 2);
+        if (input.length() > 0) {
+            int x1 = hash(input, 1);
+            int x2 = hash(input, 2);
             //draw arrows
             //arrow(x1, 1, 0, 1);
             //arrow(x2, 2, 0, 1);
@@ -138,8 +154,8 @@ public class Controller implements Initializable {
             refreshArrays();
 
             // osenci sta treba
-            highlight(true,x1,(T1.get(x1).equals(x)));
-            highlight(false,x2,(T2.get(x2).equals(x)));
+            highlight(true,x1,(T1.get(x1).equals(input)));
+            highlight(false,x2,(T2.get(x2).equals(input)));
 
             /*if ((T1[x1] == x) || (T2[x2] == x)){
                 document.getElementById("message").innerHTML = "<font color='green'>FOUND</font>";
@@ -153,7 +169,10 @@ public class Controller implements Initializable {
         inputField.requestFocus();
 
     }
-static boolean toggle=true;
+
+
+
+    static boolean toggle=true;
     private void refreshArrays() {
         System.out.println("usao asdasd awqeq ");
         if(toggle){
@@ -188,6 +207,13 @@ static boolean toggle=true;
 
     }
 
+    public void delete(){
+        String input = inputField.getText();
+
+        if (input.length() > 0) {
+            removeKey(input);
+        }
+    }
 /*
 // ------------------- functions
 
@@ -338,28 +364,6 @@ static boolean toggle=true;
             }
         }
     }
-
-    function delt(){
-        x = document.getElementById("inputx").value;
-        if (x.length>0){
-            x1 = hash(x, 1);
-            x2 = hash(x, 2);
-            if ((T1[x1] != x) && (T2[x2] != x)){
-                document.getElementById("message").innerHTML = "<font color='red'>DELETE fail.<br><br> NOT FOUND</font>";
-                setTimeout("document.getElementById('inputx').focus();", 1000);
-            }  else if (T1[x1] == x){
-                T1[x1] = '';
-                disparrays();
-                document.getElementById("message").innerHTML = "<font color='green'>DELETE ok.</font>";
-                setTimeout("document.getElementById('inputx').value = '';document.getElementById('inputx').focus();", 1000);
-            }  else if (T2[x2] == x){
-                T2[x2] = '';
-                disparrays();
-                document.getElementById("message").innerHTML = "<font color='green'>DELETE ok.</font>";
-                setTimeout("document.getElementById('inputx').value = '';document.getElementById('inputx').focus();", 1000);
-            }
-        }
-
     }*/
 
     // dummy hash function loosely based on http://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript-jquery
