@@ -1,6 +1,8 @@
 package sample;
 
 import com.sun.glass.ui.Cursor;
+import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,9 +14,11 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -24,6 +28,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -34,12 +39,13 @@ public class Controller implements Initializable {
     public VBox vboxRight;
     public TextField inputField;
     public Line lineBato;
+    public ScrollPane scroll;
     @FXML
     private VBox sideRight;
     @FXML
     private VBox sideLeft;
     private final double inputXStart=443.0;
-    private final double inputYStart=466.0;
+    private double inputYStart=466.0;
 
     @FXML
     private Canvas canvasLeft;
@@ -53,153 +59,136 @@ public class Controller implements Initializable {
     int r2 =(int) Math.round(Math.random()*1000000000);
     int tableSize=15;
     double step = 0;
-    String[] T1 = new String[tableSize];
-    String[] T2 = new String[tableSize];
+    ArrayList<String> T1 = new ArrayList<>();
+    ArrayList<String> T2 = new ArrayList<>();
     String x="";
 
 
+    public void initializeTables(double times){
+
+        tableSize*=times;
+        //inputField.requestFocus();
+        //inputField.setText("");
+
+        // Requesting focus in separate Thread because at the time of initialize() controls are not yet ready to handle focus.
+        Platform.runLater(() -> inputField.requestFocus());
+
+        for(int i =0;i<tableSize;i++){
+            Label label=new Label("");
+            label.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-wrap-text:true; -fx-border-color:black;");
+            label.setPadding(new Insets(5));
+            label.setAlignment(Pos.CENTER);
+            label.setMaxWidth(Double.MAX_VALUE);
+            label.setTextAlignment(TextAlignment.CENTER);
+            T1.add("");
+
+            vboxLeft.getChildren().add(label);
+        }
+
+        for(int i =0;i<tableSize;i++){
+            Label label=new Label("");
+            label.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-wrap-text:true; -fx-border-color:black;");
+            label.setPadding(new Insets(5));
+            label.setAlignment(Pos.CENTER);
+            label.setMaxWidth(Double.MAX_VALUE);
+            label.setTextAlignment(TextAlignment.CENTER);
+            T2.add("");
+
+            vboxRight.getChildren().add(label);
+        }
+
+    }
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        canvasLeft.heightProperty().bind(midPane.heightProperty());
-        for(int i =1;i<tableSize;i++){
-            Label label=new Label("Labela: "+i);
-            label.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-wrap-text:true; -fx-border-color:black;");
-            label.setPadding(new Insets(5));
-            label.setAlignment(Pos.CENTER);
-            label.setMaxWidth(Double.MAX_VALUE);
 
+        initializeTables(1);
+        putKey(hash("TEST1",1),"TEST1",true);
+        putKey(hash("TEST2",2),"TEST2",false);
+        // disparrays();
 
-            label.setTextAlignment(TextAlignment.CENTER);
-            vboxLeft.getChildren().add(label);
-        }
-        ((Label)vboxLeft.getChildren().get(1)).setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(5.0), null)));
-        ((Label)vboxLeft.getChildren().get(1)).setPrefWidth(100);
-        ((Label)vboxLeft.getChildren().get(1)).setMaxHeight(400);
-        ((Label)vboxLeft.getChildren().get(3)).setPrefWidth(150);
-        ((Label)vboxLeft.getChildren().get(3)).setMaxHeight(400);
-        ((Label)vboxLeft.getChildren().get(3)).setText("01234567891234567890");
-        ((Label)vboxLeft.getChildren().get(3)).setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(5.0), null)));
-        canvasLeft.heightProperty().bind(midPane.heightProperty());
-        for(int i =1;i<tableSize;i++){
-            Label label=new Label("Labela: "+i);
-            label.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-wrap-text:true; -fx-border-color:black;");
-            label.setPadding(new Insets(5));
-            label.setAlignment(Pos.CENTER);
-            label.setMaxWidth(Double.MAX_VALUE);
-
-
-            label.setTextAlignment(TextAlignment.CENTER);
-            vboxRight.getChildren().add(label);
-        }
-        ((Label)vboxRight.getChildren().get(1)).setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(5.0), null)));
-        ((Label)vboxRight.getChildren().get(1)).setPrefWidth(100);
-        ((Label)vboxRight.getChildren().get(1)).setMaxHeight(400);
-        ((Label)vboxRight.getChildren().get(3)).setPrefWidth(150);
-        ((Label)vboxRight.getChildren().get(3)).setMaxHeight(400);
-        ((Label)vboxRight.getChildren().get(3)).setText("01234567891234567890");
-        ((Label)vboxRight.getChildren().get(3)).setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(5.0), null)));
-        context1 = canvasLeft.getGraphicsContext2D();
-
-        context1.clearRect(0, 0, canvasLeft.getWidth(), canvasLeft.getHeight());
-        context1.setFill(Color.TOMATO);
-        context1.fillRect(0, 0, canvasLeft.getWidth(), canvasLeft.getHeight());
-
-
+        //((Label)vboxLeft.getChildren().get(3)).setPrefWidth(150);
+        //((Label)vboxLeft.getChildren().get(3)).setMaxHeight(400);
 
     }
-        //context2 = canvasRight.getGraphicsContext2D();
+    public String putKey(int index, String key, boolean sideLeft){
+        String oldKey=sideLeft?T1.remove(index): T2.remove(index);
+        if(sideLeft){
+            T1.add(index,key);
+            ((Label)vboxLeft.getChildren().get(index)).setText(key);
+        }else{
+            T2.add(index,key);
+            ((Label)vboxRight.getChildren().get(index)).setText(key);
+        }
+
+        return oldKey;
+    }
+    // process change in input box
+    public void inputChange() {
+        String x = inputField.getText();
+        //clearfield(); just disable arrows
+        if (x.length() > 0) {
+            int x1 = hash(x, 1);
+            int x2 = hash(x, 2);
+            //draw arrows
+            //arrow(x1, 1, 0, 1);
+            //arrow(x2, 2, 0, 1);
+
+            //obrisi sve hajlajtovano
+            refreshArrays();
+
+            // osenci sta treba
+            highlight(true,x1,(T1.get(x1).equals(x)));
+            highlight(false,x2,(T2.get(x2).equals(x)));
+
+            /*if ((T1[x1] == x) || (T2[x2] == x)){
+                document.getElementById("message").innerHTML = "<font color='green'>FOUND</font>";
+            } else {
+                document.getElementById("message").innerHTML = "<font color='red'>NOT FOUND</font>";
+            }*/
+        } else {
+            //document.getElementById("message").innerHTML = "";
+            refreshArrays();
+        }
+        inputField.requestFocus();
+
+    }
+static boolean toggle=true;
+    private void refreshArrays() {
+        System.out.println("usao asdasd awqeq ");
+        if(toggle){
+        ObservableList<Node> children = vboxLeft.getChildren();
+        for (Node l:children){
+            ((Label) l).setBackground(new Background(new BackgroundFill(Color.AZURE, new CornerRadii(5.0), null)));
+        }
+        children = vboxRight.getChildren();
+        for (Node l:children){
+            ((Label) l).setBackground(new Background(new BackgroundFill(Color.AZURE, new CornerRadii(5.0), null)));
+        }
+        //toggle=false;
+        }else{
+            ObservableList<Node> children = vboxLeft.getChildren();
+            for (Node l:children){
+                ((Label) l).setBackground(new Background(new BackgroundFill(Color.TOMATO, new CornerRadii(5.0), null)));
+            }
+            children = vboxRight.getChildren();
+            for (Node l:children){
+                ((Label) l).setBackground(new Background(new BackgroundFill(Color.TOMATO, new CornerRadii(5.0), null)));
+            }
+            toggle=true;
+        }
+    }
+
+    public void highlight(boolean leftSide,int index, boolean successful){
+        if (leftSide){
+            ((Label)vboxLeft.getChildren().get(index)).setBackground(new Background(new BackgroundFill(successful?Color.GREEN:Color.RED, new CornerRadii(5.0), null)));
+        } else {
+            ((Label)vboxRight.getChildren().get(index)).setBackground(new Background(new BackgroundFill(successful?Color.GREEN:Color.RED, new CornerRadii(5.0), null)));
+        }
+
+    }
+
 /*
-
-
-        
-        for (var i=0;i<tableSize;i++){
-            T1[i] = ""; T2[i] = "";
-        }
-        
-        T1[hash("TEST1",1)] = "TEST1";
-        T2[hash("TEST2",2)] = "TEST2";
-// clear canvas
-        context1.clearRect(0, 0, canvasLeft.getWidth(), canvasLeft.getHeight());
-        context1.setFill(Color.TOMATO);
-        context1.fillRect(0, 0, canvasLeft.getWidth(), canvasLeft.getHeight());
-
-        context2.clearRect(0, 0, canvasRight.getWidth(), canvasRight.getHeight());
-        context2.setFill(Color.TOMATO);
-        context2.fillRect  (0, 0, canvasRight.getWidth(), canvasRight.getHeight());
-
-// draw tables
-        for (int i=0;i<tableSize;i++){
-            context1.beginPath();
-            context1.rect(4, 20+i*40, 160, 40);
-            context1.setFill(Color.color(1,1,1));
-            context1.fill();
-            context1.setLineWidth(1);
-            //context1.strokeStyle = '#555';
-            context1.stroke();
-        }
-
-        for (int i=0;i<tableSize;i++){
-            context2.beginPath();
-            context2.rect(canvasRight.getWidth()-164, 20+i*40, 160, 40);
-            context2.setFill(Color.color(1,1,1));
-            context2.fill();
-            context2.setLineWidth(1);
-            //context2.setStroke(); = '#555';
-            context2.stroke();
-        }
-
-        /*context1.beginPath();
-        context1.setFill(Color.color(0,0,0));
-        //context1.setFont(Font);
-        context1.fillText("T1",65,460);
-
-        context2.beginPath();
-        context2.setFill(Color.color(0,0,0));
-        //context2.font='25px Georgia';
-        context2.fillText("T2",195,460);*/
-/*
-        disparrays();
-    }
-
-
-    public void mouseClicked(MouseEvent mouseEvent) {
-        System.out.println("Clicked on Canvas");
-
-        //drawShapes(graphicsContext);
-    }
-
-
-
-
-
-
-    void disparrays(){
-        for (int i=0;i<tableSize;i++){
-            context1.beginPath();
-            context1.setFill(Color.color(1,1,1));
-            context1.fillRect(4+2, 20+i*40+2, 160-4, 40-4);
-            context1.fill();
-            context1.setFill(Color.color(0,0,0));
-            //context1.font='15px Courier';
-            context1.fillText(T1[i],10,43+i*40);
-
-            context2.beginPath();
-            context2.setFill(Color.color(1,1,1));
-            context2.fillRect(canvasRight.getWidth()-160, 20+i*40+2, 160-4, 40-4);
-            context2.fill();
-            context2.setFill(Color.color(0,0,0));
-            //context2.font='15px Courier';
-            context2.fillText(T2[i],canvasRight.getWidth()-158,43+i*40);
-        }
-
-    }
-
-    // Initialize variables
-
-
-//document.getElementById('inputx').focus();
-
 // ------------------- functions
 
     // draw arcs and arrows
@@ -271,44 +260,9 @@ public class Controller implements Initializable {
         context2.fill();
     }
 
-    function highlight(side, i, cond){
-        if (side==1){
-            context1.beginPath();
-            context1.fillStyle = cond?"rgba(0, 255, 0, 0.5)":"rgba(255, 0, 0, 0.5)";
-            context1.fillRect(4+2, 20+i*40+2, 160-4, 40-4);
-        } else {
-            context2.beginPath();
-            context2.fillStyle = cond?"rgba(0, 255, 0, 0.5)":"rgba(255, 0, 0, 0.5)";
-            context2.fillRect(136+2, 20+i*40+2, 160-4, 40-4);
-        }
 
-    }
 
-    // process change in input box
-    function process(){
-        x = document.getElementById("inputx").value;
-        clearfield();
-        if (x.length>0){
-            x1 = hash(x, 1);
-            x2 = hash(x, 2);
-            arrow(x1, 1, 0, 1);
-            arrow(x2, 2, 0, 1);
 
-            disparrays();
-            highlight(1,x1,(T1[x1] == x));
-            highlight(2,x2,(T2[x2] == x));
-
-            if ((T1[x1] == x) || (T2[x2] == x)){
-                document.getElementById("message").innerHTML = "<font color='green'>FOUND</font>";
-            } else {
-                document.getElementById("message").innerHTML = "<font color='red'>NOT FOUND</font>";
-            }
-        } else {
-            document.getElementById("message").innerHTML = "";
-            disparrays();
-        }
-        document.getElementById('inputx').focus();
-    }
 
 
 
@@ -423,32 +377,55 @@ public class Controller implements Initializable {
     }
 
 
-    public void mouseClicked(MouseEvent mouseEvent) {context1.clearRect(0, 0, canvasLeft.getWidth(), canvasLeft.getHeight());
-        context1.setFill(Color.TOMATO);
-        context1.fillRect(0, 0, canvasLeft.getWidth(), canvasLeft.getHeight());
-        System.out.println(canvasLeft.getHeight()+"     "+canvasLeft.getWidth());
-        System.out.println(vboxLeft.getHeight()+"     "+vboxLeft.getWidth());
+    public void mouseClicked(MouseEvent mouseEvent) {
+        //context1.clearRect(0, 0, canvasLeft.getWidth(), canvasLeft.getHeight());
+        //context1.setFill(Color.AZURE);
+        //context1.fillRect(0, 0, canvasLeft.getWidth(), canvasLeft.getHeight());
+        //System.out.println(canvasLeft.getHeight()+"     "+canvasLeft.getWidth());
+        //System.out.println(vboxLeft.getHeight()+"     "+vboxLeft.getWidth());
 
-        lineBato.setStartX(((Label) vboxLeft.getChildren().get(0)).getWidth());
-        lineBato.setStartY(((Label) vboxLeft.getChildren().get(0)).getHeight()*(0.5+3));
-        lineBato.setEndX(inputXStart);
-        lineBato.setEndY(inputYStart+inputField.getHeight()*0.5);
+        drawLine();
+
 
 
     }
 
+    public void drawLine(){//boolean left, int index
+        lineBato.setStartX(((Label) vboxLeft.getChildren().get(0)).getWidth());
+        lineBato.setStartY(((Label) vboxLeft.getChildren().get(0)).getHeight()*(0.5+3));
+        lineBato.setEndX(inputXStart);
+        lineBato.setEndY(inputYStart+inputField.getHeight()*0.5);
+    }
+
     public void delHalf(ActionEvent actionEvent) {
-        tableSize*=2;
-        for(int i =tableSize/2;i<tableSize;i++){
-            vboxLeft.getChildren().add(new Label("Labela nova: "+i));
-        }
-
-       /* try {
-            //Thread.sleep(1000);
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        initializeTables(2);
+       /* for(int i =tableSize/2;i<tableSize;i++){
+            //vboxLeft.getChildren().add(new Label("Labela nova: "+i));
+            putKey(i,"Labela"+i,true);
         }*/
         this.mouseClicked(null);
+    }
+
+    public void scrollStart(ScrollEvent scrollEvent) {
+
+    }
+
+    public void scrollEnd(ScrollEvent scrollEvent) {
+        drawLine();
+    }
+
+    public void scroll(ScrollEvent scrollEvent) {
+
+       /* try {
+            System.out.println("usao jee");
+            inputYStart-=scrollEvent.getDeltaY();
+            System.out.println("pomeraj je: "+inputYStart);
+            System.out.println("pomeraj za vbox je "+vboxLeft.getLayoutX()+" asdasd"+vboxLeft.getLayoutY() );
+
+            drawLine();
+        }catch (Exception e){
+
+        }*/
+
     }
 }

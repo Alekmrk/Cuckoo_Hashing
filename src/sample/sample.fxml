@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
@@ -15,41 +13,36 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fitToWidth="true" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
-   <content>
+<ScrollPane fitToWidth="true" pannable="true" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+
       <Pane>
-         <children>
+         
       <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
          <right>
             <VBox fx:id="sideRight" alignment="CENTER" prefHeight="1000.0" prefWidth="415.0" BorderPane.alignment="CENTER">
-               <children>
+               
                   <Label alignment="CENTER" contentDisplay="CENTER" text="Label">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
                   <TextArea maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="380.0" />
-               </children>
+              
                   </VBox>
          </right>
          <left>
             <Pane prefHeight="1000.0" prefWidth="415.0" BorderPane.alignment="CENTER">
-               <children>
+             
                   <Button layoutX="189.0" layoutY="595.0" mnemonicParsing="false" text="Button" />
                   <Button layoutX="259.0" layoutY="595.0" mnemonicParsing="false" text="Button" />
-               </children>
+              
             </Pane>
          </left>
          <center>
-            <ScrollPane prefHeight="1015.0" prefWidth="1100.0" vbarPolicy="ALWAYS" BorderPane.alignment="CENTER_LEFT">
-               <content>
-                  <AnchorPane fx:id="midPane" prefHeight="1015.0" prefWidth="1085.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Canvas fx:id="canvasLeft" height="1015.0" onMouseClicked="#mouseClicked" width="1085.0" AnchorPane.bottomAnchor="-14.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <cursor>
-                        <Cursor fx:constant="CROSSHAIR" />
-                     </cursor>
-                  </Canvas>
+            <ScrollPane fx:id="scroll" onScroll="#scrollStart" onScrollFinished="#scrollEnd" onScrollStarted="#scroll" pannable="true" prefHeight="1015.0" prefWidth="1100.0" vbarPolicy="ALWAYS" BorderPane.alignment="CENTER_LEFT">
+
+                  <AnchorPane fx:id="midPane" onScroll="#scroll" prefHeight="1015.0" prefWidth="1085.0" BorderPane.alignment="CENTER">
+               
                         <VBox fx:id="vboxLeft" prefHeight="1015.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                               <VBox fx:id="vboxRight" layoutX="650.0" prefHeight="1015.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                               <TextField layoutX="443.0" layoutY="466.0" prefWidth="200.0" AnchorPane.leftAnchor="443.0" AnchorPane.rightAnchor="443.0" />
@@ -61,14 +54,13 @@
                                  </buttons>
                               </ButtonBar>
                               <Line fx:id="lineBato" endX="443.0" endY="467.0" />
-                 </children>
+                
                   </AnchorPane>
-               </content>
             </ScrollPane>
          </center>
       </BorderPane>
 
-            <TextField fx:id="inputField" layoutX="858.0" layoutY="467.0" prefWidth="200.0" />
+            <TextField fx:id="inputField" layoutX="858.0" layoutY="467.0" onKeyTyped="#inputChange" prefWidth="200.0" />
             <ButtonBar layoutX="816.0" layoutY="501.0" prefHeight="40.0" prefWidth="200.0">
                <buttons>
                   <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Find" />
@@ -76,7 +68,6 @@
                   <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#delHalf" text="Delete" />
                </buttons>
             </ButtonBar>
-         </children>
+        
       </Pane>
-   </content>
 </ScrollPane>
