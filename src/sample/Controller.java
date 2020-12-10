@@ -1,12 +1,13 @@
 package sample;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
-import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -135,6 +136,11 @@ public class Controller implements Initializable{
             rightLine.setEndY(inputField.getLayoutY()+inputField.getPrefHeight());
 
 
+            scroll.vvalueProperty().addListener((observable, oldValue, newValue) -> {
+                drawLine(true,15);
+                drawLine(false,14);
+            });
+
         // disparrays();
         //((Label)vboxLeft.getChildren().get(3)).setPrefWidth(150);
         //((Label)vboxLeft.getChildren().get(3)).setMaxHeight(400);
@@ -237,7 +243,6 @@ public class Controller implements Initializable{
         if (input.length() > 0) {
             if(addLeft(input,16)) return;
         }
-
         inputField.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(5.0), null)));
     }
 
@@ -304,19 +309,6 @@ public class Controller implements Initializable{
 
         }).start();
 
-
-
-
-
-
-    }
-    private Bounds getRelativeBounds(Node node, Node relativeTo) {
-        Bounds nodeBoundsInScene = node.localToScene(node.getBoundsInLocal());
-        return relativeTo.sceneToLocal(nodeBoundsInScene);
-    }
-
-    private Point2D getCenter(Bounds b) {
-        return new Point2D(b.getMinX() + b.getWidth() / 2, b.getMinY() + b.getHeight() / 2);
     }
     public void delHalf(ActionEvent actionEvent) {
         expandTables(2);
@@ -329,8 +321,7 @@ public class Controller implements Initializable{
 
     public void scrollEnd(ScrollEvent scrollEvent) {
         //drawLine();
-        drawLine(true,15);
-        drawLine(false,14);
+
     }
 
     public void scroll(ScrollEvent scrollEvent) {
