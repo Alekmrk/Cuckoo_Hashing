@@ -4,7 +4,9 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -20,7 +22,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class Controller implements Initializable {
+import static java.lang.Thread.sleep;
+
+public class Controller implements Initializable{
 
     public VBox vboxLeft;
     public AnchorPane midPane;
@@ -30,7 +34,6 @@ public class Controller implements Initializable {
     public Line rightLine;
     public ScrollPane scroll;
     private final double inputXStart=443.0;
-
     private double inputYStart=466.0;
 
     int r1 =(int) Math.round(Math.random()*1000000000);
@@ -74,6 +77,7 @@ public class Controller implements Initializable {
 
             vboxRight.getChildren().add(label);
         }
+
 
         tableSize*=times;
     }
@@ -120,8 +124,18 @@ public class Controller implements Initializable {
         putKey(hash("TEST2",2),"TEST2",false);
 
         Platform.runLater(() -> inputField.requestFocus());
-        // disparrays();
 
+            leftLine.setStartX(inputField.getLayoutX());
+            leftLine.setStartY(inputField.getLayoutY());
+            leftLine.setEndX(inputField.getLayoutX());
+            leftLine.setEndY(inputField.getLayoutY()+inputField.getPrefHeight());
+            rightLine.setStartX(inputField.getLayoutX()+inputField.getPrefWidth());
+            rightLine.setStartY(inputField.getLayoutY());
+            rightLine.setEndX(inputField.getLayoutX()+inputField.getPrefWidth());
+            rightLine.setEndY(inputField.getLayoutY()+inputField.getPrefHeight());
+
+
+        // disparrays();
         //((Label)vboxLeft.getChildren().get(3)).setPrefWidth(150);
         //((Label)vboxLeft.getChildren().get(3)).setMaxHeight(400);
     }
@@ -264,16 +278,46 @@ public class Controller implements Initializable {
     }
 
     public void mouseClicked(MouseEvent mouseEvent) {
-        drawLine();
+        //drawLine();
     }
 
-    public void drawLine(){//boolean left, int index
-        leftLine.setStartX(((Label) vboxLeft.getChildren().get(0)).getWidth());
-        leftLine.setStartY(((Label) vboxLeft.getChildren().get(0)).getHeight()*(0.5+3));
-        leftLine.setEndX(inputXStart);
-        leftLine.setEndY(inputYStart+inputField.getHeight()*0.5);
+    public void drawLine(boolean left, int index){//boolean left, int index
+
+        new Thread(()->{
+
+            if(left){
+                Bounds b=vboxLeft.localToScreen((vboxLeft.getChildren().get(0)).getBoundsInLocal());
+                b=leftLine.screenToLocal(b);
+                leftLine.setStartX(b.getCenterX()+b.getWidth()/2);
+                leftLine.setStartY(b.getCenterY()+b.getHeight()*index);
+                leftLine.setEndX(inputField.getLayoutX());
+                leftLine.setEndY(inputField.getLayoutY()+inputField.getPrefHeight());
+
+            }else{
+                Bounds b=vboxRight.localToScreen((vboxRight.getChildren().get(0)).getBoundsInLocal());
+                b=rightLine.screenToLocal(b);
+                rightLine.setStartX(inputField.getLayoutX()+inputField.getPrefWidth());
+                rightLine.setStartY(inputField.getLayoutY());
+                rightLine.setEndX(b.getCenterX()-b.getWidth()/2);
+                rightLine.setEndY(b.getCenterY()+b.getHeight()*index);
+            }
+
+        }).start();
+
+
+
+
+
+
+    }
+    private Bounds getRelativeBounds(Node node, Node relativeTo) {
+        Bounds nodeBoundsInScene = node.localToScene(node.getBoundsInLocal());
+        return relativeTo.sceneToLocal(nodeBoundsInScene);
     }
 
+    private Point2D getCenter(Bounds b) {
+        return new Point2D(b.getMinX() + b.getWidth() / 2, b.getMinY() + b.getHeight() / 2);
+    }
     public void delHalf(ActionEvent actionEvent) {
         expandTables(2);
         this.mouseClicked(null);
@@ -284,19 +328,13 @@ public class Controller implements Initializable {
     }
 
     public void scrollEnd(ScrollEvent scrollEvent) {
-        drawLine();
+        //drawLine();
+        drawLine(true,15);
+        drawLine(false,14);
     }
 
     public void scroll(ScrollEvent scrollEvent) {
-       /* try {
-            System.out.println("usao jee");
-            inputYStart-=scrollEvent.getDeltaY();
-            System.out.println("pomeraj je: "+inputYStart);
-            System.out.println("pomeraj za vbox je "+vboxLeft.getLayoutX()+" asdasd"+vboxLeft.getLayoutY() );
 
-            drawLine();
-        }catch (Exception e){
 
-        }*/
     }
 }

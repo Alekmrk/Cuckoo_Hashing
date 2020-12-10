@@ -45,8 +45,6 @@
                                     <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Delete" />
                                  </buttons>
                               </ButtonBar>
-                            <Line fx:id="leftLine" endX="443.0" endY="467.0" />
-                            <Line fx:id="rightLine" endX="500.0" endY="600.0" />
                   </AnchorPane>
             </ScrollPane>
          </center>
@@ -59,5 +57,7 @@
                   <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#delete" text="Delete" />
                </buttons>
             </ButtonBar>
+                <Line fx:id="leftLine" endX="857.0" endY="478.0" startX="666.0" startY="87.0" />
+                <Line fx:id="rightLine" endX="1059.0" endY="471.0" startX="1156.0" startY="106.0" />
       </AnchorPane>
 </ScrollPane>
