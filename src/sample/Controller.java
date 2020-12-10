@@ -288,6 +288,8 @@ public class Controller implements Initializable{
 
     public void drawLine(boolean left, int index){//boolean left, int index
 
+        //System.out.println(inputField.getB);
+
         new Thread(()->{
 
             if(left){
@@ -296,13 +298,13 @@ public class Controller implements Initializable{
                 leftLine.setStartX(b.getCenterX()+b.getWidth()/2);
                 leftLine.setStartY(b.getCenterY()+b.getHeight()*index);
                 leftLine.setEndX(inputField.getLayoutX());
-                leftLine.setEndY(inputField.getLayoutY()+inputField.getPrefHeight());
+                leftLine.setEndY(inputField.getLayoutY()+inputField.getHeight()/2);
 
             }else{
                 Bounds b=vboxRight.localToScreen((vboxRight.getChildren().get(0)).getBoundsInLocal());
                 b=rightLine.screenToLocal(b);
-                rightLine.setStartX(inputField.getLayoutX()+inputField.getPrefWidth());
-                rightLine.setStartY(inputField.getLayoutY());
+                rightLine.setStartX(inputField.getLayoutX()+inputField.getWidth());
+                rightLine.setStartY(inputField.getLayoutY()+inputField.getHeight()/2);
                 rightLine.setEndX(b.getCenterX()-b.getWidth()/2);
                 rightLine.setEndY(b.getCenterY()+b.getHeight()*index);
             }
