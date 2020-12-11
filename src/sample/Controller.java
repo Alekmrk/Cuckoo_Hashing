@@ -19,13 +19,14 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.TextAlignment;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import static java.lang.Thread.sleep;
 
-public class Controller implements Initializable{
+public class Controller implements Initializable {
 
     public VBox vboxLeft;
     public AnchorPane midPane;
@@ -34,19 +35,20 @@ public class Controller implements Initializable{
     public Line leftLine;
     public Line rightLine;
     public ScrollPane scroll;
-    private final double inputXStart=443.0;
-    private double inputYStart=466.0;
+    private final double inputXStart = 443.0;
+    private double inputYStart = 466.0;
 
-    int r1 =(int) Math.round(Math.random()*1000000000);
-    int r2 =(int) Math.round(Math.random()*1000000000);
+    int r1 = (int) Math.round(Math.random() * 1000000000);
+    int r2 = (int) Math.round(Math.random() * 1000000000);
 
-    int tableSize=15;
+    int tableSize = 15;
     double step = 0;
     ArrayList<String> T1 = new ArrayList<>();
     ArrayList<String> T2 = new ArrayList<>();
-    String input="";
+    String input = "";
     boolean found = false;
-    public void expandTables(double times){
+
+    public void expandTables(double times) {
 
 
         //inputField.requestFocus();
@@ -55,8 +57,8 @@ public class Controller implements Initializable{
         // Requesting focus in separate Thread because at the time of initialize() controls are not yet ready to handle focus.
         Platform.runLater(() -> inputField.requestFocus());
 
-        for(int i=tableSize;i<tableSize*times;i++){
-            Label label=new Label("");
+        for (int i = tableSize; i < tableSize * times; i++) {
+            Label label = new Label("");
             label.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-wrap-text:true; -fx-border-color:black;");
             label.setPadding(new Insets(5));
             label.setAlignment(Pos.CENTER);
@@ -67,8 +69,8 @@ public class Controller implements Initializable{
             vboxLeft.getChildren().add(label);
         }
 
-        for(int i=tableSize;i<tableSize*times;i++){
-            Label label=new Label("");
+        for (int i = tableSize; i < tableSize * times; i++) {
+            Label label = new Label("");
             label.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-wrap-text:true; -fx-border-color:black;");
             label.setPadding(new Insets(5));
             label.setAlignment(Pos.CENTER);
@@ -80,9 +82,9 @@ public class Controller implements Initializable{
         }
 
 
-        tableSize*=times;
+        tableSize *= times;
     }
-    
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -93,8 +95,8 @@ public class Controller implements Initializable{
         // Requesting focus in separate Thread because at the time of initialize() controls are not yet ready to handle focus.
 
 
-        for(int i =0;i<tableSize;i++){
-            Label label=new Label("");
+        for (int i = 0; i < tableSize; i++) {
+            Label label = new Label("");
             label.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-wrap-text:true; -fx-border-color:black;");
             label.setPadding(new Insets(5));
             label.setAlignment(Pos.CENTER);
@@ -105,8 +107,8 @@ public class Controller implements Initializable{
             vboxLeft.getChildren().add(label);
         }
 
-        for(int i =0;i<tableSize;i++){
-            Label label=new Label("");
+        for (int i = 0; i < tableSize; i++) {
+            Label label = new Label("");
             label.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-wrap-text:true; -fx-border-color:black;");
             label.setPadding(new Insets(5));
             label.setAlignment(Pos.CENTER);
@@ -119,64 +121,65 @@ public class Controller implements Initializable{
         }
 
 
-
         //expandTables(1);
-        putKey(hash("TEST1",1),"TEST1",true);
-        putKey(hash("TEST2",2),"TEST2",false);
+        putKey(hash("TEST1", 1), "TEST1", true);
+        putKey(hash("TEST2", 2), "TEST2", false);
 
         Platform.runLater(() -> inputField.requestFocus());
 
-            leftLine.setStartX(inputField.getLayoutX());
-            leftLine.setStartY(inputField.getLayoutY());
-            leftLine.setEndX(inputField.getLayoutX());
-            leftLine.setEndY(inputField.getLayoutY()+inputField.getPrefHeight());
-            rightLine.setStartX(inputField.getLayoutX()+inputField.getPrefWidth());
-            rightLine.setStartY(inputField.getLayoutY());
-            rightLine.setEndX(inputField.getLayoutX()+inputField.getPrefWidth());
-            rightLine.setEndY(inputField.getLayoutY()+inputField.getPrefHeight());
+        leftLine.setStartX(inputField.getLayoutX());
+        leftLine.setStartY(inputField.getLayoutY());
+        leftLine.setEndX(inputField.getLayoutX());
+        leftLine.setEndY(inputField.getLayoutY() + inputField.getPrefHeight());
+        rightLine.setStartX(inputField.getLayoutX() + inputField.getPrefWidth());
+        rightLine.setStartY(inputField.getLayoutY());
+        rightLine.setEndX(inputField.getLayoutX() + inputField.getPrefWidth());
+        rightLine.setEndY(inputField.getLayoutY() + inputField.getPrefHeight());
 
 
-            scroll.vvalueProperty().addListener((observable, oldValue, newValue) -> {
-                drawLine(true,15);
-                drawLine(false,14);
-            });
+        scroll.vvalueProperty().addListener((observable, oldValue, newValue) -> {
+            drawLine(true, 15);
+            drawLine(false, 14);
+        });
 
         // disparrays();
         //((Label)vboxLeft.getChildren().get(3)).setPrefWidth(150);
         //((Label)vboxLeft.getChildren().get(3)).setMaxHeight(400);
     }
-    public String putKey(int index, String key, boolean sideLeft){
-        String oldKey=sideLeft?T1.remove(index): T2.remove(index);
-        if(sideLeft){
-            T1.add(index,key);
-            ((Label)vboxLeft.getChildren().get(index)).setText(key);
-        }else{
-            T2.add(index,key);
-            ((Label)vboxRight.getChildren().get(index)).setText(key);
+
+    public String putKey(int index, String key, boolean sideLeft) {
+        String oldKey = sideLeft ? T1.remove(index) : T2.remove(index);
+        if (sideLeft) {
+            T1.add(index, key);
+            ((Label) vboxLeft.getChildren().get(index)).setText(key);
+        } else {
+            T2.add(index, key);
+            ((Label) vboxRight.getChildren().get(index)).setText(key);
         }
         return oldKey;
     }
 
-    public String removeKey(String key){
+    public String removeKey(String key) {
 
-            int x1 = hash(key, 1);
-            int x2 = hash(key, 2);
+        int x1 = hash(key, 1);
+        int x2 = hash(key, 2);
 
-            refreshArrays();
-            if(T1.get(x1).equals(key)){
-                ((Label)vboxLeft.getChildren().get(x1)).setText("");
-                String res =T1.get(x1);
-                T1.set(x1,"");
-                return res;
-            }
-            if(T2.get(x2).equals(key)){
-                ((Label)vboxRight.getChildren().get(x2)).setText("");
-                String res =T1.get(x2);
-                T1.set(x2,"");
-                return res;
-            }
-            return null;
+        refreshArrays();
+        if (T1.get(x1).equals(key)) {
+            ((Label) vboxLeft.getChildren().get(x1)).setText("");
+            String res = T1.get(x1);
+            T1.set(x1, "");
+            return res;
         }
+        if (T2.get(x2).equals(key)) {
+            ((Label) vboxRight.getChildren().get(x2)).setText("");
+            String res = T1.get(x2);
+            T1.set(x2, "");
+            return res;
+        }
+        return null;
+    }
+
     // process change in input box
     public void inputChange() {
         input = inputField.getText();
@@ -192,12 +195,12 @@ public class Controller implements Initializable{
             refreshArrays();
             Platform.runLater(() -> inputField.requestFocus());
             // osenci sta treba
-            highlight(true,x1,(T1.get(x1).equals(input)));
-            highlight(false,x2,(T2.get(x2).equals(input)));
+            highlight(true, x1, (T1.get(x1).equals(input)));
+            highlight(false, x2, (T2.get(x2).equals(input)));
 
             //document.getElementById("message").innerHTML = "<font color='green'>FOUND</font>";
             //document.getElementById("message").innerHTML = "<font color='red'>NOT FOUND</font>";
-            found= (T1.get(x1).equals(input)) || (T2.get(x2).equals(input));
+            found = (T1.get(x1).equals(input)) || (T2.get(x2).equals(input));
         } else {
             //document.getElementById("message").innerHTML = "";
             refreshArrays();
@@ -207,75 +210,78 @@ public class Controller implements Initializable{
 
     private void refreshArrays() {
         ObservableList<Node> children = vboxLeft.getChildren();
-        for (Node l:children){
+        for (Node l : children) {
             ((Label) l).setBackground(new Background(new BackgroundFill(Color.AZURE, new CornerRadii(5.0), null)));
         }
         children = vboxRight.getChildren();
-        for (Node l:children){
+        for (Node l : children) {
             ((Label) l).setBackground(new Background(new BackgroundFill(Color.AZURE, new CornerRadii(5.0), null)));
         }
 
         inputField.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5.0), null)));
     }
 
-    public void highlight(boolean leftSide,int index, boolean successful){
-        if (leftSide){
-            ((Label)vboxLeft.getChildren().get(index)).setBackground(new Background(new BackgroundFill(successful?Color.GREEN:Color.RED, new CornerRadii(5.0), null)));
+    public void highlight(boolean leftSide, int index, boolean successful) {
+        if (leftSide) {
+            ((Label) vboxLeft.getChildren().get(index)).setBackground(new Background(new BackgroundFill(successful ? Color.GREEN : Color.RED, new CornerRadii(5.0), null)));
         } else {
-            ((Label)vboxRight.getChildren().get(index)).setBackground(new Background(new BackgroundFill(successful?Color.GREEN:Color.RED, new CornerRadii(5.0), null)));
+            ((Label) vboxRight.getChildren().get(index)).setBackground(new Background(new BackgroundFill(successful ? Color.GREEN : Color.RED, new CornerRadii(5.0), null)));
         }
     }
 
-    public void delete(){
+    public void delete() {
         //input = inputField.getText();
         inputChange();
-        if(!found) return;
+        if (!found) return;
         if (input.length() > 0) {
             removeKey(input);
         }
     }
 
-    public void add(){
+    public void add() {
         inputChange();
-        if(found) {
+        if (found) {
             inputField.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(5.0), null)));
-            return;}
+            return;
+        }
         if (input.length() > 0) {
-            if(addLeft(input,16)) return;
+            if (addLeft(input, 16)) return;
         }
         inputField.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(5.0), null)));
     }
 
     private boolean addLeft(String key, int i) {
-        if(i<0){
+        if (i < 0) {
             inputField.setText(key);
-            return false;}
-        String s=putKey(hash(key,1),key,true);
-        if(!s.equals("")){
-            return addRight(s,i-1);
+            return false;
+        }
+        String s = putKey(hash(key, 1), key, true);
+        if (!s.equals("")) {
+            return addRight(s, i - 1);
         }
         return true;
     }
 
     private boolean addRight(String key, int i) {
-        if(i<0) {
+        if (i < 0) {
             inputField.setText(key);
-            return false;}
-        String s=putKey(hash(key,2),key,false);
-        if(!s.equals("")){
-            return addLeft(s,i-1);
+            return false;
         }
-        return  true;
+        String s = putKey(hash(key, 2), key, false);
+        if (!s.equals("")) {
+            return addLeft(s, i - 1);
+        }
+        return true;
     }
 
     // dummy hash function loosely based on http://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript-jquery
     // note: this is fine for visualization, but not for any real application
-    int hash(String stri,int variant) {
+    int hash(String stri, int variant) {
         int hash = 0, i, chr, len;
         if (stri.length() == 0) return hash;
         for (i = 0, len = stri.length(); i < len; i++) {
-            chr   = stri.charAt(i);
-            hash  = ((hash << 5) - hash) + chr + (chr*((variant==1)?r1:r2)<<i);
+            chr = stri.charAt(i);
+            hash = ((hash << 5) - hash) + chr + (chr * ((variant == 1) ? r1 : r2) << i);
             hash |= 0;
         }
         hash = Math.abs(hash) % tableSize;
@@ -286,32 +292,30 @@ public class Controller implements Initializable{
         //drawLine();
     }
 
-    public void drawLine(boolean left, int index){//boolean left, int index
-
+    public void drawLine(boolean left, int index) {//boolean left, int index
         //System.out.println(inputField.getB);
 
-        new Thread(()->{
+        new Thread(() -> {
 
-            if(left){
-                Bounds b=vboxLeft.localToScreen((vboxLeft.getChildren().get(0)).getBoundsInLocal());
-                b=leftLine.screenToLocal(b);
-                leftLine.setStartX(b.getCenterX()+b.getWidth()/2);
-                leftLine.setStartY(b.getCenterY()+b.getHeight()*index);
+            if (left) {
+                Bounds b = vboxLeft.localToScreen((vboxLeft.getChildren().get(0)).getBoundsInLocal());
+                b = leftLine.screenToLocal(b);
+                leftLine.setStartX(b.getCenterX() + b.getWidth() / 2);
+                leftLine.setStartY(b.getCenterY() + b.getHeight() * index);
                 leftLine.setEndX(inputField.getLayoutX());
-                leftLine.setEndY(inputField.getLayoutY()+inputField.getHeight()/2);
-
-            }else{
-                Bounds b=vboxRight.localToScreen((vboxRight.getChildren().get(0)).getBoundsInLocal());
-                b=rightLine.screenToLocal(b);
-                rightLine.setStartX(inputField.getLayoutX()+inputField.getWidth());
-                rightLine.setStartY(inputField.getLayoutY()+inputField.getHeight()/2);
-                rightLine.setEndX(b.getCenterX()-b.getWidth()/2);
-                rightLine.setEndY(b.getCenterY()+b.getHeight()*index);
+                leftLine.setEndY(inputField.getLayoutY() + inputField.getHeight() / 2);
+            } else {
+                Bounds b = vboxRight.localToScreen((vboxRight.getChildren().get(0)).getBoundsInLocal());
+                b = rightLine.screenToLocal(b);
+                rightLine.setStartX(inputField.getLayoutX() + inputField.getWidth());
+                rightLine.setStartY(inputField.getLayoutY() + inputField.getHeight() / 2);
+                rightLine.setEndX(b.getCenterX() - b.getWidth() / 2);
+                rightLine.setEndY(b.getCenterY() + b.getHeight() * index);
             }
-
         }).start();
 
     }
+
     public void delHalf(ActionEvent actionEvent) {
         expandTables(2);
         this.mouseClicked(null);
