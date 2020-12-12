@@ -13,51 +13,64 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fitToWidth="true" hbarPolicy="ALWAYS" pannable="true" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
-      <AnchorPane BorderPane.alignment="CENTER">
-      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
-         <right>
-            <VBox alignment="CENTER" prefHeight="1000.0" prefWidth="415.0" BorderPane.alignment="CENTER">
-                  <Label alignment="CENTER" contentDisplay="CENTER" text="Label">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-                  <TextArea maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="380.0" />
-            </VBox>
-         </right>
-         <left>
-            <Pane prefHeight="1000.0" prefWidth="415.0" BorderPane.alignment="CENTER">
-                  <Button layoutX="189.0" layoutY="595.0" mnemonicParsing="false" text="Button" />
-                  <Button layoutX="259.0" layoutY="595.0" mnemonicParsing="false" text="Button" />
-            </Pane>
-         </left>
-         <center>
-            <ScrollPane fx:id="scroll" onScroll="#scrollStart" onScrollFinished="#scrollEnd" onScrollStarted="#scroll" pannable="true" prefHeight="1015.0" prefWidth="1100.0" vbarPolicy="ALWAYS" BorderPane.alignment="CENTER_LEFT">
-                  <AnchorPane fx:id="midPane" onScroll="#scroll" prefHeight="1015.0" prefWidth="1085.0" BorderPane.alignment="CENTER">
-                        <VBox fx:id="vboxLeft" prefHeight="1015.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                            <VBox fx:id="vboxRight" layoutX="650.0" prefHeight="1015.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                              <TextField disable="true" layoutX="443.0" layoutY="466.0" prefWidth="200.0" visible="false" AnchorPane.leftAnchor="443.0" AnchorPane.rightAnchor="443.0" />
-                              <ButtonBar disable="true" layoutX="400.0" layoutY="500.0" prefHeight="40.0" prefWidth="200.0" visible="false" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="420.0">
-                                 <buttons>
-                                    <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Find" />
-                                    <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Add" />
-                                    <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Delete" />
-                                 </buttons>
-                              </ButtonBar>
-                  </AnchorPane>
-            </ScrollPane>
-         </center>
-      </BorderPane>
-            <TextField fx:id="inputField" layoutX="858.0" layoutY="467.0" onKeyTyped="#inputChange" prefWidth="200.0" />
-            <ButtonBar layoutX="816.0" layoutY="501.0" prefHeight="40.0" prefWidth="200.0">
-               <buttons>
-                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#delHalf" text="Find" />
-                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#add" text="Add" />
-                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#delete" text="Delete" />
-               </buttons>
-            </ButtonBar>
-                <Line fx:id="leftLine" endX="857.0" endY="478.0" startX="666.0" startY="87.0" />
-                <Line fx:id="rightLine" endX="1059.0" endY="471.0" startX="1156.0" startY="106.0" />
-      </AnchorPane>
+<ScrollPane fitToWidth="true" hbarPolicy="ALWAYS" pannable="true" vbarPolicy="ALWAYS"
+            xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="sample.Controller">
+    <AnchorPane BorderPane.alignment="CENTER">
+        <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+            <right>
+                <VBox alignment="CENTER" prefHeight="1000.0" prefWidth="415.0" BorderPane.alignment="CENTER">
+                    <Label alignment="CENTER" contentDisplay="CENTER" text="Label">
+                        <font>
+                            <Font size="20.0"/>
+                        </font>
+                    </Label>
+                    <TextArea maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                              prefHeight="300.0" prefWidth="380.0"/>
+                </VBox>
+            </right>
+            <left>
+                <Pane prefHeight="1000.0" prefWidth="415.0" BorderPane.alignment="CENTER">
+                    <Button layoutX="189.0" layoutY="595.0" mnemonicParsing="false" text="Button"/>
+                    <Button layoutX="259.0" layoutY="595.0" mnemonicParsing="false" text="Button"/>
+                </Pane>
+            </left>
+            <center>
+                <ScrollPane fx:id="scroll" onScroll="#scrollStart" onScrollFinished="#scrollEnd"
+                            onScrollStarted="#scroll" pannable="true" prefHeight="1015.0" prefWidth="1100.0"
+                            vbarPolicy="ALWAYS" BorderPane.alignment="CENTER_LEFT">
+                    <AnchorPane fx:id="midPane" onScroll="#scroll" prefHeight="1015.0" prefWidth="1085.0"
+                                BorderPane.alignment="CENTER">
+                        <VBox fx:id="vboxLeft" prefHeight="1015.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0"
+                              AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                        <VBox fx:id="vboxRight" layoutX="650.0" prefHeight="1015.0" prefWidth="250.0"
+                              AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                        <TextField disable="true" layoutX="443.0" layoutY="466.0" prefWidth="200.0" visible="false"
+                                   AnchorPane.leftAnchor="443.0" AnchorPane.rightAnchor="443.0"/>
+                        <ButtonBar disable="true" layoutX="400.0" layoutY="500.0" prefHeight="40.0" prefWidth="200.0"
+                                   visible="false" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="420.0">
+                            <buttons>
+                                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Find"/>
+                                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Add"/>
+                                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
+                                        text="Delete"/>
+                            </buttons>
+                        </ButtonBar>
+                    </AnchorPane>
+                </ScrollPane>
+            </center>
+        </BorderPane>
+        <TextField fx:id="inputField" layoutX="858.0" layoutY="467.0" onKeyTyped="#inputChange" prefWidth="200.0"/>
+        <ButtonBar layoutX="816.0" layoutY="501.0" prefHeight="40.0" prefWidth="200.0">
+            <buttons>
+                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#delHalf"
+                        text="Find"/>
+                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#add" text="Add"/>
+                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#delete"
+                        text="Delete"/>
+            </buttons>
+        </ButtonBar>
+        <Line fx:id="leftLine" endX="857.0" endY="478.0" startX="666.0" startY="87.0"/>
+        <Line fx:id="rightLine" endX="1059.0" endY="471.0" startX="1156.0" startY="106.0"/>
+    </AnchorPane>
 </ScrollPane>

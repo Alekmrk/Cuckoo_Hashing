@@ -218,6 +218,10 @@ public class Controller implements Initializable {
 
     private void refreshArrays() {
 
+        /*leftLine.setStartX(leftLine.getEndX());
+        leftLine.setStartY(leftLine.getEndY());
+        rightLine.setEndX(rightLine.getStartX());
+        rightLine.setEndY(rightLine.getStartY());*/
 
         ObservableList<Node> children = vboxLeft.getChildren();
         for (Node l : children) {
@@ -261,8 +265,12 @@ public class Controller implements Initializable {
                 highlight(true,currIndexLeft,true);}
                 else{
                 highlight(false,currIndexRight,true);
-                }}
-            inputField.setText("");
+                }
+                inputField.setText("");
+            }else{
+                inputField.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(5.0), null)));
+            }
+
             return;
         }
         inputChange();
@@ -315,6 +323,7 @@ public class Controller implements Initializable {
     public void drawLine(boolean left, int index) {//boolean left, int index
         //System.out.println(inputField.getB);
         if((left&&currIndexLeft<0)||(!left&&currIndexRight<0)){
+            //leftLine.setVisible(false);
             return;
         }
         new Thread(() -> {
