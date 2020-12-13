@@ -35,8 +35,8 @@ public class Controller implements Initializable {
     public Line leftLine;
     public Line rightLine;
     public ScrollPane scroll;
-    private int currIndexLeft=-1;
-    private int currIndexRight=-1;
+    private int currIndexLeft = -1;
+    private int currIndexRight = -1;
     private final double inputXStart = 443.0;
     private double inputYStart = 466.0;
 
@@ -99,7 +99,7 @@ public class Controller implements Initializable {
 
         for (int i = 0; i < tableSize; i++) {
             Label label = new Label("");
-            label.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-wrap-text:true; -fx-border-color:black;");
+            label.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-wrap-text:false; -fx-border-color:black;");
             label.setPadding(new Insets(5));
             label.setAlignment(Pos.CENTER);
             label.setMaxWidth(Double.MAX_VALUE);
@@ -111,7 +111,7 @@ public class Controller implements Initializable {
 
         for (int i = 0; i < tableSize; i++) {
             Label label = new Label("");
-            label.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-wrap-text:true; -fx-border-color:black;");
+            label.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-wrap-text:false; -fx-border-color:black;");
             label.setPadding(new Insets(5));
             label.setAlignment(Pos.CENTER);
             label.setMaxWidth(Double.MAX_VALUE);
@@ -192,10 +192,10 @@ public class Controller implements Initializable {
             //draw arrows
             //arrow(x1, 1, 0, 1);
             //arrow(x2, 2, 0, 1);
-            currIndexLeft=x1;
-            currIndexRight=x2;
-            drawLine(true,x1);
-            drawLine(false,x2);
+            currIndexLeft = x1;
+            currIndexRight = x2;
+            drawLine(true, x1);
+            drawLine(false, x2);
 
             //obrisi sve hajlajtovano
             refreshArrays();
@@ -209,19 +209,22 @@ public class Controller implements Initializable {
             found = (T1.get(x1).equals(input)) || (T2.get(x2).equals(input));
         } else {
             //document.getElementById("message").innerHTML = "";
+
+            currIndexRight = -1;
+            currIndexLeft = -1;
             refreshArrays();
-            currIndexRight=-1;
-            currIndexLeft=-1;
         }
         inputField.requestFocus();
     }
 
     private void refreshArrays() {
+        //ovo zna da zeza valjda
 
-        /*leftLine.setStartX(leftLine.getEndX());
-        leftLine.setStartY(leftLine.getEndY());
-        rightLine.setEndX(rightLine.getStartX());
-        rightLine.setEndY(rightLine.getStartY());*/
+            /*leftLine.setStartX(leftLine.getEndX());
+            leftLine.setStartY(leftLine.getEndY());
+            rightLine.setEndX(rightLine.getStartX());
+            rightLine.setEndY(rightLine.getStartY());*/
+
 
         ObservableList<Node> children = vboxLeft.getChildren();
         for (Node l : children) {
@@ -254,20 +257,22 @@ public class Controller implements Initializable {
 
     public void add() {
         inputChange();
-        String curr=inputField.getText();
+        String curr = inputField.getText();
         if (found) {
             inputField.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(5.0), null)));
             return;
         }
         if (input.length() > 0) {
             if (addLeft(input, 16)) {
-                if(T1.get(currIndexLeft).equals(curr)){
-                highlight(true,currIndexLeft,true);}
-                else{
-                highlight(false,currIndexRight,true);
+                if (T1.get(currIndexLeft).equals(curr)) {
+                    highlight(true, currIndexLeft, true);
+
+                } else {
+                    highlight(false, currIndexRight, true);
                 }
                 inputField.setText("");
-            }else{
+                inputField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null)));
+            } else {
                 inputField.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(5.0), null)));
             }
 
@@ -322,7 +327,7 @@ public class Controller implements Initializable {
 
     public void drawLine(boolean left, int index) {//boolean left, int index
         //System.out.println(inputField.getB);
-        if((left&&currIndexLeft<0)||(!left&&currIndexRight<0)){
+        if ((left && currIndexLeft < 0) || (!left && currIndexRight < 0)) {
             //leftLine.setVisible(false);
             return;
         }
