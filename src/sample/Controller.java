@@ -200,11 +200,14 @@ public class Controller implements Initializable {
             //arrow(x2, 2, 0, 1);
             currIndexLeft = x1;
             currIndexRight = x2;
+
+            refreshArrays();
+
             drawLine(true, x1);
             drawLine(false, x2);
 
             //obrisi sve hajlajtovano
-            refreshArrays();
+
             Platform.runLater(() -> inputField.requestFocus());
             // osenci sta treba
             highlight(true, x1, (T1.get(x1).equals(input)));
@@ -226,10 +229,12 @@ public class Controller implements Initializable {
     private void refreshArrays() {
         //ovo zna da zeza valjda
 
-            /*leftLine.setStartX(leftLine.getEndX());
+        Platform.runLater(() -> {
+            leftLine.setStartX(leftLine.getEndX());
             leftLine.setStartY(leftLine.getEndY());
             rightLine.setEndX(rightLine.getStartX());
-            rightLine.setEndY(rightLine.getStartY());*/
+            rightLine.setEndY(rightLine.getStartY());
+        });
 
 
         ObservableList<Node> children = vboxLeft.getChildren();
