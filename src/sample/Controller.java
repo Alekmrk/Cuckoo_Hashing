@@ -360,23 +360,8 @@ public class Controller implements Initializable {
 
     }
 
-    public void delHalf(ActionEvent actionEvent) {
+    public void expand(ActionEvent actionEvent) {
         expandTables(2);
         this.mouseClicked(null);
     }
-
-    public void scrollStart(ScrollEvent scrollEvent) {
-
-    }
-
-    public void scrollEnd(ScrollEvent scrollEvent) {
-        //drawLine();
-
-    }
-
-    public void scroll(ScrollEvent scrollEvent) {
-
-
-    }
-
 }

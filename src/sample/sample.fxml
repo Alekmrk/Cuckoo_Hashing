@@ -38,8 +38,8 @@
                 </Pane>
             </left>
             <center>
-                <ScrollPane fx:id="scroll" onScroll="#scrollStart" onScrollFinished="#scrollEnd" onScrollStarted="#scroll" pannable="true" prefHeight="1015.0" prefWidth="1100.0" vbarPolicy="ALWAYS" BorderPane.alignment="CENTER_LEFT">
-                    <AnchorPane fx:id="midPane" onScroll="#scroll" prefHeight="1015.0" prefWidth="1085.0" BorderPane.alignment="CENTER">
+                <ScrollPane fx:id="scroll" pannable="true" prefHeight="1015.0" prefWidth="1100.0" vbarPolicy="ALWAYS" BorderPane.alignment="CENTER_LEFT">
+                    <AnchorPane fx:id="midPane" prefHeight="1015.0" prefWidth="1085.0" BorderPane.alignment="CENTER">
                         <VBox fx:id="vboxLeft" prefHeight="1015.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                         <VBox fx:id="vboxRight" layoutX="650.0" prefHeight="1015.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                         <TextField disable="true" layoutX="443.0" layoutY="466.0" prefWidth="200.0" visible="false" AnchorPane.leftAnchor="443.0" AnchorPane.rightAnchor="443.0" />
@@ -58,7 +58,7 @@
             <TextField fx:id="inputField" layoutX="858.0" layoutY="467.0" onKeyTyped="#inputChange" prefWidth="200.0" translateX="-734.0" />
             <ButtonBar layoutX="816.0" layoutY="501.0" prefHeight="40.0" prefWidth="200.0" translateX="-734.0">
                 <buttons>
-                    <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#delHalf" text="Find" />
+                    <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#expand" text="Find" />
                     <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#add" text="Add" />
                     <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#delete" text="Delete" />
                 </buttons>
