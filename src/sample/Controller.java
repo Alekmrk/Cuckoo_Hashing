@@ -95,7 +95,11 @@ public class Controller implements Initializable {
         //inputField.setText("");
 
         // Requesting focus in separate Thread because at the time of initialize() controls are not yet ready to handle focus.
-
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         for (int i = 0; i < tableSize; i++) {
             Label label = new Label("");
