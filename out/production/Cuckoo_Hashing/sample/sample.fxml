@@ -13,8 +13,8 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fitToWidth="true" hbarPolicy="ALWAYS" pannable="true" prefHeight="930.0" prefWidth="1930.0" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
-    <AnchorPane maxHeight="900.0" maxWidth="1900.0" prefHeight="900.0" prefWidth="1900.0" BorderPane.alignment="CENTER">
+<ScrollPane fitToWidth="true" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+    <AnchorPane maxHeight="900.0" maxWidth="1900.0" minHeight="900.0" minWidth="1900.0" prefHeight="900.0" prefWidth="1900.0" BorderPane.alignment="CENTER">
         <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
             <right>
                 <VBox alignment="CENTER" prefHeight="1000.0" prefWidth="415.0" BorderPane.alignment="CENTER">
