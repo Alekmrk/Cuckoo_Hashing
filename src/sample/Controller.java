@@ -124,6 +124,7 @@ public class Controller implements Initializable {
             T2.add("");
 
             vboxRight.getChildren().add(label);
+            //Line.intersect()
         }
 
 
@@ -374,4 +375,5 @@ public class Controller implements Initializable {
 
 
     }
+
 }
