@@ -132,17 +132,18 @@ public class Controller implements Initializable {
         putKey(hash("TEST1", 1), "TEST1", true);
         putKey(hash("TEST2", 2), "TEST2", false);
 
-        Platform.runLater(() -> inputField.requestFocus());
-
-        leftLine.setStartX(inputField.getLayoutX());
-        leftLine.setStartY(inputField.getLayoutY());
-        leftLine.setEndX(inputField.getLayoutX());
-        leftLine.setEndY(inputField.getLayoutY() + inputField.getPrefHeight());
-        rightLine.setStartX(inputField.getLayoutX() + inputField.getPrefWidth());
-        rightLine.setStartY(inputField.getLayoutY());
-        rightLine.setEndX(inputField.getLayoutX() + inputField.getPrefWidth());
-        rightLine.setEndY(inputField.getLayoutY() + inputField.getPrefHeight());
-
+        Platform.runLater(() -> {
+                    leftLine.setStartX(inputField.getLayoutX());
+                    leftLine.setStartY(inputField.getLayoutY());
+                    leftLine.setEndX(inputField.getLayoutX());
+                    leftLine.setEndY(inputField.getLayoutY() + inputField.getPrefHeight());
+                    rightLine.setStartX(inputField.getLayoutX() + inputField.getPrefWidth());
+                    rightLine.setStartY(inputField.getLayoutY());
+                    rightLine.setEndX(inputField.getLayoutX() + inputField.getPrefWidth());
+                    rightLine.setEndY(inputField.getLayoutY() + inputField.getPrefHeight());
+                    inputField.requestFocus();
+                }
+        );
 
         scroll.vvalueProperty().addListener((observable, oldValue, newValue) -> {
             drawLine(true, currIndexLeft);
@@ -336,7 +337,7 @@ public class Controller implements Initializable {
             //leftLine.setVisible(false);
             return;
         }
-        new Thread(() -> {
+        Platform.runLater(() -> {
 
             if (left) {
                 Bounds b = vboxLeft.localToScreen((vboxLeft.getChildren().get(0)).getBoundsInLocal());
@@ -345,6 +346,7 @@ public class Controller implements Initializable {
                 leftLine.setStartY(b.getCenterY() + b.getHeight() * index);
                 leftLine.setEndX(inputField.getLayoutX());
                 leftLine.setEndY(inputField.getLayoutY() + inputField.getHeight() / 2);
+                System.out.println(leftLine);
             } else {
                 Bounds b = vboxRight.localToScreen((vboxRight.getChildren().get(0)).getBoundsInLocal());
                 b = rightLine.screenToLocal(b);
@@ -352,8 +354,9 @@ public class Controller implements Initializable {
                 rightLine.setStartY(inputField.getLayoutY() + inputField.getHeight() / 2);
                 rightLine.setEndX(b.getCenterX() - b.getWidth() / 2);
                 rightLine.setEndY(b.getCenterY() + b.getHeight() * index);
+                System.out.println(rightLine);
             }
-        }).start();
+        });
 
     }
 
