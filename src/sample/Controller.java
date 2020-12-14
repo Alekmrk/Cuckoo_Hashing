@@ -35,6 +35,7 @@ public class Controller implements Initializable {
     public Line leftLine;
     public Line rightLine;
     public ScrollPane scroll;
+    public Pane paneResizable;
     private int currIndexLeft = -1;
     private int currIndexRight = -1;
     private final double inputXStart = 443.0;
@@ -123,7 +124,6 @@ public class Controller implements Initializable {
             T2.add("");
 
             vboxRight.getChildren().add(label);
-
         }
 
 
