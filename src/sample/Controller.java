@@ -109,6 +109,7 @@ public class Controller implements Initializable {
             label.setAlignment(Pos.CENTER);
             label.setMaxWidth(Double.MAX_VALUE);
             label.setTextAlignment(TextAlignment.CENTER);
+            label.setBackground(new Background(new BackgroundFill(Color.AZURE, new CornerRadii(5.0), null)));
             T1.add("");
 
             vboxLeft.getChildren().add(label);
@@ -121,6 +122,7 @@ public class Controller implements Initializable {
             label.setAlignment(Pos.CENTER);
             label.setMaxWidth(Double.MAX_VALUE);
             label.setTextAlignment(TextAlignment.CENTER);
+            label.setBackground(new Background(new BackgroundFill(Color.AZURE, new CornerRadii(5.0), null)));
             T2.add("");
 
             vboxRight.getChildren().add(label);
@@ -129,8 +131,8 @@ public class Controller implements Initializable {
 
 
         //expandTables(1);
-        putKey(hash("TEST1", 1), "TEST1", true);
-        putKey(hash("TEST2", 2), "TEST2", false);
+        putKey(hash("key1", 1), "key1", true);
+        putKey(hash("key2", 2), "key2", false);
 
         Platform.runLater(() -> {
                     leftLine.setStartX(inputField.getLayoutX());
