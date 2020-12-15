@@ -180,6 +180,24 @@ public class Controller implements Initializable {
         inputField.requestFocus();
     }
 
+    private void refreshBackground(boolean left) {
+        //ovo zna da zeza valjda
+
+        linesOperator.resetLines(left);
+        if (left) {
+            ObservableList<Node> children = vboxLeft.getChildren();
+            for (Node l : children) {
+                ((Label) l).setBackground(new Background(new BackgroundFill(Color.AZURE, new CornerRadii(5.0), null)));
+            }
+        } else {
+            ObservableList<Node> children = vboxRight.getChildren();
+            for (Node l : children) {
+                ((Label) l).setBackground(new Background(new BackgroundFill(Color.AZURE, new CornerRadii(5.0), null)));
+            }
+        }
+        inputField.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5.0), null)));
+    }
+
     private void refreshBackground() {
         //ovo zna da zeza valjda
 
@@ -228,8 +246,10 @@ public class Controller implements Initializable {
             if (addLeft(input, 16)) {
                 if (T1.get(currIndexLeft).equals(curr)) {
                     highlight(true, currIndexLeft, true);
+                    refreshBackground(false);
                 } else {
                     highlight(false, currIndexRight, true);
+                    refreshBackground(true);
                 }
                 inputField.setText("");
                 inputField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null)));
