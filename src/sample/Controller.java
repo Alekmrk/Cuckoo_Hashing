@@ -237,7 +237,6 @@ public class Controller implements Initializable {
             } else {
                 inputField.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(5.0), null)));
             }
-
             return;
         }
         inputChange();
