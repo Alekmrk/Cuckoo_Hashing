@@ -202,9 +202,9 @@ public class Controller implements Initializable {
 
     public void highlight(boolean leftSide, int index, boolean successful) {
         if (leftSide) {
-            ((Label) vboxLeft.getChildren().get(index)).setBackground(new Background(new BackgroundFill(successful ? Color.GREEN : Color.RED, new CornerRadii(5.0), null)));
+            ((Label) vboxLeft.getChildren().get(index)).setBackground(new Background(new BackgroundFill(successful ? Color.GREENYELLOW : Color.web("FF0000CD"), new CornerRadii(5.0), null)));
         } else {
-            ((Label) vboxRight.getChildren().get(index)).setBackground(new Background(new BackgroundFill(successful ? Color.GREEN : Color.RED, new CornerRadii(5.0), null)));
+            ((Label) vboxRight.getChildren().get(index)).setBackground(new Background(new BackgroundFill(successful ? Color.GREENYELLOW : Color.web("FF0000CD"), new CornerRadii(5.0), null)));
         }
     }
 
@@ -221,26 +221,26 @@ public class Controller implements Initializable {
         inputChange();
         String curr = inputField.getText();
         if (found) {
-            inputField.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(5.0), null)));
+            inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null)));
             return;
         }
         if (input.length() > 0) {
             if (addLeft(input, 16)) {
                 if (T1.get(currIndexLeft).equals(curr)) {
                     highlight(true, currIndexLeft, true);
-
                 } else {
                     highlight(false, currIndexRight, true);
                 }
                 inputField.setText("");
                 inputField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null)));
             } else {
-                inputField.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(5.0), null)));
+                inputChange();
+                inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null)));
             }
             return;
         }
         inputChange();
-        inputField.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(5.0), null)));
+        inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null)));
     }
 
     private boolean addLeft(String key, int i) {
