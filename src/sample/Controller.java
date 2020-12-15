@@ -1,20 +1,16 @@
 package sample;
 
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -28,74 +24,39 @@ import static java.lang.Thread.sleep;
 
 public class Controller implements Initializable {
 
-    public VBox vboxLeft;
-    public AnchorPane midPane;
-    public VBox vboxRight;
-    public TextField inputField;
-    public Line leftLine;
-    public Line rightLine;
-    public ScrollPane scroll;
-    public Pane paneResizable;
+    @FXML
+    private VBox vboxLeft;
+    @FXML
+    private VBox vboxRight;
+    @FXML
+    private TextField inputField;
+    @FXML
+    private Line leftLine;
+    @FXML
+    private Line rightLine;
+    @FXML
+    private ScrollPane scroll;
+
     private int currIndexLeft = -1;
     private int currIndexRight = -1;
-    private final double inputXStart = 443.0;
-    private double inputYStart = 466.0;
 
-    int r1 = (int) Math.round(Math.random() * 1000000000);
-    int r2 = (int) Math.round(Math.random() * 1000000000);
+    private int tableSize = 15;
 
-    int tableSize = 15;
-    double step = 0;
-    ArrayList<String> T1 = new ArrayList<>();
-    ArrayList<String> T2 = new ArrayList<>();
-    String input = "";
-    boolean found = false;
+    private int r1 = (int) Math.round(Math.random() * 1000000000);
+    private int r2 = (int) Math.round(Math.random() * 1000000000);
 
-    public void expandTables(double times) {
+    private ArrayList<String> T1 = new ArrayList<>();
+    private ArrayList<String> T2 = new ArrayList<>();
 
+    private String input = "";
 
-        //inputField.requestFocus();
-        //inputField.setText("");
+    private boolean found = false;
 
-        // Requesting focus in separate Thread because at the time of initialize() controls are not yet ready to handle focus.
-        Platform.runLater(() -> inputField.requestFocus());
-
-        for (int i = tableSize; i < tableSize * times; i++) {
-            Label label = new Label("");
-            label.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-wrap-text:true; -fx-border-color:black;");
-            label.setPadding(new Insets(5));
-            label.setAlignment(Pos.CENTER);
-            label.setMaxWidth(Double.MAX_VALUE);
-            label.setTextAlignment(TextAlignment.CENTER);
-            T1.add("");
-
-            vboxLeft.getChildren().add(label);
-        }
-
-        for (int i = tableSize; i < tableSize * times; i++) {
-            Label label = new Label("");
-            label.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-wrap-text:true; -fx-border-color:black;");
-            label.setPadding(new Insets(5));
-            label.setAlignment(Pos.CENTER);
-            label.setMaxWidth(Double.MAX_VALUE);
-            label.setTextAlignment(TextAlignment.CENTER);
-            T2.add("");
-
-            vboxRight.getChildren().add(label);
-        }
-
-
-        tableSize *= times;
-    }
+    private LinesOperator linesOperator;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-
-        //inputField.requestFocus();
-        //inputField.setText("");
-
-        // Requesting focus in separate Thread because at the time of initialize() controls are not yet ready to handle focus.
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
@@ -103,58 +64,54 @@ public class Controller implements Initializable {
         }
 
         for (int i = 0; i < tableSize; i++) {
-            Label label = new Label("");
-            label.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-wrap-text:false; -fx-border-color:black;");
-            label.setPadding(new Insets(5));
-            label.setAlignment(Pos.CENTER);
-            label.setMaxWidth(Double.MAX_VALUE);
-            label.setTextAlignment(TextAlignment.CENTER);
-            label.setBackground(new Background(new BackgroundFill(Color.AZURE, new CornerRadii(5.0), null)));
             T1.add("");
-
-            vboxLeft.getChildren().add(label);
+            vboxLeft.getChildren().add(createDefaultLabel());
         }
 
         for (int i = 0; i < tableSize; i++) {
-            Label label = new Label("");
-            label.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-wrap-text:false; -fx-border-color:black;");
-            label.setPadding(new Insets(5));
-            label.setAlignment(Pos.CENTER);
-            label.setMaxWidth(Double.MAX_VALUE);
-            label.setTextAlignment(TextAlignment.CENTER);
-            label.setBackground(new Background(new BackgroundFill(Color.AZURE, new CornerRadii(5.0), null)));
             T2.add("");
-
-            vboxRight.getChildren().add(label);
-            //Line.intersect()
+            vboxRight.getChildren().add(createDefaultLabel());
         }
 
-
-        //expandTables(1);
+        linesOperator = new LinesOperator(inputField, leftLine, rightLine, vboxLeft, vboxRight);
         putKey(hash("key1", 1), "key1", true);
         putKey(hash("key2", 2), "key2", false);
 
-        Platform.runLater(() -> {
-                    leftLine.setStartX(inputField.getLayoutX());
-                    leftLine.setStartY(inputField.getLayoutY());
-                    leftLine.setEndX(inputField.getLayoutX());
-                    leftLine.setEndY(inputField.getLayoutY() + inputField.getPrefHeight());
-                    rightLine.setStartX(inputField.getLayoutX() + inputField.getPrefWidth());
-                    rightLine.setStartY(inputField.getLayoutY());
-                    rightLine.setEndX(inputField.getLayoutX() + inputField.getPrefWidth());
-                    rightLine.setEndY(inputField.getLayoutY() + inputField.getPrefHeight());
-                    inputField.requestFocus();
-                }
-        );
-
         scroll.vvalueProperty().addListener((observable, oldValue, newValue) -> {
-            drawLine(true, currIndexLeft);
-            drawLine(false, currIndexRight);
+            linesOperator.drawLine(true, currIndexLeft);
+            linesOperator.drawLine(false, currIndexRight);
         });
 
         // disparrays();
         //((Label)vboxLeft.getChildren().get(3)).setPrefWidth(150);
         //((Label)vboxLeft.getChildren().get(3)).setMaxHeight(400);
+    }
+
+    private Label createDefaultLabel() {
+        Label label = new Label("");
+        label.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-wrap-text:true; -fx-border-color:black;");
+        label.setPadding(new Insets(5));
+        label.setAlignment(Pos.CENTER);
+        label.setMaxWidth(Double.MAX_VALUE);
+        label.setBackground(new Background(new BackgroundFill(Color.AZURE, new CornerRadii(5.0), null)));
+        label.setTextAlignment(TextAlignment.CENTER);
+        return label;
+    }
+
+    public void expandTables(double times) {
+        for (int i = tableSize; i < tableSize * times; i++) {
+            T1.add("");
+            vboxLeft.getChildren().add(createDefaultLabel());
+        }
+
+        for (int i = tableSize; i < tableSize * times; i++) {
+            T2.add("");
+            vboxRight.getChildren().add(createDefaultLabel());
+        }
+
+        tableSize *= times;
+        // Requesting focus in separate Thread because at the time of initialize() controls are not yet ready to handle focus.
+        Platform.runLater(() -> inputField.requestFocus());
     }
 
     public String putKey(int index, String key, boolean sideLeft) {
@@ -174,7 +131,7 @@ public class Controller implements Initializable {
         int x1 = hash(key, 1);
         int x2 = hash(key, 2);
 
-        refreshArrays();
+        refreshBackground();
         if (T1.get(x1).equals(key)) {
             ((Label) vboxLeft.getChildren().get(x1)).setText("");
             String res = T1.get(x1);
@@ -193,25 +150,21 @@ public class Controller implements Initializable {
     // process change in input box
     public void inputChange() {
         input = inputField.getText();
-        //clearfield(); just disable arrows
+
         if (input.length() > 0) {
             int x1 = hash(input, 1);
             int x2 = hash(input, 2);
-            //draw arrows
-            //arrow(x1, 1, 0, 1);
-            //arrow(x2, 2, 0, 1);
+
             currIndexLeft = x1;
             currIndexRight = x2;
 
-            refreshArrays();
+            refreshBackground();
 
-            drawLine(true, x1);
-            drawLine(false, x2);
-
-            //obrisi sve hajlajtovano
+            linesOperator.drawLine(true, x1);
+            linesOperator.drawLine(false, x2);
 
             Platform.runLater(() -> inputField.requestFocus());
-            // osenci sta treba
+
             highlight(true, x1, (T1.get(x1).equals(input)));
             highlight(false, x2, (T2.get(x2).equals(input)));
 
@@ -220,24 +173,21 @@ public class Controller implements Initializable {
             found = (T1.get(x1).equals(input)) || (T2.get(x2).equals(input));
         } else {
             //document.getElementById("message").innerHTML = "";
-
             currIndexRight = -1;
             currIndexLeft = -1;
-            refreshArrays();
+            refreshBackground();
         }
         inputField.requestFocus();
     }
 
-    private void refreshArrays() {
+    private void refreshBackground() {
         //ovo zna da zeza valjda
 
-        Platform.runLater(() -> {
-            leftLine.setStartX(leftLine.getEndX());
-            leftLine.setStartY(leftLine.getEndY());
-            rightLine.setEndX(rightLine.getStartX());
-            rightLine.setEndY(rightLine.getStartY());
-        });
+        linesOperator.resetLines();
 
+        // optimization just refresh ones with index
+        //((Label)vboxLeft.getChildren().get(currIndexLeft)).setBackground(new Background(new BackgroundFill(Color.AZURE, new CornerRadii(5.0), null)));
+        //((Label)vboxRight.getChildren().get(currIndexRight)).setBackground(new Background(new BackgroundFill(Color.AZURE, new CornerRadii(5.0), null)));
 
         ObservableList<Node> children = vboxLeft.getChildren();
         for (Node l : children) {
@@ -247,7 +197,6 @@ public class Controller implements Initializable {
         for (Node l : children) {
             ((Label) l).setBackground(new Background(new BackgroundFill(Color.AZURE, new CornerRadii(5.0), null)));
         }
-
         inputField.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5.0), null)));
     }
 
@@ -334,41 +283,7 @@ public class Controller implements Initializable {
         return hash;
     }
 
-    public void mouseClicked(MouseEvent mouseEvent) {
-        //drawLine();
-    }
-
-    public void drawLine(boolean left, int index) {//boolean left, int index
-        //System.out.println(inputField.getB);
-        if ((left && currIndexLeft < 0) || (!left && currIndexRight < 0)) {
-            //leftLine.setVisible(false);
-            return;
-        }
-        Platform.runLater(() -> {
-
-            if (left) {
-                Bounds b = vboxLeft.localToScreen((vboxLeft.getChildren().get(0)).getBoundsInLocal());
-                b = leftLine.screenToLocal(b);
-                leftLine.setStartX(b.getCenterX() + b.getWidth() / 2);
-                leftLine.setStartY(b.getCenterY() + b.getHeight() * index);
-                leftLine.setEndX(inputField.getLayoutX());
-                leftLine.setEndY(inputField.getLayoutY() + inputField.getHeight() / 2);
-                System.out.println(leftLine);
-            } else {
-                Bounds b = vboxRight.localToScreen((vboxRight.getChildren().get(0)).getBoundsInLocal());
-                b = rightLine.screenToLocal(b);
-                rightLine.setStartX(inputField.getLayoutX() + inputField.getWidth());
-                rightLine.setStartY(inputField.getLayoutY() + inputField.getHeight() / 2);
-                rightLine.setEndX(b.getCenterX() - b.getWidth() / 2);
-                rightLine.setEndY(b.getCenterY() + b.getHeight() * index);
-                System.out.println(rightLine);
-            }
-        });
-
-    }
-
     public void expand(ActionEvent actionEvent) {
         expandTables(2);
-        this.mouseClicked(null);
     }
 }

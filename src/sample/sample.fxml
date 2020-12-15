@@ -39,7 +39,7 @@
             </left>
             <center>
                 <ScrollPane fx:id="scroll" pannable="true" prefHeight="1015.0" prefWidth="1100.0" vbarPolicy="ALWAYS" BorderPane.alignment="CENTER_LEFT">
-                    <AnchorPane fx:id="midPane" prefHeight="1015.0" prefWidth="1085.0" BorderPane.alignment="CENTER">
+                    <AnchorPane prefHeight="1015.0" prefWidth="1085.0" BorderPane.alignment="CENTER">
                         <VBox fx:id="vboxLeft" prefHeight="1015.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                         <VBox fx:id="vboxRight" layoutX="650.0" prefHeight="1015.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                         <TextField disable="true" layoutX="443.0" layoutY="466.0" prefWidth="200.0" visible="false" AnchorPane.leftAnchor="443.0" AnchorPane.rightAnchor="443.0" />
