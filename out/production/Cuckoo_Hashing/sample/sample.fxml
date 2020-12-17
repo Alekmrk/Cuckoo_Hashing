@@ -4,6 +4,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
@@ -33,8 +35,10 @@
             </right>
             <left>
                 <Pane prefHeight="1000.0" prefWidth="400.0" BorderPane.alignment="CENTER">
-                    <Button layoutX="189.0" layoutY="595.0" mnemonicParsing="false" text="Button" />
-                    <Button layoutX="259.0" layoutY="595.0" mnemonicParsing="false" text="Button" />
+                    <Button layoutX="82.0" layoutY="608.0" mnemonicParsing="false" text="Button" />
+                    <Button layoutX="238.0" layoutY="608.0" mnemonicParsing="false" text="Button" />
+               <RadioButton fx:id="stepByStepButton" layoutX="163.0" layoutY="540.0" mnemonicParsing="false" onAction="#changeStepByStep" text="Step by Step" />
+               <ListView editable="true" fixedCellSize="1.0" layoutX="106.0" layoutY="424.0" prefHeight="90.0" prefWidth="200.0" />
                 </Pane>
             </left>
             <center>
@@ -58,7 +62,7 @@
             <Line fx:id="leftLine" endX="857.0" endY="478.0" startX="857.0" startY="478.0" translateX="-734.0" />
             <Line fx:id="rightLine" endX="1059.0" endY="471.0" startX="1059.0" startY="471.0" translateX="-734.0" />
             <TextField fx:id="inputField" layoutX="858.0" layoutY="467.0" onKeyTyped="#inputChange" prefWidth="200.0" translateX="-734.0" />
-            <ButtonBar layoutX="816.0" layoutY="501.0" prefHeight="40.0" prefWidth="200.0" translateX="-734.0">
+            <ButtonBar fx:id="buttonBar" layoutX="816.0" layoutY="501.0" prefHeight="40.0" prefWidth="200.0" translateX="-734.0">
                 <buttons>
                     <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#expand" text="Find" />
                     <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#add" text="Add" />

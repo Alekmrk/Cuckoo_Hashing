@@ -2,15 +2,14 @@ package sample;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -24,6 +23,8 @@ import static java.lang.Thread.sleep;
 
 public class Controller implements Initializable {
 
+    public ButtonBar buttonBar;
+    public RadioButton stepByStepButton;
     @FXML
     private VBox vboxLeft;
     @FXML
@@ -52,11 +53,14 @@ public class Controller implements Initializable {
 
     private boolean found = false;
 
+    boolean stepByStep = false;
+
     private LinesOperator linesOperator;
+    private TablesOperator tablesOperator;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        // ne znam da li treba ovo ili ne, ali kao za svaki slucaj
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
@@ -74,6 +78,7 @@ public class Controller implements Initializable {
         }
 
         linesOperator = new LinesOperator(inputField, leftLine, rightLine, vboxLeft, vboxRight);
+        tablesOperator = new TablesOperator(vboxLeft, vboxRight);
         putKey(hash("key1", 1), "key1", true);
         putKey(hash("key2", 2), "key2", false);
 
@@ -81,7 +86,6 @@ public class Controller implements Initializable {
             linesOperator.drawLine(true, currIndexLeft);
             linesOperator.drawLine(false, currIndexRight);
         });
-
         // disparrays();
         //((Label)vboxLeft.getChildren().get(3)).setPrefWidth(150);
         //((Label)vboxLeft.getChildren().get(3)).setMaxHeight(400);
@@ -89,7 +93,7 @@ public class Controller implements Initializable {
 
     private Label createDefaultLabel() {
         Label label = new Label("");
-        label.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-wrap-text:true; -fx-border-color:black;");
+        label.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-wrap-text:false; -fx-border-color:black;");
         label.setPadding(new Insets(5));
         label.setAlignment(Pos.CENTER);
         label.setMaxWidth(Double.MAX_VALUE);
@@ -99,6 +103,8 @@ public class Controller implements Initializable {
     }
 
     public void expandTables(double times) {
+
+
         for (int i = tableSize; i < tableSize * times; i++) {
             T1.add("");
             vboxLeft.getChildren().add(createDefaultLabel());
@@ -118,10 +124,11 @@ public class Controller implements Initializable {
         String oldKey = sideLeft ? T1.remove(index) : T2.remove(index);
         if (sideLeft) {
             T1.add(index, key);
-            ((Label) vboxLeft.getChildren().get(index)).setText(key);
+            Platform.runLater(() -> ((Label) vboxLeft.getChildren().get(index)).setText(key));
+
         } else {
             T2.add(index, key);
-            ((Label) vboxRight.getChildren().get(index)).setText(key);
+            Platform.runLater(() -> ((Label) vboxRight.getChildren().get(index)).setText(key));
         }
         return oldKey;
     }
@@ -165,8 +172,8 @@ public class Controller implements Initializable {
 
             Platform.runLater(() -> inputField.requestFocus());
 
-            highlight(true, x1, (T1.get(x1).equals(input)));
-            highlight(false, x2, (T2.get(x2).equals(input)));
+            tablesOperator.highlight(true, x1, (T1.get(x1).equals(input)));
+            tablesOperator.highlight(false, x2, (T2.get(x2).equals(input)));
 
             //document.getElementById("message").innerHTML = "<font color='green'>FOUND</font>";
             //document.getElementById("message").innerHTML = "<font color='red'>NOT FOUND</font>";
@@ -181,49 +188,16 @@ public class Controller implements Initializable {
     }
 
     private void refreshBackground(boolean left) {
-        //ovo zna da zeza valjda
 
         linesOperator.resetLines(left);
-        if (left) {
-            ObservableList<Node> children = vboxLeft.getChildren();
-            for (Node l : children) {
-                ((Label) l).setBackground(new Background(new BackgroundFill(Color.AZURE, new CornerRadii(5.0), null)));
-            }
-        } else {
-            ObservableList<Node> children = vboxRight.getChildren();
-            for (Node l : children) {
-                ((Label) l).setBackground(new Background(new BackgroundFill(Color.AZURE, new CornerRadii(5.0), null)));
-            }
-        }
+        tablesOperator.refreshTables(left);
         inputField.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5.0), null)));
     }
 
     private void refreshBackground() {
-        //ovo zna da zeza valjda
-
         linesOperator.resetLines();
-
-        // optimization just refresh ones with index
-        //((Label)vboxLeft.getChildren().get(currIndexLeft)).setBackground(new Background(new BackgroundFill(Color.AZURE, new CornerRadii(5.0), null)));
-        //((Label)vboxRight.getChildren().get(currIndexRight)).setBackground(new Background(new BackgroundFill(Color.AZURE, new CornerRadii(5.0), null)));
-
-        ObservableList<Node> children = vboxLeft.getChildren();
-        for (Node l : children) {
-            ((Label) l).setBackground(new Background(new BackgroundFill(Color.AZURE, new CornerRadii(5.0), null)));
-        }
-        children = vboxRight.getChildren();
-        for (Node l : children) {
-            ((Label) l).setBackground(new Background(new BackgroundFill(Color.AZURE, new CornerRadii(5.0), null)));
-        }
+        tablesOperator.refreshTables();
         inputField.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5.0), null)));
-    }
-
-    public void highlight(boolean leftSide, int index, boolean successful) {
-        if (leftSide) {
-            ((Label) vboxLeft.getChildren().get(index)).setBackground(new Background(new BackgroundFill(successful ? Color.GREENYELLOW : Color.web("FF0000CD"), new CornerRadii(5.0), null)));
-        } else {
-            ((Label) vboxRight.getChildren().get(index)).setBackground(new Background(new BackgroundFill(successful ? Color.GREENYELLOW : Color.web("FF0000CD"), new CornerRadii(5.0), null)));
-        }
     }
 
     public void delete() {
@@ -236,31 +210,66 @@ public class Controller implements Initializable {
     }
 
     public void add() {
-        inputChange();
-        String curr = inputField.getText();
-        if (found) {
-            inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null)));
-            return;
-        }
-        if (input.length() > 0) {
-            if (addLeft(input, 16)) {
-                if (T1.get(currIndexLeft).equals(curr)) {
-                    highlight(true, currIndexLeft, true);
-                    refreshBackground(false);
-                } else {
-                    highlight(false, currIndexRight, true);
-                    refreshBackground(true);
-                }
-                inputField.setText("");
-                inputField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null)));
-            } else {
-                inputChange();
+        //ne mora
+        //inputChange();
+        //mainPane.setDisable(true);
+        buttonBar.setDisable(true);
+        inputField.setEditable(false);
+        new Thread(() -> {
+
+            String curr = inputField.getText();
+            if (found) {
                 inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null)));
+                buttonBar.setDisable(false);
+                inputField.setEditable(true);
+                return;
             }
+            Platform.runLater(() -> inputField.requestFocus());
+
+            //refreshBackground();
+            if (input.length() > 0) {
+                if (addLeft(input, 16)) {
+                    if (T1.get(currIndexLeft).equals(curr)) {
+                        tablesOperator.highlight(true, currIndexLeft, true);
+                        linesOperator.drawLine(true, currIndexLeft);
+                        refreshBackground(false);
+                    } else {
+                        tablesOperator.highlight(false, currIndexRight, true);
+                        linesOperator.drawLine(true, currIndexRight);
+                        refreshBackground(true);
+                    }
+                    inputField.setText("");
+                    inputField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null)));
+                } else {
+                    inputChange();
+                    inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null)));
+                }
+                buttonBar.setDisable(false);
+                inputField.setEditable(true);
+                return;
+            }
+            inputChange();
+            inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null)));
+            buttonBar.setDisable(false);
+            inputField.setEditable(true);
+        }).start();
+    }
+
+    private void stepByStep(boolean left, String s, int index) {
+        if (!stepByStep) {
             return;
         }
-        inputChange();
-        inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null)));
+        Platform.runLater(() -> {
+            refreshBackground(!left);
+            inputField.setText(s);
+            linesOperator.drawLine(left, index);
+            tablesOperator.highlight(left, index, Color.YELLOW);
+        });
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean addLeft(String key, int i) {
@@ -268,20 +277,25 @@ public class Controller implements Initializable {
             inputField.setText(key);
             return false;
         }
-        String s = putKey(hash(key, 1), key, true);
+        int index = hash(key, 1);
+        String s = putKey(index, key, true);
+        stepByStep(true, s, index);
         if (!s.equals("")) {
-            inputField.setText(s);
             return addRight(s, i - 1);
         }
         return true;
     }
 
     private boolean addRight(String key, int i) {
+        // ne moze da se desi
         if (i < 0) {
             inputField.setText(key);
             return false;
         }
-        String s = putKey(hash(key, 2), key, false);
+        //ovde treba da se hajlajtuje desno polje i da postoji desna strelica a ostalo da se disejbluje
+        int index = hash(key, 2);
+        String s = putKey(index, key, false);
+        stepByStep(false, s, index);
         if (!s.equals("")) {
             return addLeft(s, i - 1);
         }
@@ -304,5 +318,9 @@ public class Controller implements Initializable {
 
     public void expand(ActionEvent actionEvent) {
         expandTables(2);
+    }
+
+    public void changeStepByStep(ActionEvent actionEvent) {
+        stepByStep = stepByStepButton.isSelected();
     }
 }
