@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -29,21 +30,29 @@ public class TablesOperator {
 
     public void highlight(boolean leftSide, int index, boolean successful) {
         if (leftSide) {
-            ((Label) vboxLeft.getChildren().get(index)).setBackground(new Background(new BackgroundFill(successful ? Color.GREENYELLOW : Color.web("FF0000CD"), new CornerRadii(5.0), null)));
-            leftTable.add(index);
+            Platform.runLater(() -> {
+                ((Label) vboxLeft.getChildren().get(index)).setBackground(new Background(new BackgroundFill(successful ? Color.GREENYELLOW : Color.web("FF0000CD"), new CornerRadii(5.0), null)));
+                leftTable.add(index);
+            });
         } else {
-            ((Label) vboxRight.getChildren().get(index)).setBackground(new Background(new BackgroundFill(successful ? Color.GREENYELLOW : Color.web("FF0000CD"), new CornerRadii(5.0), null)));
-            rightTable.add(index);
+            Platform.runLater(() -> {
+                ((Label) vboxRight.getChildren().get(index)).setBackground(new Background(new BackgroundFill(successful ? Color.GREENYELLOW : Color.web("FF0000CD"), new CornerRadii(5.0), null)));
+                rightTable.add(index);
+            });
         }
     }
 
     public void highlight(boolean leftSide, int index, Color color) {
         if (leftSide) {
-            ((Label) vboxLeft.getChildren().get(index)).setBackground(new Background(new BackgroundFill(color, new CornerRadii(5.0), null)));
-            leftTable.add(index);
+            Platform.runLater(() -> {
+                ((Label) vboxLeft.getChildren().get(index)).setBackground(new Background(new BackgroundFill(color, new CornerRadii(5.0), null)));
+                leftTable.add(index);
+            });
         } else {
-            ((Label) vboxRight.getChildren().get(index)).setBackground(new Background(new BackgroundFill(color, new CornerRadii(5.0), null)));
-            rightTable.add(index);
+            Platform.runLater(() -> {
+                ((Label) vboxRight.getChildren().get(index)).setBackground(new Background(new BackgroundFill(color, new CornerRadii(5.0), null)));
+                rightTable.add(index);
+            });
         }
     }
 
@@ -55,15 +64,19 @@ public class TablesOperator {
 
     public void refreshTables(boolean left) {
         if (left) {
-            for (int i : leftTable) {
-                ((Label) vboxLeft.getChildren().get(i)).setBackground(new Background(new BackgroundFill(Color.AZURE, new CornerRadii(5.0), null)));
-            }
-            leftTable = new ArrayList<>();
+            Platform.runLater(() -> {
+                for (int i : leftTable) {
+                    ((Label) vboxLeft.getChildren().get(i)).setBackground(new Background(new BackgroundFill(Color.AZURE, new CornerRadii(5.0), null)));
+                }
+                leftTable = new ArrayList<>();
+            });
         } else {
-            for (int i : rightTable) {
-                ((Label) vboxRight.getChildren().get(i)).setBackground(new Background(new BackgroundFill(Color.AZURE, new CornerRadii(5.0), null)));
-            }
-            rightTable = new ArrayList<>();
+            Platform.runLater(() -> {
+                for (int i : rightTable) {
+                    ((Label) vboxRight.getChildren().get(i)).setBackground(new Background(new BackgroundFill(Color.AZURE, new CornerRadii(5.0), null)));
+                }
+                rightTable = new ArrayList<>();
+            });
         }
     }
 }

@@ -104,7 +104,6 @@ public class Controller implements Initializable {
 
     public void expandTables(double times) {
 
-
         for (int i = tableSize; i < tableSize * times; i++) {
             T1.add("");
             vboxLeft.getChildren().add(createDefaultLabel());
@@ -147,8 +146,8 @@ public class Controller implements Initializable {
         }
         if (T2.get(x2).equals(key)) {
             ((Label) vboxRight.getChildren().get(x2)).setText("");
-            String res = T1.get(x2);
-            T1.set(x2, "");
+            String res = T2.get(x2);
+            T2.set(x2, "");
             return res;
         }
         return null;
@@ -191,13 +190,13 @@ public class Controller implements Initializable {
 
         linesOperator.resetLines(left);
         tablesOperator.refreshTables(left);
-        inputField.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5.0), null)));
+        Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5.0), null))));
     }
 
     private void refreshBackground() {
         linesOperator.resetLines();
         tablesOperator.refreshTables();
-        inputField.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5.0), null)));
+        Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5.0), null))));
     }
 
     public void delete() {
@@ -238,18 +237,20 @@ public class Controller implements Initializable {
                         linesOperator.drawLine(true, currIndexRight);
                         refreshBackground(true);
                     }
-                    inputField.setText("");
-                    inputField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null)));
+                    Platform.runLater(() -> {
+                        inputField.setText("");
+                        inputField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null)));
+                    });
                 } else {
                     inputChange();
-                    inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null)));
+                    Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null))));
                 }
                 buttonBar.setDisable(false);
                 inputField.setEditable(true);
                 return;
             }
             inputChange();
-            inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null)));
+            Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null))));
             buttonBar.setDisable(false);
             inputField.setEditable(true);
         }).start();
