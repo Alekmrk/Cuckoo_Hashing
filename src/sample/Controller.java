@@ -184,7 +184,7 @@ public class Controller implements Initializable {
             currIndexLeft = -1;
             refreshBackground();
         }
-        inputField.requestFocus();
+        Platform.runLater(() -> inputField.requestFocus());
     }
 
     private void refreshBackground(boolean left) {
