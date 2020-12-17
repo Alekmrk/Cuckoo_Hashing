@@ -132,7 +132,7 @@ public class Controller implements Initializable {
         return oldKey;
     }
 
-    public String removeKey(String key) {
+    public boolean removeKey(String key) {
 
         int x1 = hash(key, 1);
         int x2 = hash(key, 2);
@@ -140,17 +140,17 @@ public class Controller implements Initializable {
         refreshBackground();
         if (T1.get(x1).equals(key)) {
             ((Label) vboxLeft.getChildren().get(x1)).setText("");
-            String res = T1.get(x1);
+            //String res = T1.get(x1);
             T1.set(x1, "");
-            return res;
+            return true;
         }
         if (T2.get(x2).equals(key)) {
             ((Label) vboxRight.getChildren().get(x2)).setText("");
-            String res = T2.get(x2);
+            //String res = T2.get(x2);
             T2.set(x2, "");
-            return res;
+            return true;
         }
-        return null;
+        return false;
     }
 
     // process change in input box
@@ -202,10 +202,22 @@ public class Controller implements Initializable {
     public void delete() {
         //input = inputField.getText();
         inputChange();
-        if (!found) return;
-        if (input.length() > 0) {
-            removeKey(input);
+        if (!found) {
+            Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null))));
+            return;
         }
+        if (input.length() > 0) {
+            // This must be done this way because
+            // we want to call input change after deletion and also to change background of input field
+            boolean keyRemoved = removeKey(input);
+            inputChange();
+            if (keyRemoved) {
+                Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null))));
+            } else {
+                Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null))));
+            }
+        }
+
     }
 
     public void add() {
