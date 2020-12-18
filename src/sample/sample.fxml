@@ -61,6 +61,7 @@
         <Pane layoutX="734.0" maxHeight="541.0" maxWidth="1157.0" pickOnBounds="false" prefHeight="541.0" prefWidth="423.0">
             <Line fx:id="leftLine" endX="857.0" endY="478.0" startX="857.0" startY="478.0" translateX="-734.0" />
             <Line fx:id="rightLine" endX="1059.0" endY="471.0" startX="1059.0" startY="471.0" translateX="-734.0" />
+            <Line fx:id="helperLine" endX="214.0" endY="457.0" startX="214.0" startY="457.0" translateX="-734.0"/>
             <TextField fx:id="inputField" layoutX="858.0" layoutY="467.0" onKeyTyped="#inputChange" prefWidth="200.0" translateX="-734.0" />
             <ButtonBar fx:id="buttonBar" layoutX="816.0" layoutY="501.0" prefHeight="40.0" prefWidth="200.0" translateX="-734.0">
                 <buttons>

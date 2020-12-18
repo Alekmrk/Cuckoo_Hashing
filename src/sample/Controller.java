@@ -25,6 +25,7 @@ public class Controller implements Initializable {
 
     public ButtonBar buttonBar;
     public RadioButton stepByStepButton;
+
     @FXML
     private VBox vboxLeft;
     @FXML
@@ -36,12 +37,18 @@ public class Controller implements Initializable {
     @FXML
     private Line rightLine;
     @FXML
+    private Line helperLine;
+    @FXML
     private ScrollPane scroll;
 
     private int currIndexLeft = -1;
     private int currIndexRight = -1;
+    private int currIndexHelper = -1;
+    private boolean currSideHelper = true;
 
+    private int baseTableSize = 15;
     private int tableSize = 15;
+    private int resizedTimes = 0;
 
     private int r1 = (int) Math.round(Math.random() * 1000000000);
     private int r2 = (int) Math.round(Math.random() * 1000000000);
@@ -52,6 +59,7 @@ public class Controller implements Initializable {
     private String input = "";
 
     private boolean found = false;
+    private int foundIndex = -1;
 
     boolean stepByStep = false;
 
@@ -77,14 +85,15 @@ public class Controller implements Initializable {
             vboxRight.getChildren().add(createDefaultLabel());
         }
 
-        linesOperator = new LinesOperator(inputField, leftLine, rightLine, vboxLeft, vboxRight);
+        linesOperator = new LinesOperator(inputField, leftLine, rightLine, helperLine, vboxLeft, vboxRight);
         tablesOperator = new TablesOperator(vboxLeft, vboxRight);
         putKey(hash("key1", 1), "key1", true);
         putKey(hash("key2", 2), "key2", false);
 
         scroll.vvalueProperty().addListener((observable, oldValue, newValue) -> {
-            linesOperator.drawLine(true, currIndexLeft);
-            linesOperator.drawLine(false, currIndexRight);
+            linesOperator.drawLineEvent(true, currIndexLeft);
+            linesOperator.drawLineEvent(false, currIndexRight);
+            linesOperator.drawHelperLine(currSideHelper, currIndexHelper);
         });
         // disparrays();
         //((Label)vboxLeft.getChildren().get(3)).setPrefWidth(150);
@@ -115,8 +124,10 @@ public class Controller implements Initializable {
         }
 
         tableSize *= times;
+        resizedTimes++;
         // Requesting focus in separate Thread because at the time of initialize() controls are not yet ready to handle focus.
-        Platform.runLater(() -> inputField.requestFocus());
+        //Platform.runLater(() -> inputField.requestFocus());
+        inputChange();
     }
 
     public String putKey(int index, String key, boolean sideLeft) {
@@ -134,20 +145,17 @@ public class Controller implements Initializable {
 
     public boolean removeKey(String key) {
 
-        int x1 = hash(key, 1);
-        int x2 = hash(key, 2);
-
         refreshBackground();
-        if (T1.get(x1).equals(key)) {
-            ((Label) vboxLeft.getChildren().get(x1)).setText("");
+        if (T1.get(foundIndex).equals(key)) {
+            ((Label) vboxLeft.getChildren().get(foundIndex)).setText("");
             //String res = T1.get(x1);
-            T1.set(x1, "");
+            T1.set(foundIndex, "");
             return true;
         }
-        if (T2.get(x2).equals(key)) {
-            ((Label) vboxRight.getChildren().get(x2)).setText("");
+        if (T2.get(foundIndex).equals(key)) {
+            ((Label) vboxRight.getChildren().get(foundIndex)).setText("");
             //String res = T2.get(x2);
-            T2.set(x2, "");
+            T2.set(foundIndex, "");
             return true;
         }
         return false;
@@ -176,24 +184,66 @@ public class Controller implements Initializable {
 
             //document.getElementById("message").innerHTML = "<font color='green'>FOUND</font>";
             //document.getElementById("message").innerHTML = "<font color='red'>NOT FOUND</font>";
-            found = (T1.get(x1).equals(input)) || (T2.get(x2).equals(input));
+            // ide se redom i ako ga je nasla prva linija druga ne trazi dalje ifound je ispravan
+            found = (T1.get(x1).equals(input));
+            if (found) {
+                foundIndex = x1;
+            } else {
+                found = (T2.get(x2).equals(input));
+                if (found) {
+                    foundIndex = x2;
+                }
+            }
+            // ako ni leva ni desna linija nije nasla onda cemo uz pomoc helper da nadjemo
+            if (!found) {
+                int base = baseTableSize;
+                for (int i = 0; i < resizedTimes; i++) {
+
+                    x1 = hash(input, 1, base);
+                    x2 = hash(input, 2, base);
+                    found = (T1.get(x1).equals(input));
+                    if (found) {
+                        linesOperator.drawHelperLine(true, x1);
+                        tablesOperator.highlight(true, x1, true);
+                        currIndexHelper = x1;
+                        currSideHelper = true;
+                        foundIndex = x1;
+                        break;
+                    }
+                    found = (T2.get(x2).equals(input));
+                    if (found) {
+                        linesOperator.drawHelperLine(false, x2);
+                        tablesOperator.highlight(false, x2, true);
+                        currIndexHelper = x2;
+                        currSideHelper = false;
+                        foundIndex = x2;
+                        break;
+                    }
+
+                    base *= 2;
+                }
+            }
         } else {
             //document.getElementById("message").innerHTML = "";
             currIndexRight = -1;
             currIndexLeft = -1;
+            currIndexHelper = -1;
             refreshBackground();
         }
         Platform.runLater(() -> inputField.requestFocus());
     }
 
     private void refreshBackground(boolean left) {
-
+        // we are removing helper line, if we have need for one we will draw it
+        currIndexHelper = -1;
         linesOperator.resetLines(left);
         tablesOperator.refreshTables(left);
         Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5.0), null))));
     }
 
     private void refreshBackground() {
+        // removing lines so we don`t draw it while scrolling
+        currIndexHelper = -1;
         linesOperator.resetLines();
         tablesOperator.refreshTables();
         Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5.0), null))));
@@ -210,6 +260,7 @@ public class Controller implements Initializable {
             // This must be done this way because
             // we want to call input change after deletion and also to change background of input field
             boolean keyRemoved = removeKey(input);
+            // ne mora, moze i samo da se promeni pozadina
             inputChange();
             if (keyRemoved) {
                 Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null))));
@@ -317,6 +368,19 @@ public class Controller implements Initializable {
 
     // dummy hash function loosely based on http://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript-jquery
     // note: this is fine for visualization, but not for any real application
+    // prebaci ovo sranje
+    int hash(String stri, int variant, int tableSize) {
+        int hash = 0, i, chr, len;
+        if (stri.length() == 0) return hash;
+        for (i = 0, len = stri.length(); i < len; i++) {
+            chr = stri.charAt(i);
+            hash = ((hash << 5) - hash) + chr + (chr * ((variant == 1) ? r1 : r2) << i);
+            hash |= 0;
+        }
+        hash = Math.abs(hash) % tableSize;
+        return hash;
+    }
+
     int hash(String stri, int variant) {
         int hash = 0, i, chr, len;
         if (stri.length() == 0) return hash;

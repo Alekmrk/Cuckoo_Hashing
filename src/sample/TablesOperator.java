@@ -15,7 +15,7 @@ import java.security.cert.PolicyNode;
 import java.util.ArrayList;
 
 public class TablesOperator {
-
+    // everything is called with Platform.runLater();
 
     private final VBox vboxLeft;
     private final VBox vboxRight;
@@ -27,7 +27,7 @@ public class TablesOperator {
         this.vboxLeft = vboxLeft;
         this.vboxRight = vboxRight;
     }
-
+        // da se doda kod brisanja samo ono sto je oznaceno ovde da se lako izdboji i izbrise
     public void highlight(boolean leftSide, int index, boolean successful) {
         if (leftSide) {
             Platform.runLater(() -> {
