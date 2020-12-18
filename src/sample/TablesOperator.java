@@ -1,17 +1,13 @@
 package sample;
 
 import javafx.application.Platform;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.TextAlignment;
 
-import java.security.cert.PolicyNode;
 import java.util.ArrayList;
 
 public class TablesOperator {
@@ -27,7 +23,8 @@ public class TablesOperator {
         this.vboxLeft = vboxLeft;
         this.vboxRight = vboxRight;
     }
-        // da se doda kod brisanja samo ono sto je oznaceno ovde da se lako izdboji i izbrise
+
+    // da se doda kod brisanja samo ono sto je oznaceno ovde da se lako izdboji i izbrise
     public void highlight(boolean leftSide, int index, boolean successful) {
         if (leftSide) {
             Platform.runLater(() -> {

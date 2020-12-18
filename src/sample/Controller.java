@@ -1,16 +1,16 @@
 package sample;
 
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.TextAlignment;
@@ -18,8 +18,6 @@ import javafx.scene.text.TextAlignment;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
-import static java.lang.Thread.sleep;
 
 public class Controller implements Initializable {
 
@@ -50,9 +48,6 @@ public class Controller implements Initializable {
     private int tableSize = 15;
     private int resizedTimes = 0;
 
-    private int r1 = (int) Math.round(Math.random() * 1000000000);
-    private int r2 = (int) Math.round(Math.random() * 1000000000);
-
     private ArrayList<String> T1 = new ArrayList<>();
     private ArrayList<String> T2 = new ArrayList<>();
 
@@ -65,6 +60,7 @@ public class Controller implements Initializable {
 
     private LinesOperator linesOperator;
     private TablesOperator tablesOperator;
+    private AlgorithmsOperator algorithmsOperator;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -87,17 +83,16 @@ public class Controller implements Initializable {
 
         linesOperator = new LinesOperator(inputField, leftLine, rightLine, helperLine, vboxLeft, vboxRight);
         tablesOperator = new TablesOperator(vboxLeft, vboxRight);
-        putKey(hash("key1", 1), "key1", true);
-        putKey(hash("key2", 2), "key2", false);
+        algorithmsOperator = new AlgorithmsOperator();
+
+        putKey(algorithmsOperator.hash("key1", true, tableSize), "key1", true);
+        putKey(algorithmsOperator.hash("key2", false, tableSize), "key2", false);
 
         scroll.vvalueProperty().addListener((observable, oldValue, newValue) -> {
             linesOperator.drawLineEvent(true, currIndexLeft);
             linesOperator.drawLineEvent(false, currIndexRight);
             linesOperator.drawHelperLine(currSideHelper, currIndexHelper);
         });
-        // disparrays();
-        //((Label)vboxLeft.getChildren().get(3)).setPrefWidth(150);
-        //((Label)vboxLeft.getChildren().get(3)).setMaxHeight(400);
     }
 
     private Label createDefaultLabel() {
@@ -166,8 +161,8 @@ public class Controller implements Initializable {
         input = inputField.getText();
 
         if (input.length() > 0) {
-            int x1 = hash(input, 1);
-            int x2 = hash(input, 2);
+            int x1 = algorithmsOperator.hash(input, true, tableSize);
+            int x2 = algorithmsOperator.hash(input, false, tableSize);
 
             currIndexLeft = x1;
             currIndexRight = x2;
@@ -199,8 +194,8 @@ public class Controller implements Initializable {
                 int base = baseTableSize;
                 for (int i = 0; i < resizedTimes; i++) {
 
-                    x1 = hash(input, 1, base);
-                    x2 = hash(input, 2, base);
+                    x1 = algorithmsOperator.hash(input, true, base);
+                    x2 = algorithmsOperator.hash(input, false, base);
                     found = (T1.get(x1).equals(input));
                     if (found) {
                         linesOperator.drawHelperLine(true, x1);
@@ -349,7 +344,7 @@ public class Controller implements Initializable {
             inputField.setText(key);
             return false;
         }
-        int index = hash(key, 1);
+        int index = algorithmsOperator.hash(key, true, tableSize);
         String s = putKey(index, key, true);
         stepByStep(true, s, index);
         if (!s.equals("")) {
@@ -365,7 +360,7 @@ public class Controller implements Initializable {
             return false;
         }
         //ovde treba da se hajlajtuje desno polje i da postoji desna strelica a ostalo da se disejbluje
-        int index = hash(key, 2);
+        int index = algorithmsOperator.hash(key, false, tableSize);
         String s = putKey(index, key, false);
         stepByStep(false, s, index);
         if (!s.equals("")) {
@@ -374,32 +369,6 @@ public class Controller implements Initializable {
         return true;
     }
 
-    // dummy hash function loosely based on http://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript-jquery
-    // note: this is fine for visualization, but not for any real application
-    // prebaci ovo sranje
-    int hash(String stri, int variant, int tableSize) {
-        int hash = 0, i, chr, len;
-        if (stri.length() == 0) return hash;
-        for (i = 0, len = stri.length(); i < len; i++) {
-            chr = stri.charAt(i);
-            hash = ((hash << 5) - hash) + chr + (chr * ((variant == 1) ? r1 : r2) << i);
-            hash |= 0;
-        }
-        hash = Math.abs(hash) % tableSize;
-        return hash;
-    }
-
-    int hash(String stri, int variant) {
-        int hash = 0, i, chr, len;
-        if (stri.length() == 0) return hash;
-        for (i = 0, len = stri.length(); i < len; i++) {
-            chr = stri.charAt(i);
-            hash = ((hash << 5) - hash) + chr + (chr * ((variant == 1) ? r1 : r2) << i);
-            hash |= 0;
-        }
-        hash = Math.abs(hash) % tableSize;
-        return hash;
-    }
 
     public void expand(ActionEvent actionEvent) {
         expandTables(2);
