@@ -20,10 +20,14 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
-
-    public ButtonBar buttonBar;
-    public RadioButton stepByStepButton;
-
+    @FXML
+    private ButtonBar buttonBar;
+    @FXML
+    private RadioButton stepByStepButton;
+    @FXML
+    private ComboBox dropListLeft;
+    @FXML
+    private ComboBox dropListRight;
     @FXML
     private VBox vboxLeft;
     @FXML
