@@ -16,8 +16,8 @@ public class LinesOperator {
     public Line rightLine;
     public Line helperLine;
     public TextField inputField;
-    private boolean lockedLeft=true;
-    private boolean lockedRight=true;
+    private boolean lockedLeft = true;
+    private boolean lockedRight = true;
 
     public LinesOperator(TextField inputField, Line leftLine, Line rightLine, Line helperLine, VBox vboxLeft, VBox vboxRight) {
         this.vboxLeft = vboxLeft;
@@ -42,6 +42,7 @@ public class LinesOperator {
                     helperLine.setStartY(inputField.getLayoutY());
                     helperLine.setEndX(inputField.getLayoutX() + inputField.getPrefWidth() / 2);
                     helperLine.setEndY(inputField.getLayoutY());
+                    helperLine.getStrokeDashArray().addAll(25d, 20d, 5d, 20d);
 
                     inputField.requestFocus();
                 }
@@ -49,9 +50,9 @@ public class LinesOperator {
     }
 
     public void drawLineEvent(boolean left, int index) {
-        if(left && lockedLeft) return;
-        if(!left && lockedRight) return;
-        drawLine(left,index);
+        if (left && lockedLeft) return;
+        if (!left && lockedRight) return;
+        drawLine(left, index);
 
     }
 
@@ -73,7 +74,7 @@ public class LinesOperator {
                 // ne mora valjda ovo
                 leftLine.setEndX(inputField.getLayoutX());
                 leftLine.setEndY(inputField.getLayoutY() + inputField.getHeight() / 2);
-                lockedLeft=false;
+                lockedLeft = false;
                 //System.out.println(leftLine);
             } else {
                 Bounds b = vboxRight.localToScreen((vboxRight.getChildren().get(0)).getBoundsInLocal());
@@ -83,7 +84,7 @@ public class LinesOperator {
                 // ne mora valjda ovo jedino ako zabaguje nekad
                 rightLine.setEndX(b.getCenterX() - b.getWidth() / 2);
                 rightLine.setEndY(b.getCenterY() + b.getHeight() * index);
-                lockedRight=false;
+                lockedRight = false;
                 //System.out.println(rightLine);
             }
         });
@@ -94,7 +95,11 @@ public class LinesOperator {
         Platform.runLater(() -> {
             Bounds b = left ? vboxLeft.localToScreen((vboxLeft.getChildren().get(0)).getBoundsInLocal()) : vboxRight.localToScreen((vboxRight.getChildren().get(0)).getBoundsInLocal());
             b = helperLine.screenToLocal(b);
-            helperLine.setStartX(b.getCenterX() + b.getWidth() / 2);
+            if (left) {
+                helperLine.setStartX(b.getCenterX() + b.getWidth() / 2);
+            } else {
+                helperLine.setStartX(b.getCenterX() - b.getWidth() / 2);
+            }
             helperLine.setStartY(b.getCenterY() + b.getHeight() * index);
             helperLine.setEndX(inputField.getLayoutX() + inputField.getWidth() / 2);
             helperLine.setEndY(inputField.getLayoutY());
@@ -111,8 +116,8 @@ public class LinesOperator {
 
             helperLine.setStartX(helperLine.getEndX());
             helperLine.setStartY(helperLine.getEndY());
-            lockedLeft=true;
-            lockedRight=true;
+            lockedLeft = true;
+            lockedRight = true;
         });
     }
 
@@ -121,11 +126,11 @@ public class LinesOperator {
             if (left) {
                 leftLine.setStartX(leftLine.getEndX());
                 leftLine.setStartY(leftLine.getEndY());
-                lockedLeft=true;
+                lockedLeft = true;
             } else {
                 rightLine.setEndX(rightLine.getStartX());
                 rightLine.setEndY(rightLine.getStartY());
-                lockedRight=true;
+                lockedRight = true;
             }
             helperLine.setStartX(helperLine.getEndX());
             helperLine.setStartY(helperLine.getEndY());

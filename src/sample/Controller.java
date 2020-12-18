@@ -258,7 +258,7 @@ public class Controller implements Initializable {
         }
         if (input.length() > 0) {
             // This must be done this way because
-            // we want to call input change after deletion and also to change background of input field
+            // we want to call inputChange() after deletion and also to change background of input field
             boolean keyRemoved = removeKey(input);
             // ne mora, moze i samo da se promeni pozadina
             inputChange();
@@ -273,7 +273,7 @@ public class Controller implements Initializable {
 
     public void add() {
         //ne mora
-        //inputChange();
+        inputChange();
         //mainPane.setDisable(true);
         buttonBar.setDisable(true);
         inputField.setEditable(false);
@@ -281,7 +281,11 @@ public class Controller implements Initializable {
 
             String curr = inputField.getText();
             if (found) {
-                inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null)));
+                Platform.runLater(() -> {
+                    inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null)));
+                    inputField.requestFocus();
+                    inputField.selectEnd();
+                });
                 buttonBar.setDisable(false);
                 inputField.setEditable(true);
                 return;
@@ -310,6 +314,10 @@ public class Controller implements Initializable {
                 }
                 buttonBar.setDisable(false);
                 inputField.setEditable(true);
+                Platform.runLater(() -> {
+                    inputField.requestFocus();
+                    inputField.selectEnd();
+                });
                 return;
             }
             inputChange();
