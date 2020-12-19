@@ -100,8 +100,9 @@ public class Controller implements Initializable {
         Platform.runLater(() -> {
             inputField.setText("");
             inputField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null)));
+            inputField.requestFocus();
         });
-        
+
         tablesOperator.resetTables();
         linesOperator.resetLines();
         tablesOperator.expandTables(tableSize);
