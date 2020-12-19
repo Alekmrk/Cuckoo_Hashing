@@ -40,7 +40,7 @@
                <ComboBox fx:id="dropListLeft" layoutX="7.0" layoutY="13.0" prefWidth="150.0" />
                <ComboBox fx:id="dropListRight" layoutX="238.0" layoutY="13.0" prefWidth="150.0" />
                     <Button layoutX="82.0" layoutY="608.0" mnemonicParsing="false" text="Button" />
-                    <Button layoutX="238.0" layoutY="608.0" mnemonicParsing="false" text="Button" />
+                    <Button layoutX="238.0" layoutY="608.0" mnemonicParsing="false" onAction="#reset" text="Reset" textAlignment="CENTER" textFill="RED" />
                <RadioButton fx:id="stepByStepButton" layoutX="163.0" layoutY="540.0" mnemonicParsing="false" onAction="#changeStepByStep" text="Step by Step" />
                 </Pane>
             </left>
