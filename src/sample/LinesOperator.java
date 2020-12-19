@@ -18,6 +18,7 @@ public class LinesOperator {
     public TextField inputField;
     private boolean lockedLeft = true;
     private boolean lockedRight = true;
+    private boolean lockedHelper = true;
 
     public LinesOperator(TextField inputField, Line leftLine, Line rightLine, Line helperLine, VBox vboxLeft, VBox vboxRight) {
         this.vboxLeft = vboxLeft;
@@ -54,6 +55,11 @@ public class LinesOperator {
         if (!left && lockedRight) return;
         drawLine(left, index);
 
+    }
+
+    public void drawHelperLineEvent(boolean left, int index) {
+        if (lockedHelper) return;
+        drawHelperLine(left, index);
     }
 
     public void drawLine(boolean left, int index) {
@@ -103,11 +109,16 @@ public class LinesOperator {
             helperLine.setStartY(b.getCenterY() + b.getHeight() * index);
             helperLine.setEndX(inputField.getLayoutX() + inputField.getWidth() / 2);
             helperLine.setEndY(inputField.getLayoutY());
+            lockedHelper = false;
         });
     }
 
     public void resetLines() {
         Platform.runLater(() -> {
+            lockedLeft = true;
+            lockedRight = true;
+            lockedHelper = true;
+
             leftLine.setStartX(leftLine.getEndX());
             leftLine.setStartY(leftLine.getEndY());
 
@@ -116,8 +127,6 @@ public class LinesOperator {
 
             helperLine.setStartX(helperLine.getEndX());
             helperLine.setStartY(helperLine.getEndY());
-            lockedLeft = true;
-            lockedRight = true;
         });
     }
 
@@ -132,6 +141,7 @@ public class LinesOperator {
                 rightLine.setEndY(rightLine.getStartY());
                 lockedRight = true;
             }
+            lockedHelper = true;
             helperLine.setStartX(helperLine.getEndX());
             helperLine.setStartY(helperLine.getEndY());
         });

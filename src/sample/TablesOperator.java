@@ -1,12 +1,15 @@
 package sample;
 
 import javafx.application.Platform;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.TextAlignment;
 
 import java.util.ArrayList;
 
@@ -75,5 +78,34 @@ public class TablesOperator {
                 rightTable = new ArrayList<>();
             });
         }
+    }
+
+    public void resetTables() {
+        Platform.runLater(() -> {
+            vboxRight.getChildren().clear();
+            vboxLeft.getChildren().clear();
+        });
+        leftTable = new ArrayList<>();
+        rightTable = new ArrayList<>();
+    }
+
+    public void expandTables(int size) {
+        Platform.runLater(() -> {
+            for (int i = 0; i < size; i++) {
+                vboxLeft.getChildren().add(createDefaultLabel());
+                vboxRight.getChildren().add(createDefaultLabel());
+            }
+        });
+    }
+
+    private Label createDefaultLabel() {
+        Label label = new Label("");
+        label.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-wrap-text:false; -fx-border-color:black;");
+        label.setPadding(new Insets(5));
+        label.setAlignment(Pos.CENTER);
+        label.setMaxWidth(Double.MAX_VALUE);
+        label.setBackground(new Background(new BackgroundFill(Color.AZURE, new CornerRadii(5.0), null)));
+        label.setTextAlignment(TextAlignment.CENTER);
+        return label;
     }
 }

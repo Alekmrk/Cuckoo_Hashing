@@ -4,8 +4,6 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -13,7 +11,6 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.text.TextAlignment;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -75,19 +72,15 @@ public class Controller implements Initializable {
             e.printStackTrace();
         }
 
-        for (int i = 0; i < tableSize; i++) {
-            T1.add("");
-            vboxLeft.getChildren().add(createDefaultLabel());
-        }
-
-        for (int i = 0; i < tableSize; i++) {
-            T2.add("");
-            vboxRight.getChildren().add(createDefaultLabel());
-        }
-
         linesOperator = new LinesOperator(inputField, leftLine, rightLine, helperLine, vboxLeft, vboxRight);
         tablesOperator = new TablesOperator(vboxLeft, vboxRight);
         algorithmsOperator = new AlgorithmsOperator(dropListLeft, dropListRight);
+
+        for (int i = 0; i < tableSize; i++) {
+            T1.add("");
+            T2.add("");
+        }
+        tablesOperator.expandTables(tableSize);
 
         putKey(algorithmsOperator.hash("key1", true, tableSize), "key1", true);
         putKey(algorithmsOperator.hash("key2", false, tableSize), "key2", false);
@@ -95,33 +88,39 @@ public class Controller implements Initializable {
         scroll.vvalueProperty().addListener((observable, oldValue, newValue) -> {
             linesOperator.drawLineEvent(true, currIndexLeft);
             linesOperator.drawLineEvent(false, currIndexRight);
-            linesOperator.drawHelperLine(currSideHelper, currIndexHelper);
+            linesOperator.drawHelperLineEvent(currSideHelper, currIndexHelper);
         });
     }
 
-    private Label createDefaultLabel() {
-        Label label = new Label("");
-        label.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-wrap-text:false; -fx-border-color:black;");
-        label.setPadding(new Insets(5));
-        label.setAlignment(Pos.CENTER);
-        label.setMaxWidth(Double.MAX_VALUE);
-        label.setBackground(new Background(new BackgroundFill(Color.AZURE, new CornerRadii(5.0), null)));
-        label.setTextAlignment(TextAlignment.CENTER);
-        return label;
+    private void setToDefault() {
+        tableSize = baseTableSize;
+        T1 = new ArrayList<>();
+        T2 = new ArrayList<>();
+
+        Platform.runLater(() -> {
+            inputField.setText("");
+            inputField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null)));
+        });
+        
+        tablesOperator.resetTables();
+        linesOperator.resetLines();
+        tablesOperator.expandTables(tableSize);
+
+        for (int i = 0; i < tableSize; i++) {
+            T1.add("");
+            T2.add("");
+        }
     }
+
 
     public void expandTables(double times) {
 
         for (int i = tableSize; i < tableSize * times; i++) {
             T1.add("");
-            vboxLeft.getChildren().add(createDefaultLabel());
-        }
-
-        for (int i = tableSize; i < tableSize * times; i++) {
             T2.add("");
-            vboxRight.getChildren().add(createDefaultLabel());
         }
 
+        tablesOperator.expandTables((int) (tableSize * times - tableSize));
         tableSize *= times;
         resizedTimes++;
         // Requesting focus in separate Thread because at the time of initialize() controls are not yet ready to handle focus.
@@ -237,7 +236,7 @@ public class Controller implements Initializable {
 
     private void refreshBackground(boolean left) {
         // we are removing helper line, if we have need for one we will draw it
-        currIndexHelper = -1;
+        //currIndexHelper = -1;
         linesOperator.resetLines(left);
         tablesOperator.refreshTables(left);
         Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5.0), null))));
@@ -245,7 +244,7 @@ public class Controller implements Initializable {
 
     private void refreshBackground() {
         // removing lines so we don`t draw it while scrolling
-        currIndexHelper = -1;
+        //currIndexHelper = -1;
         linesOperator.resetLines();
         tablesOperator.refreshTables();
         Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5.0), null))));
@@ -391,5 +390,11 @@ public class Controller implements Initializable {
 
     public void changeStepByStep(ActionEvent actionEvent) {
         stepByStep = stepByStepButton.isSelected();
+    }
+
+    public void reset(ActionEvent actionEvent) {
+        // i proveriti da neko ne stisne slucajno
+        setToDefault();
+        //postaviti da moze da se menja size i da mogu algoritmi da se biraju
     }
 }

@@ -1,6 +1,5 @@
 package sample;
 
-import javafx.beans.value.ChangeListener;
 import javafx.scene.control.ComboBox;
 
 import java.nio.charset.StandardCharsets;
@@ -15,7 +14,7 @@ public class AlgorithmsOperator {
     private String rightAlgorithm;
     private String[] algorithmNames = {"MD2", "MD5", "SHA-1", "SHA-224", "SHA-256", "SHA-384", "SHA-512"};
 
-    public AlgorithmsOperator(ComboBox dropListLeft, ComboBox dropListRight) {
+    public AlgorithmsOperator(ComboBox<String> dropListLeft, ComboBox<String> dropListRight) {
         this.dropListLeft = dropListLeft;
         this.dropListRight = dropListRight;
 
@@ -27,8 +26,8 @@ public class AlgorithmsOperator {
         dropListRight.setValue("MD2");
         rightAlgorithm = "MD2";
 
-        dropListLeft.valueProperty().addListener((ChangeListener<String>) (ov, oldString, newString) -> leftAlgorithm = newString);
-        dropListRight.valueProperty().addListener((ChangeListener<String>) (ov, oldString, newString) -> rightAlgorithm = newString);
+        dropListLeft.valueProperty().addListener((ov, oldString, newString) -> leftAlgorithm = newString);
+        dropListRight.valueProperty().addListener((ov, oldString, newString) -> rightAlgorithm = newString);
 
     }
 
