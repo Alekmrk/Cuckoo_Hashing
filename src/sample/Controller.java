@@ -25,9 +25,9 @@ public class Controller implements Initializable {
     @FXML
     private RadioButton stepByStepButton;
     @FXML
-    private ComboBox dropListLeft;
+    private ComboBox<String> dropListLeft;
     @FXML
-    private ComboBox dropListRight;
+    private ComboBox<String> dropListRight;
     @FXML
     private VBox vboxLeft;
     @FXML
@@ -87,7 +87,7 @@ public class Controller implements Initializable {
 
         linesOperator = new LinesOperator(inputField, leftLine, rightLine, helperLine, vboxLeft, vboxRight);
         tablesOperator = new TablesOperator(vboxLeft, vboxRight);
-        algorithmsOperator = new AlgorithmsOperator();
+        algorithmsOperator = new AlgorithmsOperator(dropListLeft, dropListRight);
 
         putKey(algorithmsOperator.hash("key1", true, tableSize), "key1", true);
         putKey(algorithmsOperator.hash("key2", false, tableSize), "key2", false);
@@ -130,13 +130,13 @@ public class Controller implements Initializable {
     }
 
     public String putKey(int index, String key, boolean sideLeft) {
-        String oldKey = sideLeft ? T1.remove(index) : T2.remove(index);
+        String oldKey = sideLeft ? T1.get(index) : T2.get(index);
         if (sideLeft) {
-            T1.add(index, key);
+            T1.set(index, key);
             Platform.runLater(() -> ((Label) vboxLeft.getChildren().get(index)).setText(key));
 
         } else {
-            T2.add(index, key);
+            T2.set(index, key);
             Platform.runLater(() -> ((Label) vboxRight.getChildren().get(index)).setText(key));
         }
         return oldKey;
@@ -162,7 +162,12 @@ public class Controller implements Initializable {
 
     // process change in input box
     public void inputChange() {
-        input = inputField.getText();
+
+        // ovo nam treba kada dodje do loopa i onda pozovemo inputField set text treba vremena u platformu, i kada se pozove ovo
+        //ta set text u platgormu nije izvrsena
+        // boolean useInputField = true;
+        //if (useInputField)
+            input = inputField.getText();
 
         if (input.length() > 0) {
             int x1 = algorithmsOperator.hash(input, true, tableSize);
@@ -181,8 +186,6 @@ public class Controller implements Initializable {
             tablesOperator.highlight(true, x1, (T1.get(x1).equals(input)));
             tablesOperator.highlight(false, x2, (T2.get(x2).equals(input)));
 
-            //document.getElementById("message").innerHTML = "<font color='green'>FOUND</font>";
-            //document.getElementById("message").innerHTML = "<font color='red'>NOT FOUND</font>";
             // ide se redom i ako ga je nasla prva linija druga ne trazi dalje ifound je ispravan
             found = (T1.get(x1).equals(input));
             if (found) {
@@ -308,8 +311,16 @@ public class Controller implements Initializable {
                         inputField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null)));
                     });
                 } else {
-                    inputChange();
-                    Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null))));
+                    new Thread(() -> {
+                        try {
+                            Thread.sleep(50);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        inputChange();
+                        Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null))));
+                    }).start();
+
                 }
                 buttonBar.setDisable(false);
                 inputField.setEditable(true);
@@ -345,7 +356,7 @@ public class Controller implements Initializable {
 
     private boolean addLeft(String key, int i) {
         if (i < 0) {
-            inputField.setText(key);
+            Platform.runLater(() -> inputField.setText(key));
             return false;
         }
         int index = algorithmsOperator.hash(key, true, tableSize);
@@ -360,7 +371,7 @@ public class Controller implements Initializable {
     private boolean addRight(String key, int i) {
         // ne moze da se desi
         if (i < 0) {
-            inputField.setText(key);
+            Platform.runLater(() -> inputField.setText(key));
             return false;
         }
         //ovde treba da se hajlajtuje desno polje i da postoji desna strelica a ostalo da se disejbluje
