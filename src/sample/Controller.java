@@ -164,7 +164,7 @@ public class Controller implements Initializable {
     public void inputChange() {
 
         // ovo nam treba kada dodje do loopa i onda pozovemo inputField set text treba vremena u platformu, i kada se pozove ovo
-        //ta set text u platgormu nije izvrsena
+        //ta set text u platformu nije izvrsena
         // boolean useInputField = true;
         //if (useInputField)
         input = inputField.getText();
