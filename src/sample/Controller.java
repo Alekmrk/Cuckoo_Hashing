@@ -167,7 +167,7 @@ public class Controller implements Initializable {
         //ta set text u platgormu nije izvrsena
         // boolean useInputField = true;
         //if (useInputField)
-            input = inputField.getText();
+        input = inputField.getText();
 
         if (input.length() > 0) {
             int x1 = algorithmsOperator.hash(input, true, tableSize);
