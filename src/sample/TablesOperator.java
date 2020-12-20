@@ -1,9 +1,14 @@
 package sample;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -91,14 +96,15 @@ public class TablesOperator {
 
     public void expandTables(int size) {
         Platform.runLater(() -> {
+            int currIndex = vboxLeft.getChildren().size();
             for (int i = 0; i < size; i++) {
-                vboxLeft.getChildren().add(createDefaultLabel());
-                vboxRight.getChildren().add(createDefaultLabel());
+                vboxLeft.getChildren().add(createDefaultLabel(currIndex + i));
+                vboxRight.getChildren().add(createDefaultLabel(currIndex + i));
             }
         });
     }
 
-    private Label createDefaultLabel() {
+    private Label createDefaultLabel(int currIndex) {
         Label label = new Label("");
         label.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-wrap-text:false; -fx-border-color:black;");
         label.setPadding(new Insets(5));
@@ -106,6 +112,24 @@ public class TablesOperator {
         label.setMaxWidth(Double.MAX_VALUE);
         label.setBackground(new Background(new BackgroundFill(Color.AZURE, new CornerRadii(5.0), null)));
         label.setTextAlignment(TextAlignment.CENTER);
+
+        // create a menu
+        ContextMenu contextMenu = new ContextMenu();
+
+        // create menuitems
+        MenuItem copy = new MenuItem("Copy");
+        MenuItem index = new MenuItem("Index [" + currIndex + "]");
+        copy.setOnAction((ActionEvent e) -> {
+            Clipboard clipboard = Clipboard.getSystemClipboard();
+            ClipboardContent content = new ClipboardContent();
+            content.putString(label.getText());
+            clipboard.setContent(content);
+        });
+        
+        // add menu items to menu
+        contextMenu.getItems().addAll(copy, index);
+        label.setContextMenu(contextMenu);
+
         return label;
     }
 }
