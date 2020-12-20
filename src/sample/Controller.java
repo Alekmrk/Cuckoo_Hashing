@@ -86,8 +86,8 @@ public class Controller implements Initializable {
         }
         tablesOperator.expandTables(tableSize);
 
-        putKey(algorithmsOperator.hash("key1", true, tableSize), "key1", true);
-        putKey(algorithmsOperator.hash("key2", false, tableSize), "key2", false);
+        //putKey(algorithmsOperator.hash("key1", true, tableSize), "key1", true);
+        //putKey(algorithmsOperator.hash("key2", false, tableSize), "key2", false);
 
         scroll.vvalueProperty().addListener((observable, oldValue, newValue) -> {
             linesOperator.drawLineEvent(true, currIndexLeft);
@@ -398,7 +398,7 @@ public class Controller implements Initializable {
                 alert.setTitle("Same hashing functions warning");
                 Optional<ButtonType> result = alert.showAndWait();
 
-                if (result.get() == ButtonType.YES) {
+                if (result.orElse(null) == ButtonType.YES) {
                     dropListLeft.setDisable(true);
                     dropListRight.setDisable(true);
                     algorithmLocked = true;
