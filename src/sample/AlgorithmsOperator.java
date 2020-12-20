@@ -70,4 +70,8 @@ public class AlgorithmsOperator {
         hash = Math.abs(hash) % tableSize;
         return hash;
     }
+
+    public boolean areSame() {
+        return leftAlgorithm.equals(rightAlgorithm);
+    }
 }

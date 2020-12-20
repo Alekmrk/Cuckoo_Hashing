@@ -15,6 +15,7 @@ import javafx.scene.shape.Line;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -58,7 +59,9 @@ public class Controller implements Initializable {
     private boolean found = false;
     private int foundIndex = -1;
 
-    boolean stepByStep = false;
+    private boolean stepByStep = false;
+
+    private boolean algorithmLocked = false;
 
     private LinesOperator linesOperator;
     private TablesOperator tablesOperator;
@@ -117,7 +120,6 @@ public class Controller implements Initializable {
             T2.add("");
         }
     }
-
 
     public void expandTables(double times) {
 
@@ -280,6 +282,10 @@ public class Controller implements Initializable {
         //ne mora
         inputChange(true);
         //mainPane.setDisable(true);
+
+        if (!lockAlgorithmsChange()) {
+            return;
+        }
         buttonBar.setDisable(true);
         inputField.setEditable(false);
         new Thread(() -> {
@@ -288,8 +294,8 @@ public class Controller implements Initializable {
             if (found) {
                 Platform.runLater(() -> {
                     inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null)));
-                    inputField.requestFocus();
                     inputField.selectEnd();
+                    inputField.requestFocus();
                 });
                 buttonBar.setDisable(false);
                 inputField.setEditable(true);
@@ -333,23 +339,6 @@ public class Controller implements Initializable {
         }).start();
     }
 
-    private void stepByStep(boolean left, String s, int index) {
-        if (!stepByStep) {
-            return;
-        }
-        Platform.runLater(() -> {
-            refreshBackground(!left);
-            inputField.setText(s);
-            linesOperator.drawLine(left, index);
-            tablesOperator.highlight(left, index, Color.YELLOW);
-        });
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
     private boolean addLeft(String key, int i) {
         if (i < 0) {
             input = key;
@@ -382,6 +371,49 @@ public class Controller implements Initializable {
         return true;
     }
 
+    private void stepByStep(boolean left, String s, int index) {
+        if (!stepByStep) {
+            return;
+        }
+        Platform.runLater(() -> {
+            refreshBackground(!left);
+            inputField.setText(s);
+            linesOperator.drawLine(left, index);
+            tablesOperator.highlight(left, index, Color.YELLOW);
+        });
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private boolean lockAlgorithmsChange() {
+        if (!algorithmLocked) {
+            if (algorithmsOperator.areSame()) {
+                Alert alert = new Alert(
+                        Alert.AlertType.WARNING,
+                        "Hashing functions for both tables are the same.\nAre you sure you want to continue?",
+                        ButtonType.YES, ButtonType.NO);
+                alert.setTitle("Same hashing functions warning");
+                Optional<ButtonType> result = alert.showAndWait();
+
+                if (result.get() == ButtonType.YES) {
+                    dropListLeft.setDisable(true);
+                    dropListRight.setDisable(true);
+                    algorithmLocked = true;
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                dropListLeft.setDisable(true);
+                dropListRight.setDisable(true);
+                algorithmLocked = true;
+            }
+        }
+        return true;
+    }
 
     public void expand(ActionEvent actionEvent) {
         expandTables(2);
@@ -396,6 +428,9 @@ public class Controller implements Initializable {
         setToDefault();
         buttonBar.setDisable(false);
         inputField.setEditable(true);
+        dropListLeft.setDisable(false);
+        dropListRight.setDisable(false);
+        algorithmLocked = false;
         //postaviti da moze da se menja size i da mogu algoritmi da se biraju
     }
 
