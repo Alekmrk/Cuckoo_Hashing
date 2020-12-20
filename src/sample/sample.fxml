@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -37,11 +39,16 @@
             </right>
             <left>
                 <Pane prefHeight="1000.0" prefWidth="400.0" BorderPane.alignment="CENTER">
-               <ComboBox fx:id="dropListLeft" layoutX="7.0" layoutY="13.0" prefWidth="150.0" />
-               <ComboBox fx:id="dropListRight" layoutX="238.0" layoutY="13.0" prefWidth="150.0" />
-                    <Button layoutX="82.0" layoutY="608.0" mnemonicParsing="false" text="Button" />
-                    <Button layoutX="238.0" layoutY="608.0" mnemonicParsing="false" onAction="#reset" text="Reset" textAlignment="CENTER" textFill="RED" />
-               <RadioButton fx:id="stepByStepButton" layoutX="163.0" layoutY="540.0" mnemonicParsing="false" onAction="#changeStepByStep" text="Step by Step" />
+               <ComboBox fx:id="dropListLeft" layoutX="10.0" layoutY="423.0" prefWidth="150.0" />
+               <ComboBox fx:id="dropListRight" layoutX="241.0" layoutY="423.0" prefWidth="150.0" />
+                    <Button layoutX="97.0" layoutY="646.0" mnemonicParsing="false" text="Button" />
+                    <Button layoutX="253.0" layoutY="646.0" mnemonicParsing="false" onAction="#reset" prefHeight="25.0" prefWidth="65.0" text="Reset" textAlignment="CENTER" textFill="RED" />
+               <RadioButton fx:id="stepByStepButton" layoutX="163.0" layoutY="539.0" mnemonicParsing="false" onAction="#changeStepByStep" text="Step by Step" />
+               <Group fx:id="stepByStepGroup" disable="true" layoutX="92.0" layoutY="569.0" visible="false">
+                     <Slider fx:id="speedSlider" blockIncrement="1.0" layoutX="45.0" layoutY="1.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="50.0" />
+                     <Label layoutY="1.0" text="0.1 sec" />
+                     <Label layoutX="195.0" layoutY="1.0" text="2 sec" />
+               </Group>
                 </Pane>
             </left>
             <center>
@@ -49,14 +56,6 @@
                     <AnchorPane prefHeight="1015.0" prefWidth="1085.0" BorderPane.alignment="CENTER">
                         <VBox fx:id="vboxLeft" prefHeight="1015.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                         <VBox fx:id="vboxRight" layoutX="650.0" prefHeight="1015.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        <TextField disable="true" layoutX="443.0" layoutY="466.0" prefWidth="200.0" visible="false" AnchorPane.leftAnchor="443.0" AnchorPane.rightAnchor="443.0" />
-                        <ButtonBar disable="true" layoutX="400.0" layoutY="500.0" prefHeight="40.0" prefWidth="200.0" visible="false" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="420.0">
-                            <buttons>
-                                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Find" />
-                                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Add" />
-                                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Delete" />
-                            </buttons>
-                        </ButtonBar>
                     </AnchorPane>
                 </ScrollPane>
             </center>

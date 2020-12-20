@@ -4,12 +4,10 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
@@ -19,6 +17,10 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
+    @FXML
+    private Group stepByStepGroup;
+    @FXML
+    private Slider speedSlider;
     @FXML
     private ButtonBar buttonBar;
     @FXML
@@ -60,6 +62,8 @@ public class Controller implements Initializable {
     private int foundIndex = -1;
 
     private boolean stepByStep = false;
+    private long maxSpeed = 2000;
+    private long currSpeed = 1000;
 
     private boolean algorithmLocked = false;
 
@@ -86,13 +90,24 @@ public class Controller implements Initializable {
         }
         tablesOperator.expandTables(tableSize);
 
+        setListeners();
         //putKey(algorithmsOperator.hash("key1", true, tableSize), "key1", true);
         //putKey(algorithmsOperator.hash("key2", false, tableSize), "key2", false);
+    }
 
+    private void setListeners() {
         scroll.vvalueProperty().addListener((observable, oldValue, newValue) -> {
             linesOperator.drawLineEvent(true, currIndexLeft);
             linesOperator.drawLineEvent(false, currIndexRight);
             linesOperator.drawHelperLineEvent(currSideHelper, currIndexHelper);
+        });
+
+        speedSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.longValue() == 0) {
+                currSpeed = 20;
+            } else {
+                currSpeed = maxSpeed * newValue.longValue() / 100;
+            }
         });
     }
 
@@ -382,7 +397,7 @@ public class Controller implements Initializable {
             tablesOperator.highlight(left, index, Color.YELLOW);
         });
         try {
-            Thread.sleep(1000);
+            Thread.sleep(currSpeed);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -421,6 +436,13 @@ public class Controller implements Initializable {
 
     public void changeStepByStep(ActionEvent actionEvent) {
         stepByStep = stepByStepButton.isSelected();
+        if (stepByStep) {
+            stepByStepGroup.setDisable(false);
+            stepByStepGroup.setVisible(true);
+        } else {
+            stepByStepGroup.setDisable(true);
+            stepByStepGroup.setVisible(false);
+        }
     }
 
     public void reset(ActionEvent actionEvent) {
