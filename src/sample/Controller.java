@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -94,6 +95,10 @@ public class Controller implements Initializable {
 
     private void setToDefault() {
         tableSize = baseTableSize;
+        resizedTimes = 0;
+        found = false;
+        foundIndex = -1;
+
         T1 = new ArrayList<>();
         T2 = new ArrayList<>();
 
@@ -126,7 +131,7 @@ public class Controller implements Initializable {
         resizedTimes++;
         // Requesting focus in separate Thread because at the time of initialize() controls are not yet ready to handle focus.
         //Platform.runLater(() -> inputField.requestFocus());
-        inputChange();
+        inputChange(true);
     }
 
     public String putKey(int index, String key, boolean sideLeft) {
@@ -161,14 +166,13 @@ public class Controller implements Initializable {
     }
 
     // process change in input box
-    public void inputChange() {
+    public void inputChange(boolean useInputField) {
 
         // ovo nam treba kada dodje do loopa i onda pozovemo inputField set text treba vremena u platformu, i kada se pozove ovo
         //ta set text u platformu nije izvrsena
-        // boolean useInputField = true;
-        //if (useInputField)
-        input = inputField.getText();
-
+        if (useInputField) {
+            input = inputField.getText();
+        }
         if (input.length() > 0) {
             int x1 = algorithmsOperator.hash(input, true, tableSize);
             int x2 = algorithmsOperator.hash(input, false, tableSize);
@@ -221,7 +225,6 @@ public class Controller implements Initializable {
                         foundIndex = x2;
                         break;
                     }
-
                     base *= 2;
                 }
             }
@@ -253,7 +256,7 @@ public class Controller implements Initializable {
 
     public void delete() {
         //input = inputField.getText();
-        inputChange();
+        inputChange(true);
         if (!found) {
             Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null))));
             return;
@@ -263,7 +266,7 @@ public class Controller implements Initializable {
             // we want to call inputChange() after deletion and also to change background of input field
             boolean keyRemoved = removeKey(input);
             // ne mora, moze i samo da se promeni pozadina
-            inputChange();
+            inputChange(true);
             if (keyRemoved) {
                 Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null))));
             } else {
@@ -275,12 +278,12 @@ public class Controller implements Initializable {
 
     public void add() {
         //ne mora
-        inputChange();
+        inputChange(true);
         //mainPane.setDisable(true);
         buttonBar.setDisable(true);
         inputField.setEditable(false);
         new Thread(() -> {
-
+            // moze se promeniti na input
             String curr = inputField.getText();
             if (found) {
                 Platform.runLater(() -> {
@@ -297,6 +300,7 @@ public class Controller implements Initializable {
             //refreshBackground();
             if (input.length() > 0) {
                 if (addLeft(input, 16)) {
+                    // ovde baca gresku pri dodavanju, razresi to obaveznoo. index je nekada -1
                     if (T1.get(currIndexLeft).equals(curr)) {
                         tablesOperator.highlight(true, currIndexLeft, true);
                         linesOperator.drawLine(true, currIndexLeft);
@@ -311,16 +315,8 @@ public class Controller implements Initializable {
                         inputField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null)));
                     });
                 } else {
-                    new Thread(() -> {
-                        try {
-                            Thread.sleep(50);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        inputChange();
-                        Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null))));
-                    }).start();
-
+                    inputChange(false);
+                    Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null))));
                 }
                 buttonBar.setDisable(false);
                 inputField.setEditable(true);
@@ -330,7 +326,7 @@ public class Controller implements Initializable {
                 });
                 return;
             }
-            inputChange();
+            inputChange(true);
             Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null))));
             buttonBar.setDisable(false);
             inputField.setEditable(true);
@@ -356,6 +352,7 @@ public class Controller implements Initializable {
 
     private boolean addLeft(String key, int i) {
         if (i < 0) {
+            input = key;
             Platform.runLater(() -> inputField.setText(key));
             return false;
         }
@@ -371,6 +368,7 @@ public class Controller implements Initializable {
     private boolean addRight(String key, int i) {
         // ne moze da se desi
         if (i < 0) {
+            input = key;
             Platform.runLater(() -> inputField.setText(key));
             return false;
         }
@@ -396,6 +394,12 @@ public class Controller implements Initializable {
     public void reset(ActionEvent actionEvent) {
         // i proveriti da neko ne stisne slucajno
         setToDefault();
+        buttonBar.setDisable(false);
+        inputField.setEditable(true);
         //postaviti da moze da se menja size i da mogu algoritmi da se biraju
+    }
+
+    public void inputChangeAction(KeyEvent keyEvent) {
+        inputChange(true);
     }
 }

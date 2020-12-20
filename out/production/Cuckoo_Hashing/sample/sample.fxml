@@ -73,7 +73,7 @@
                   </stops>
                </RadialGradient>
             </fill></Line>
-            <TextField fx:id="inputField" layoutX="858.0" layoutY="467.0" onKeyTyped="#inputChange" prefWidth="200.0" translateX="-734.0" />
+            <TextField fx:id="inputField" layoutX="858.0" layoutY="467.0" onKeyTyped="#inputChangeAction" prefWidth="200.0" translateX="-734.0" />
             <ButtonBar fx:id="buttonBar" layoutX="816.0" layoutY="501.0" prefHeight="40.0" prefWidth="200.0" translateX="-734.0">
                 <buttons>
                     <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#expand" text="Find" />
