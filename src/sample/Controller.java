@@ -156,7 +156,6 @@ public class Controller implements Initializable {
         if (sideLeft) {
             T1.set(index, key);
             Platform.runLater(() -> ((Label) vboxLeft.getChildren().get(index)).setText(key));
-
         } else {
             T2.set(index, key);
             Platform.runLater(() -> ((Label) vboxRight.getChildren().get(index)).setText(key));

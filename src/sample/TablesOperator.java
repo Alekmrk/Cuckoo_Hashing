@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.Background;
@@ -116,18 +117,19 @@ public class TablesOperator {
         // create a menu
         ContextMenu contextMenu = new ContextMenu();
 
-        // create menuitems
+        // create menuItems
         MenuItem copy = new MenuItem("Copy");
         MenuItem index = new MenuItem("Index [" + currIndex + "]");
+        SeparatorMenuItem separator = new SeparatorMenuItem();
         copy.setOnAction((ActionEvent e) -> {
             Clipboard clipboard = Clipboard.getSystemClipboard();
             ClipboardContent content = new ClipboardContent();
             content.putString(label.getText());
             clipboard.setContent(content);
         });
-        
+
         // add menu items to menu
-        contextMenu.getItems().addAll(copy, index);
+        contextMenu.getItems().addAll(copy, separator, index);
         label.setContextMenu(contextMenu);
 
         return label;
