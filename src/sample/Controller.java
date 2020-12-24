@@ -439,10 +439,10 @@ public class Controller implements Initializable {
         stepByStep = stepByStepButton.isSelected();
         if (stepByStep) {
             stepByStepGroup.setDisable(false);
-            stepByStepGroup.setVisible(true);
+            //stepByStepGroup.setVisible(true);
         } else {
             stepByStepGroup.setDisable(true);
-            stepByStepGroup.setVisible(false);
+            //stepByStepGroup.setVisible(false);
         }
     }
 

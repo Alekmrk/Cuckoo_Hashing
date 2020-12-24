@@ -29,15 +29,15 @@ public class LinesOperator {
         this.helperLine = helperLine;
 
         Platform.runLater(() -> {
-                    leftLine.setStartX(inputField.getLayoutX());
-                    leftLine.setStartY(inputField.getLayoutY());
-                    leftLine.setEndX(inputField.getLayoutX());
-                    leftLine.setEndY(inputField.getLayoutY() + inputField.getPrefHeight());
+                    leftLine.setStartX(inputField.getLayoutX() + 5);
+                    leftLine.setStartY(inputField.getLayoutY() + inputField.getPrefHeight() / 2);
+                    leftLine.setEndX(inputField.getLayoutX() + 5);
+                    leftLine.setEndY(inputField.getLayoutY() + inputField.getPrefHeight() / 2);
 
-                    rightLine.setStartX(inputField.getLayoutX() + inputField.getPrefWidth());
-                    rightLine.setStartY(inputField.getLayoutY());
-                    rightLine.setEndX(inputField.getLayoutX() + inputField.getPrefWidth());
-                    rightLine.setEndY(inputField.getLayoutY() + inputField.getPrefHeight());
+                    rightLine.setStartX(inputField.getLayoutX() + inputField.getPrefWidth() - 5);
+                    rightLine.setStartY(inputField.getLayoutY() + inputField.getPrefHeight() / 2);
+                    rightLine.setEndX(inputField.getLayoutX() + inputField.getPrefWidth() - 5);
+                    rightLine.setEndY(inputField.getLayoutY() + inputField.getPrefHeight() / 2);
 
                     helperLine.setStartX(inputField.getLayoutX() + inputField.getPrefWidth() / 2);
                     helperLine.setStartY(inputField.getLayoutY());
@@ -77,17 +77,19 @@ public class LinesOperator {
                 b = leftLine.screenToLocal(b);
                 leftLine.setStartX(b.getCenterX() + b.getWidth() / 2);
                 leftLine.setStartY(b.getCenterY() + b.getHeight() * index);
+
                 // ne mora valjda ovo
-                leftLine.setEndX(inputField.getLayoutX());
-                leftLine.setEndY(inputField.getLayoutY() + inputField.getHeight() / 2);
+                //leftLine.setEndX(inputField.getLayoutX() + 5);
+                //leftLine.setEndY(inputField.getLayoutY() + inputField.getPrefHeight() / 2);
                 lockedLeft = false;
                 //System.out.println(leftLine);
             } else {
                 Bounds b = vboxRight.localToScreen((vboxRight.getChildren().get(0)).getBoundsInLocal());
                 b = rightLine.screenToLocal(b);
-                rightLine.setStartX(inputField.getLayoutX() + inputField.getWidth());
-                rightLine.setStartY(inputField.getLayoutY() + inputField.getHeight() / 2);
                 // ne mora valjda ovo jedino ako zabaguje nekad
+                //rightLine.setStartX(inputField.getLayoutX() + inputField.getPrefWidth()-5);
+                //rightLine.setStartY(inputField.getLayoutY()+ inputField.getPrefHeight() / 2);
+
                 rightLine.setEndX(b.getCenterX() - b.getWidth() / 2);
                 rightLine.setEndY(b.getCenterY() + b.getHeight() * index);
                 lockedRight = false;
@@ -146,6 +148,4 @@ public class LinesOperator {
             helperLine.setStartY(helperLine.getEndY());
         });
     }
-
-
 }
