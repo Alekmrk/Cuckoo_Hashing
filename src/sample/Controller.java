@@ -18,6 +18,8 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
     @FXML
+    private TextArea textArea;
+    @FXML
     private Group stepByStepGroup;
     @FXML
     private Slider speedSlider;
@@ -66,6 +68,7 @@ public class Controller implements Initializable {
     private long currSpeed = 1000;
 
     private boolean algorithmLocked = false;
+    private InsertionState insertionState = InsertionState.SUCCESSFUL;
 
     private LinesOperator linesOperator;
     private TablesOperator tablesOperator;
@@ -295,11 +298,6 @@ public class Controller implements Initializable {
     public void add() {
         //ne mora
         inputChange(true);
-        //mainPane.setDisable(true);
-
-        if (!lockAlgorithmsChange()) {
-            return;
-        }
         buttonBar.setDisable(true);
         inputField.setEditable(false);
         new Thread(() -> {
@@ -313,6 +311,7 @@ public class Controller implements Initializable {
                 });
                 buttonBar.setDisable(false);
                 inputField.setEditable(true);
+                insertionState = InsertionState.ALREADY_EXISTS;
                 return;
             }
             Platform.runLater(() -> inputField.requestFocus());
@@ -334,9 +333,11 @@ public class Controller implements Initializable {
                         inputField.setText("");
                         inputField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null)));
                     });
+                    insertionState = InsertionState.SUCCESSFUL;
                 } else {
                     inputChange(false);
                     Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null))));
+                    insertionState = InsertionState.INFINITE_LOOP;
                 }
                 buttonBar.setDisable(false);
                 inputField.setEditable(true);
@@ -403,6 +404,7 @@ public class Controller implements Initializable {
     }
 
     private boolean lockAlgorithmsChange() {
+        // ovo sluzi da proveri funkcije hesiranja i nista drugo
         if (!algorithmLocked) {
             if (algorithmsOperator.areSame()) {
                 Alert alert = new Alert(
@@ -457,5 +459,12 @@ public class Controller implements Initializable {
 
     public void inputChangeAction(KeyEvent keyEvent) {
         inputChange(true);
+    }
+
+    public void addButton(ActionEvent actionEvent) {
+        if (!lockAlgorithmsChange()) {
+            return;
+        }
+        add();
     }
 }
