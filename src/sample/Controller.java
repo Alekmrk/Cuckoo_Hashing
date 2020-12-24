@@ -73,6 +73,7 @@ public class Controller implements Initializable {
     private LinesOperator linesOperator;
     private TablesOperator tablesOperator;
     private AlgorithmsOperator algorithmsOperator;
+    private FileReader fileReader;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -86,6 +87,7 @@ public class Controller implements Initializable {
         linesOperator = new LinesOperator(inputField, leftLine, rightLine, helperLine, vboxLeft, vboxRight);
         tablesOperator = new TablesOperator(vboxLeft, vboxRight);
         algorithmsOperator = new AlgorithmsOperator(dropListLeft, dropListRight);
+        fileReader = new FileReader(textArea);
 
         for (int i = 0; i < tableSize; i++) {
             T1.add("");
@@ -431,22 +433,18 @@ public class Controller implements Initializable {
         return true;
     }
 
-    public void expand(ActionEvent actionEvent) {
+    public void expandAction(ActionEvent actionEvent) {
         expandTables(2);
     }
 
-    public void changeStepByStep(ActionEvent actionEvent) {
+    public void changeStepByStepAction(ActionEvent actionEvent) {
         stepByStep = stepByStepButton.isSelected();
-        if (stepByStep) {
-            stepByStepGroup.setDisable(false);
-            //stepByStepGroup.setVisible(true);
-        } else {
-            stepByStepGroup.setDisable(true);
-            //stepByStepGroup.setVisible(false);
-        }
+        //stepByStepGroup.setVisible(true);
+        //stepByStepGroup.setVisible(false);
+        stepByStepGroup.setDisable(!stepByStep);
     }
 
-    public void reset(ActionEvent actionEvent) {
+    public void resetAction(ActionEvent actionEvent) {
         // i proveriti da neko ne stisne slucajno
         setToDefault();
         buttonBar.setDisable(false);
@@ -461,10 +459,35 @@ public class Controller implements Initializable {
         inputChange(true);
     }
 
-    public void addButton(ActionEvent actionEvent) {
+    public void addButtonAction(ActionEvent actionEvent) {
         if (!lockAlgorithmsChange()) {
             return;
         }
         add();
+    }
+
+    public void nextWordAction(ActionEvent actionEvent) {
+        if (input.length() > 0) {
+            Alert alert = new Alert(
+                    Alert.AlertType.WARNING,
+                    "There is already a text in input field.\nThis action may change text in it!\nAre you sure you want to continue?",
+                    ButtonType.YES, ButtonType.NO);
+            alert.setTitle("Putting text in occupied text field");
+
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.orElse(null) == ButtonType.NO) {
+                return;
+            }
+        }
+        String newWord = fileReader.nextWord();
+        if (newWord != null) {
+            Platform.runLater(() -> {
+                // ispitati ako se vec nalazi u input polju da li zelimo da idemo nextWord
+                inputField.setText(newWord);
+                inputChange(true);
+            });
+
+        }
     }
 }
