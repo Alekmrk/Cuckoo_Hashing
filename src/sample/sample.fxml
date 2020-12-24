@@ -25,23 +25,29 @@
         <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
             <right>
             <Pane BorderPane.alignment="CENTER">
+               <children>
                   <Pane prefHeight="1000.0" prefWidth="400.0">
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="185.0" layoutY="327.0" text="Label">
+                     <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="185.0" layoutY="243.0" text="Label">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <TextArea fx:id="textArea" layoutX="10.0" layoutY="365.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="395.0" wrapText="true" />
-                        <Group layoutX="97.0" layoutY="684.0">
-                            <Button alignment="CENTER" mnemonicParsing="false" prefWidth="70.0" text="Next" />
-                              <Button alignment="CENTER" layoutX="85.0" mnemonicParsing="false" prefWidth="70.0" text="Start/Stop">
+                        <TextArea fx:id="textArea" layoutX="10.0" layoutY="282.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="395.0" wrapText="true" />
+                        <Group layoutX="86.0" layoutY="601.0">
+                           <children>
+                            <Button alignment="CENTER" mnemonicParsing="false" prefWidth="75.0" text="Next" />
+                              <Button alignment="CENTER" layoutX="85.0" mnemonicParsing="false" prefWidth="75.0" text="Start/Stop">
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>
                               </Button>
-                              <Button alignment="CENTER" layoutX="170.0" mnemonicParsing="false" prefWidth="70.0" text="Finish" />
+                              <Button alignment="CENTER" layoutX="170.0" mnemonicParsing="false" prefWidth="75.0" text="Finish" />
+                           </children>
                         </Group>
+                     </children>
                   </Pane>
+               </children>
             </Pane>
             </right>
             <left>
@@ -82,9 +88,9 @@
             <TextField fx:id="inputField" layoutX="858.0" layoutY="467.0" onKeyTyped="#inputChangeAction" prefWidth="200.0" translateX="-734.0" />
             <ButtonBar fx:id="buttonBar" layoutX="816.0" layoutY="501.0" prefHeight="40.0" prefWidth="200.0" translateX="-734.0">
                 <buttons>
-                    <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#expand" text="Find" />
-                    <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addButton" text="Add" />
-                    <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#delete" text="Delete" />
+                    <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#expand" prefWidth="75.0" text="Find" />
+                    <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addButton" prefWidth="75.0" text="Add" />
+                    <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#delete" prefWidth="75.0" text="Delete" />
                 </buttons>
             </ButtonBar>
         </Pane>
