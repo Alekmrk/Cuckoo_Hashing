@@ -126,6 +126,7 @@ public class Controller implements Initializable {
         T2 = new ArrayList<>();
 
         Platform.runLater(() -> {
+            input = "";
             inputField.setText("");
             inputField.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5.0), null)));
             inputField.requestFocus();
@@ -332,6 +333,7 @@ public class Controller implements Initializable {
                         refreshBackground(true);
                     }
                     Platform.runLater(() -> {
+                        input = "";
                         inputField.setText("");
                         inputField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null)));
                     });
