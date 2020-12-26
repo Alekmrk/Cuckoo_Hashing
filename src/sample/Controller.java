@@ -7,7 +7,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
@@ -17,6 +20,10 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
+    @FXML
+    private Group algorithmLockGroup;
+    @FXML
+    private TextField tableSizeField;
     @FXML
     private TextArea textArea;
     @FXML
@@ -74,6 +81,7 @@ public class Controller implements Initializable {
     private TablesOperator tablesOperator;
     private AlgorithmsOperator algorithmsOperator;
     private FileReader fileReader;
+    private boolean tableSizeValid = true;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -88,7 +96,9 @@ public class Controller implements Initializable {
         tablesOperator = new TablesOperator(vboxLeft, vboxRight);
         algorithmsOperator = new AlgorithmsOperator(dropListLeft, dropListRight);
         fileReader = new FileReader(textArea);
-
+        Platform.runLater(() ->
+                tableSizeField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null)))
+        );
         for (int i = 0; i < tableSize; i++) {
             T1.add("");
             T2.add("");
@@ -114,10 +124,40 @@ public class Controller implements Initializable {
                 currSpeed = maxSpeed * newValue.longValue() / 100;
             }
         });
+
+        tableSizeField.textProperty().addListener((observable, oldValue, newValue) -> {
+
+            String number = newValue.replaceAll("[^\\d]", "");
+            if (number.equals("")) {
+                Platform.runLater(() -> {
+                    tableSizeField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null)));
+                    tableSizeField.setText("");
+                });
+                tableSizeValid = false;
+                return;
+            }
+            try {
+                baseTableSize = Integer.parseInt(number);
+                Platform.runLater(() ->
+                        tableSizeField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null)))
+                );
+                baseTableSize = Math.min(baseTableSize, 1000);
+                baseTableSize = Math.max(baseTableSize, 1);
+                Platform.runLater(() -> tableSizeField.setText("" + baseTableSize));
+                Platform.runLater(() -> tableSizeField.end());
+                tableSizeValid = true;
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                //ispisi negde gresku
+            }
+        });
     }
 
     private void setToDefault() {
+
         tableSize = baseTableSize;
+        tableSizeValid = true;
+
         resizedTimes = 0;
         found = false;
         foundIndex = -1;
@@ -418,19 +458,15 @@ public class Controller implements Initializable {
                 alert.setTitle("Same hashing functions warning");
                 Optional<ButtonType> result = alert.showAndWait();
 
-                if (result.orElse(null) == ButtonType.YES) {
-                    dropListLeft.setDisable(true);
-                    dropListRight.setDisable(true);
-                    algorithmLocked = true;
-                    return true;
-                } else {
+                if (result.orElse(null) == ButtonType.NO) {
                     return false;
                 }
-            } else {
-                dropListLeft.setDisable(true);
-                dropListRight.setDisable(true);
-                algorithmLocked = true;
             }
+            dropListLeft.setDisable(true);
+            dropListRight.setDisable(true);
+            algorithmLockGroup.setDisable(true);
+            algorithmLocked = true;
+
         }
         return true;
     }
@@ -448,11 +484,18 @@ public class Controller implements Initializable {
 
     public void resetAction(ActionEvent actionEvent) {
         // i proveriti da neko ne stisne slucajno
+        baseTableSize = 15;
+        Platform.runLater(() -> {
+                    tableSizeField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null)));
+                    tableSizeField.setText("" + baseTableSize);
+                }
+        );
         setToDefault();
         buttonBar.setDisable(false);
         inputField.setEditable(true);
         dropListLeft.setDisable(false);
         dropListRight.setDisable(false);
+        algorithmLockGroup.setDisable(false);
         algorithmLocked = false;
         //postaviti da moze da se menja size i da mogu algoritmi da se biraju
     }
@@ -490,6 +533,14 @@ public class Controller implements Initializable {
                 inputChange(true);
             });
 
+        }
+    }
+
+    public void tableSizeAction(ActionEvent actionEvent) {
+        if (tableSizeValid) {
+            setToDefault();
+        } else {
+            // vrv alert koji mu kaze da ne valja
         }
     }
 }

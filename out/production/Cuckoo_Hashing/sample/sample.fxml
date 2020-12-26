@@ -52,8 +52,17 @@
             </right>
             <left>
                 <Pane prefHeight="1000.0" prefWidth="400.0" BorderPane.alignment="CENTER">
-               <ComboBox fx:id="dropListLeft" layoutX="10.0" layoutY="423.0" prefWidth="150.0" />
-               <ComboBox fx:id="dropListRight" layoutX="241.0" layoutY="423.0" prefWidth="150.0" />
+               <Group fx:id="algorithmLockGroup" layoutX="10.0" layoutY="335.0">
+                  <children>
+                     <ComboBox fx:id="dropListLeft" layoutY="29.0" prefWidth="150.0" />
+                     <ComboBox fx:id="dropListRight" layoutX="231.0" layoutY="29.0" prefWidth="150.0" />
+                     <TextField fx:id="tableSizeField" layoutX="158.0" layoutY="85.0" prefHeight="25.0" prefWidth="70.0" promptText="Numbers" text="15" />
+                     <Label layoutX="50.0" text="Left table" />
+                     <Label layoutX="277.0" text="Right table" />
+                     <Label layoutX="66.0" layoutY="88.0" text="Initial table size:" />
+                     <Button defaultButton="true" layoutX="243.0" layoutY="85.0" mnemonicParsing="false" onAction="#tableSizeAction" text="Apply" textAlignment="CENTER" />
+                  </children>
+               </Group>
                <RadioButton fx:id="stepByStepButton" layoutX="163.0" layoutY="539.0" mnemonicParsing="false" onAction="#changeStepByStepAction" text="Step by Step" />
                <Group fx:id="stepByStepGroup" disable="true" layoutX="92.0" layoutY="569.0">
                      <Slider fx:id="speedSlider" blockIncrement="1.0" layoutX="45.0" layoutY="1.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="50.0" />
@@ -61,7 +70,7 @@
                      <Label layoutX="195.0" layoutY="1.0" text="2 sec" />
                </Group>
                     <Button layoutX="97.0" layoutY="646.0" mnemonicParsing="false" prefWidth="75.0" text="Button" />
-                    <Button layoutX="253.0" layoutY="646.0" mnemonicParsing="false" onAction="#resetAction" prefWidth="75.0" text="Reset" textAlignment="CENTER" textFill="RED" />
+                    <Button defaultButton="true" layoutX="253.0" layoutY="646.0" mnemonicParsing="false" onAction="#resetAction" prefWidth="75.0" text="Reset" textAlignment="CENTER" textFill="RED" />
                 </Pane>
             </left>
             <center>
