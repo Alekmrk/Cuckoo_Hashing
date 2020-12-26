@@ -124,7 +124,7 @@
                     <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#delete" pickOnBounds="false" prefWidth="75.0" text="Delete" />
                 </buttons>
             </ButtonBar>
-            <Label alignment="CENTER" cache="true" cacheHint="SPEED" contentDisplay="CENTER" layoutX="124.0" layoutY="391.0" pickOnBounds="false" prefHeight="70.0" prefWidth="200.0" text="lkjasdflkjasldfkjldjasfkljasdlfkjladkjsflkasdjflkjasdlfkjalsdfjlkdjasf" textAlignment="CENTER" textFill="RED" wrapText="true" />
+            <Label fx:id="messageLabel" alignment="CENTER" cache="true" cacheHint="SPEED" contentDisplay="CENTER" layoutX="124.0" layoutY="391.0" pickOnBounds="false" prefHeight="70.0" prefWidth="200.0" textAlignment="CENTER" textFill="#030303" wrapText="true" />
             <Button alignment="CENTER" contentDisplay="CENTER" layoutX="187.0" layoutY="559.0" mnemonicParsing="false" onAction="#expandAction" pickOnBounds="false" prefWidth="75.0" text="Expand" />
         </Pane>
     </AnchorPane>

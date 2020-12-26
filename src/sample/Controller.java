@@ -22,6 +22,8 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
     @FXML
+    private Label messageLabel;
+    @FXML
     private Group algorithmLockGroup;
     @FXML
     private TextField tableSizeField;
@@ -76,7 +78,7 @@ public class Controller implements Initializable {
     private long currSpeed = 1000;
 
     private boolean algorithmLocked = false;
-    private InsertionState insertionState = InsertionState.SUCCESSFUL;
+    private ActionState actionState = ActionState.SUCCESSFUL_ADD;
 
     private LinesOperator linesOperator;
     private TablesOperator tablesOperator;
@@ -169,10 +171,10 @@ public class Controller implements Initializable {
         Platform.runLater(() -> {
             input = "";
             inputField.setText("");
-            inputField.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5.0), null)));
+            //inputField.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5.0), null)));
             inputField.requestFocus();
         });
-
+        showMessage(ActionState.PROCESSING);
         tablesOperator.resetTables();
         linesOperator.resetLines();
         tablesOperator.expandTables(tableSize);
@@ -236,6 +238,7 @@ public class Controller implements Initializable {
         if (useInputField) {
             input = inputField.getText();
         }
+        showMessage(ActionState.PROCESSING);
         if (input.length() > 0) {
             int x1 = algorithmsOperator.hash(input, true, tableSize);
             int x2 = algorithmsOperator.hash(input, false, tableSize);
@@ -307,7 +310,7 @@ public class Controller implements Initializable {
         //currIndexHelper = -1;
         linesOperator.resetLines(left);
         tablesOperator.refreshTables(left);
-        Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5.0), null))));
+        //Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5.0), null))));
     }
 
     private void refreshBackground() {
@@ -315,14 +318,15 @@ public class Controller implements Initializable {
         //currIndexHelper = -1;
         linesOperator.resetLines();
         tablesOperator.refreshTables();
-        Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5.0), null))));
+        //Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5.0), null))));
     }
 
     public void delete() {
         //input = inputField.getText();
         inputChange(true);
         if (!found) {
-            Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null))));
+            //Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null))));
+            showMessage(ActionState.UNSUCCESSFUL_DELETE);
             return;
         }
         if (input.length() > 0) {
@@ -332,9 +336,11 @@ public class Controller implements Initializable {
             // ne mora, moze i samo da se promeni pozadina
             inputChange(true);
             if (keyRemoved) {
-                Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null))));
+                //Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null))));
+                showMessage(ActionState.SUCCESSFUL_DELETE);
             } else {
-                Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null))));
+                //Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null))));
+                showMessage(ActionState.UNSUCCESSFUL_DELETE);
             }
         }
 
@@ -345,19 +351,19 @@ public class Controller implements Initializable {
         inputChange(true);
         buttonBar.setDisable(true);
         inputField.setEditable(false);
-        insertionState = InsertionState.PROCESSING;
+        actionState = ActionState.PROCESSING;
         new Thread(() -> {
             // moze se promeniti na input
             String curr = inputField.getText();
             if (found) {
                 Platform.runLater(() -> {
-                    inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null)));
+                    //inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null)));
                     inputField.selectEnd();
                     inputField.requestFocus();
                 });
                 buttonBar.setDisable(false);
                 inputField.setEditable(true);
-                insertionState = InsertionState.ALREADY_EXISTS;
+                showMessage(ActionState.ALREADY_EXISTS);
                 return;
             }
             Platform.runLater(() -> inputField.requestFocus());
@@ -381,15 +387,16 @@ public class Controller implements Initializable {
                     Platform.runLater(() -> {
                         input = "";
                         inputField.setText("");
-                        inputField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null)));
+                        //inputField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null)));
                     });
-                    insertionState = InsertionState.SUCCESSFUL;
-                    ensureVisible(true);
+                    // must call it via runLater so we make sure that background is refreshed
+                    Platform.runLater(() -> ensureVisible(true));
+                    showMessage(ActionState.SUCCESSFUL_ADD);
                 } else {
                     //neuspesno dodavanje
                     inputChange(false);
-                    Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null))));
-                    insertionState = InsertionState.INFINITE_LOOP;
+                    //Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null))));
+                    showMessage(ActionState.INFINITE_LOOP);
                 }
                 buttonBar.setDisable(false);
                 inputField.setEditable(true);
@@ -400,7 +407,8 @@ public class Controller implements Initializable {
                 return;
             }
             inputChange(true);
-            Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null))));
+            //Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null))));
+            showMessage(ActionState.EMPTY_INPUT);
             buttonBar.setDisable(false);
             inputField.setEditable(true);
         }).start();
@@ -452,6 +460,70 @@ public class Controller implements Initializable {
             Thread.sleep(currSpeed);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    private boolean ensureVisible(boolean addedRequest) {
+        if (!addedRequest) {
+            if (!found) {
+                return false;
+            }
+        }
+        double height = scroll.getContent().getBoundsInLocal().getHeight();
+        Node node = vboxLeft.getChildren().get(foundIndex);
+        double y = node.getBoundsInParent().getMaxY();
+
+        // scrolling values range from 0 to 1
+        scroll.setVvalue(y / height);
+
+        Platform.runLater(() -> {
+            inputField.requestFocus();
+            inputField.end();
+        });
+        return true;
+    }
+
+    private void showMessage(ActionState action) {
+        actionState = action;
+        switch (actionState) {
+            case PROCESSING:
+                Platform.runLater(() -> {
+                    messageLabel.setText("");
+                    messageLabel.setBackground(new Background(new BackgroundFill(Color.WHITESMOKE, new CornerRadii(5.0), null)));
+                });
+                break;
+            case SUCCESSFUL_ADD:
+                Platform.runLater(() -> {
+                    messageLabel.setText("Successfully added!");
+                    messageLabel.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null)));
+                });
+                break;
+            case ALREADY_EXISTS:
+                Platform.runLater(() -> {
+                    messageLabel.setText("Already exists!");
+                    messageLabel.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null)));
+                });
+                break;
+            case INFINITE_LOOP:
+                Platform.runLater(() -> {
+                    messageLabel.setText("Could not be added. Infinite loop occurred!\nPlease expand tables by clicking on button down below.");
+                    messageLabel.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null)));
+                });
+                break;
+            case SUCCESSFUL_DELETE:
+                Platform.runLater(() -> {
+                    messageLabel.setText("Successfully deleted!");
+                    messageLabel.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null)));
+                });
+                break;
+            case UNSUCCESSFUL_DELETE:
+                Platform.runLater(() -> {
+                    messageLabel.setText("Unsuccessful deletion!\nThere is no such item!");
+                    messageLabel.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null)));
+                });
+                break;
+            default:
+                break;
         }
     }
 
@@ -557,25 +629,4 @@ public class Controller implements Initializable {
             //stavi da izadje porukica
         }
     }
-
-    private boolean ensureVisible(boolean addedRequest) {
-        if (!addedRequest) {
-            if (!found) {
-                return false;
-            }
-        }
-        double height = scroll.getContent().getBoundsInLocal().getHeight();
-        Node node = vboxLeft.getChildren().get(foundIndex);
-        double y = node.getBoundsInParent().getMaxY();
-
-        // scrolling values range from 0 to 1
-        scroll.setVvalue(y / height);
-
-        Platform.runLater(() -> {
-            inputField.requestFocus();
-            inputField.end();
-        });
-        return true;
-    }
-
 }

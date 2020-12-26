@@ -27,7 +27,7 @@ public class TablesOperator {
 
     private ArrayList<Integer> leftTable = new ArrayList<>();
     private ArrayList<Integer> rightTable = new ArrayList<>();
-    
+
     public TablesOperator(VBox vboxLeft, VBox vboxRight) {
         this.vboxLeft = vboxLeft;
         this.vboxRight = vboxRight;
