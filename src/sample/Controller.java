@@ -510,6 +510,12 @@ public class Controller implements Initializable {
                     messageLabel.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null)));
                 });
                 break;
+            case EMPTY_INPUT:
+                Platform.runLater(() -> {
+                    messageLabel.setText("Input must not be empty!");
+                    messageLabel.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null)));
+                });
+                break;
             case SUCCESSFUL_DELETE:
                 Platform.runLater(() -> {
                     messageLabel.setText("Successfully deleted!");
