@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
@@ -298,6 +299,7 @@ public class Controller implements Initializable {
             refreshBackground();
         }
         Platform.runLater(() -> inputField.requestFocus());
+        ensureVisible(false);
     }
 
     private void refreshBackground(boolean left) {
@@ -343,6 +345,7 @@ public class Controller implements Initializable {
         inputChange(true);
         buttonBar.setDisable(true);
         inputField.setEditable(false);
+        insertionState = InsertionState.PROCESSING;
         new Thread(() -> {
             // moze se promeniti na input
             String curr = inputField.getText();
@@ -361,15 +364,18 @@ public class Controller implements Initializable {
 
             //refreshBackground();
             if (input.length() > 0) {
+                //mora da se promeni da ne bude 16 nego u zavisnosti od velicine tabele
                 if (addLeft(input, 16)) {
-                    // ovde baca gresku pri dodavanju, razresi to obaveznoo. index je nekada -1
+                    // ovde baca gresku pri dodavanju, razresi to obaveznoo. index je nekada -1. vise ne valjda
                     if (T1.get(currIndexLeft).equals(curr)) {
                         tablesOperator.highlight(true, currIndexLeft, true);
                         linesOperator.drawLine(true, currIndexLeft);
+                        foundIndex = currIndexLeft;
                         refreshBackground(false);
                     } else {
                         tablesOperator.highlight(false, currIndexRight, true);
                         linesOperator.drawLine(true, currIndexRight);
+                        foundIndex = currIndexRight;
                         refreshBackground(true);
                     }
                     Platform.runLater(() -> {
@@ -378,7 +384,9 @@ public class Controller implements Initializable {
                         inputField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null)));
                     });
                     insertionState = InsertionState.SUCCESSFUL;
+                    ensureVisible(true);
                 } else {
+                    //neuspesno dodavanje
                     inputChange(false);
                     Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null))));
                     insertionState = InsertionState.INFINITE_LOOP;
@@ -473,6 +481,7 @@ public class Controller implements Initializable {
 
     public void expandAction(ActionEvent actionEvent) {
         expandTables(2);
+        Platform.runLater(() -> inputField.end());
     }
 
     public void changeStepByStepAction(ActionEvent actionEvent) {
@@ -532,7 +541,6 @@ public class Controller implements Initializable {
                 inputField.setText(newWord);
                 inputChange(true);
             });
-
         }
     }
 
@@ -543,4 +551,31 @@ public class Controller implements Initializable {
             // vrv alert koji mu kaze da ne valja
         }
     }
+
+    public void findAction(ActionEvent actionEvent) {
+        if (!ensureVisible(false)) {
+            //stavi da izadje porukica
+        }
+    }
+
+    private boolean ensureVisible(boolean addedRequest) {
+        if (!addedRequest) {
+            if (!found) {
+                return false;
+            }
+        }
+        double height = scroll.getContent().getBoundsInLocal().getHeight();
+        Node node = vboxLeft.getChildren().get(foundIndex);
+        double y = node.getBoundsInParent().getMaxY();
+
+        // scrolling values range from 0 to 1
+        scroll.setVvalue(y / height);
+
+        Platform.runLater(() -> {
+            inputField.requestFocus();
+            inputField.end();
+        });
+        return true;
+    }
+
 }
