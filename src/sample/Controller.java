@@ -343,7 +343,6 @@ public class Controller implements Initializable {
                 showMessage(ActionState.UNSUCCESSFUL_DELETE);
             }
         }
-
     }
 
     public void add() {
@@ -472,10 +471,14 @@ public class Controller implements Initializable {
         double height = scroll.getContent().getBoundsInLocal().getHeight();
         Node node = vboxLeft.getChildren().get(foundIndex);
         double y = node.getBoundsInParent().getMaxY();
+        // height of label is 37 by default
+        double delta = 37;
 
+        if (y / height > 0.5) {
+            delta = -delta;
+        }
         // scrolling values range from 0 to 1
-        scroll.setVvalue(y / height);
-
+        scroll.setVvalue((y - delta) / height);
         Platform.runLater(() -> {
             inputField.requestFocus();
             inputField.end();
