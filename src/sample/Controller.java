@@ -160,6 +160,7 @@ public class Controller implements Initializable {
             }
 
         });
+        // swapping focus between addButton and tableSizeButton
         tableSizeField.focusedProperty().addListener((observable, oldValue, newValue) -> {
             addButton.setDefaultButton(!newValue);
             tableSizeButton.setDefaultButton(newValue);
@@ -329,30 +330,6 @@ public class Controller implements Initializable {
         linesOperator.resetLines();
         tablesOperator.refreshTables();
         //Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5.0), null))));
-    }
-
-    public void delete() {
-        //input = inputField.getText();
-        inputChange(true);
-        if (!found) {
-            //Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null))));
-            showMessage(ActionState.UNSUCCESSFUL_DELETE);
-            return;
-        }
-        if (input.length() > 0) {
-            // This must be done this way because
-            // we want to call inputChange() after deletion and also to change background of input field
-            boolean keyRemoved = removeKey(input);
-            // ne mora, moze i samo da se promeni pozadina
-            inputChange(true);
-            if (keyRemoved) {
-                //Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null))));
-                showMessage(ActionState.SUCCESSFUL_DELETE);
-            } else {
-                //Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null))));
-                showMessage(ActionState.UNSUCCESSFUL_DELETE);
-            }
-        }
     }
 
     public void add() {
@@ -626,11 +603,35 @@ public class Controller implements Initializable {
         inputChange(true);
     }
 
-    public void addButtonAction(ActionEvent actionEvent) {
+    public void addAction(ActionEvent actionEvent) {
         if (!lockAlgorithmsChange()) {
             return;
         }
         add();
+    }
+
+    public void deleteAction() {
+        //input = inputField.getText();
+        inputChange(true);
+        if (!found) {
+            //Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null))));
+            showMessage(ActionState.UNSUCCESSFUL_DELETE);
+            return;
+        }
+        if (input.length() > 0) {
+            // This must be done this way because
+            // we want to call inputChange() after deletion and also to change background of input field
+            boolean keyRemoved = removeKey(input);
+            // ne mora, moze i samo da se promeni pozadina
+            inputChange(true);
+            if (keyRemoved) {
+                //Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null))));
+                showMessage(ActionState.SUCCESSFUL_DELETE);
+            } else {
+                //Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null))));
+                showMessage(ActionState.UNSUCCESSFUL_DELETE);
+            }
+        }
     }
 
     public void nextWordAction(ActionEvent actionEvent) {

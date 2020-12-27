@@ -105,8 +105,8 @@
             <ButtonBar fx:id="buttonBar" layoutX="816.0" layoutY="501.0" pickOnBounds="false" prefHeight="40.0" prefWidth="200.0" translateX="-734.0">
                 <buttons>
                     <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#findAction" pickOnBounds="false" prefWidth="75.0" text="Find" />
-                    <Button fx:id="addButton" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#addButtonAction" pickOnBounds="false" prefWidth="75.0" text="Add" />
-                    <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#delete" pickOnBounds="false" prefWidth="75.0" text="Delete" />
+                    <Button fx:id="addButton" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#addAction" pickOnBounds="false" prefWidth="75.0" text="Add" />
+                    <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#deleteAction" pickOnBounds="false" prefWidth="75.0" text="Delete" />
                 </buttons>
             </ButtonBar>
             <Button alignment="CENTER" contentDisplay="CENTER" layoutX="187.0" layoutY="559.0" mnemonicParsing="false" onAction="#expandAction" pickOnBounds="false" prefWidth="75.0" text="Expand" />

@@ -28,69 +28,53 @@
         <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
             <right>
                 <Pane BorderPane.alignment="CENTER">
-                    <children>
-                        <Pane prefHeight="1000.0" prefWidth="400.0">
-                            <children>
-                                <Label alignment="CENTER" contentDisplay="CENTER" layoutX="185.0" layoutY="243.0" text="Label">
-                                    <font>
-                                        <Font size="20.0" />
-                                    </font>
-                                </Label>
-                                <TextArea fx:id="textArea" layoutX="10.0" layoutY="282.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="395.0" wrapText="true" />
-                                <Group layoutX="86.0" layoutY="601.0">
-                                    <children>
-                                        <Button alignment="CENTER" mnemonicParsing="false" onAction="#nextWordAction" prefWidth="75.0" text="Next" />
-                                        <Button alignment="CENTER" layoutX="85.0" mnemonicParsing="false" prefWidth="75.0" text="Start/Stop">
-                                            <opaqueInsets>
-                                                <Insets />
-                                            </opaqueInsets>
-                                        </Button>
-                                        <Button alignment="CENTER" layoutX="170.0" mnemonicParsing="false" prefWidth="75.0" text="Finish" />
-                                    </children>
-                                </Group>
-                            </children>
-                        </Pane>
-                    </children>
+                    <Pane prefHeight="1000.0" prefWidth="400.0">
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="185.0" layoutY="243.0" text="Label">
+                            <font>
+                                <Font size="20.0" />
+                            </font>
+                        </Label>
+                        <TextArea fx:id="textArea" layoutX="10.0" layoutY="282.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="395.0" wrapText="true" />
+                        <Group layoutX="86.0" layoutY="601.0">
+                            <Button alignment="CENTER" mnemonicParsing="false" onAction="#nextWordAction" prefWidth="75.0" text="Next" />
+                            <Button alignment="CENTER" layoutX="85.0" mnemonicParsing="false" prefWidth="75.0" text="Start/Stop">
+                                <opaqueInsets>
+                                    <Insets />
+                                </opaqueInsets>
+                            </Button>
+                            <Button alignment="CENTER" layoutX="170.0" mnemonicParsing="false" prefWidth="75.0" text="Finish" />
+                        </Group>
+                    </Pane>
                 </Pane>
             </right>
             <left>
                 <Pane prefHeight="1000.0" prefWidth="400.0" BorderPane.alignment="CENTER">
                     <Group fx:id="algorithmLockGroup" layoutX="10.0" layoutY="335.0">
-                        <children>
-                            <ComboBox fx:id="dropListLeft" layoutY="29.0" prefWidth="150.0" />
-                            <ComboBox fx:id="dropListRight" layoutX="231.0" layoutY="29.0" prefWidth="150.0" />
-                            <TextField fx:id="tableSizeField" layoutX="158.0" layoutY="85.0" prefHeight="25.0" prefWidth="70.0" promptText="Numbers" text="15" />
-                            <Label layoutX="50.0" text="Left table" />
-                            <Label layoutX="277.0" text="Right table" />
-                            <Label layoutX="66.0" layoutY="88.0" text="Initial table size:" />
-                            <Button defaultButton="true" layoutX="243.0" layoutY="85.0" mnemonicParsing="false" onAction="#tableSizeAction" text="Apply" textAlignment="CENTER" />
-                        </children>
+                        <ComboBox fx:id="dropListLeft" layoutY="29.0" prefWidth="150.0" />
+                        <ComboBox fx:id="dropListRight" layoutX="231.0" layoutY="29.0" prefWidth="150.0" />
+                        <TextField fx:id="tableSizeField" layoutX="158.0" layoutY="85.0" prefHeight="25.0" prefWidth="70.0" promptText="Numbers" text="15" />
+                        <Label layoutX="50.0" text="Left table" />
+                        <Label layoutX="277.0" text="Right table" />
+                        <Label layoutX="66.0" layoutY="88.0" text="Initial table size:" />
+                        <Button fx:id="tableSizeButton" layoutX="243.0" layoutY="85.0" mnemonicParsing="false" onAction="#tableSizeAction" text="Apply" textAlignment="CENTER" />
                     </Group>
                     <RadioButton fx:id="stepByStepButton" layoutX="163.0" layoutY="539.0" mnemonicParsing="false" onAction="#changeStepByStepAction" text="Step by Step" />
                     <Group fx:id="stepByStepGroup" disable="true" layoutX="92.0" layoutY="569.0">
-                        <Slider fx:id="speedSlider" blockIncrement="1.0" layoutX="45.0" layoutY="1.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="50.0" />
+                        <Slider fx:id="speedSlider" blockIncrement="1.0" layoutX="45.0" layoutY="1.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="33.0" />
                         <Label layoutY="1.0" text="0.1 sec" />
-                        <Label layoutX="195.0" layoutY="1.0" text="2 sec" />
+                        <Label layoutX="195.0" layoutY="1.0" text="3 sec" />
                     </Group>
-                    <Button defaultButton="true" layoutX="165.0" layoutY="642.0" mnemonicParsing="false" onAction="#resetAction" prefWidth="75.0" text="Reset" textAlignment="CENTER" textFill="RED" />
+                    <Button alignment="CENTER" layoutX="165.0" layoutY="642.0" mnemonicParsing="false" onAction="#resetAction" prefWidth="75.0" text="Reset" textAlignment="CENTER" textFill="RED" />
                     <MenuBar layoutY="2.0">
-                        <menus>
-                            <Menu mnemonicParsing="false" text="File">
-                                <items>
-                                    <MenuItem mnemonicParsing="false" onAction="#loadTextAction" text="Load file" />
-                                </items>
-                            </Menu>
-                            <Menu mnemonicParsing="false" text="Edit">
-                                <items>
-                                    <MenuItem mnemonicParsing="false" text="Delete" />
-                                </items>
-                            </Menu>
-                            <Menu mnemonicParsing="false" text="Help">
-                                <items>
-                                    <MenuItem mnemonicParsing="false" text="About" />
-                                </items>
-                            </Menu>
-                        </menus>
+                        <Menu mnemonicParsing="false" text="File">
+                            <MenuItem mnemonicParsing="false" onAction="#loadTextAction" text="Load file" />
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Edit">
+                            <MenuItem mnemonicParsing="false" text="Delete" />
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Help">
+                            <MenuItem mnemonicParsing="false" text="About" />
+                        </Menu>
                     </MenuBar>
                 </Pane>
             </left>
@@ -121,7 +105,7 @@
             <ButtonBar fx:id="buttonBar" layoutX="816.0" layoutY="501.0" pickOnBounds="false" prefHeight="40.0" prefWidth="200.0" translateX="-734.0">
                 <buttons>
                     <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#findAction" pickOnBounds="false" prefWidth="75.0" text="Find" />
-                    <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addButtonAction" pickOnBounds="false" prefWidth="75.0" text="Add" />
+                    <Button fx:id="addButton" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#addButtonAction" pickOnBounds="false" prefWidth="75.0" text="Add" />
                     <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#delete" pickOnBounds="false" prefWidth="75.0" text="Delete" />
                 </buttons>
             </ButtonBar>
