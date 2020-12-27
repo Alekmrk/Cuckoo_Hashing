@@ -24,6 +24,8 @@ import java.util.ResourceBundle;
 import java.util.Scanner;
 
 public class Controller implements Initializable {
+    public Button tableSizeButton;
+    public Button addButton;
     @FXML
     private Label messageLabel;
     @FXML
@@ -77,7 +79,7 @@ public class Controller implements Initializable {
     private int foundIndex = -1;
 
     private boolean stepByStep = false;
-    private long maxSpeed = 2000;
+    private long maxSpeed = 3000;
     private long currSpeed = 1000;
 
     private boolean algorithmLocked = false;
@@ -156,6 +158,11 @@ public class Controller implements Initializable {
                 e.printStackTrace();
                 //ispisi negde gresku
             }
+
+        });
+        tableSizeField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            addButton.setDefaultButton(!newValue);
+            tableSizeButton.setDefaultButton(newValue);
         });
     }
 
