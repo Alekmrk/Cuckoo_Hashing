@@ -571,7 +571,7 @@ public class Controller implements Initializable {
         File selectedFile = fileChooser.showOpenDialog(null);
 
         if (selectedFile == null) {
-            //Dialogs.showErrorDialog("You have to choose file");
+
         } else {
             try {
                 Scanner sc = new Scanner(selectedFile);
