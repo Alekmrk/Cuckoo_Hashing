@@ -14,11 +14,14 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.stage.FileChooser;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 public class Controller implements Initializable {
     @FXML
@@ -560,6 +563,28 @@ public class Controller implements Initializable {
         return true;
     }
 
+    public void loadTextAction() {
+
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Text files", "*.txt");
+        fileChooser.getExtensionFilters().add(extensionFilter);
+        File selectedFile = fileChooser.showOpenDialog(null);
+
+        if (selectedFile == null) {
+            //Dialogs.showErrorDialog("You have to choose file");
+        } else {
+            try {
+                Scanner sc = new Scanner(selectedFile);
+                // we just need to use \\Z as delimiter
+                sc.useDelimiter("\\Z");
+                Platform.runLater(() -> textArea.setText(sc.next()));
+            } catch (Exception e) {
+                //e.printStackTrace();
+                // do nothing
+            }
+        }
+    }
+
     public void expandAction(ActionEvent actionEvent) {
         expandTables(2);
         Platform.runLater(() -> inputField.end());
@@ -605,7 +630,7 @@ public class Controller implements Initializable {
         if (input.length() > 0) {
             Alert alert = new Alert(
                     Alert.AlertType.WARNING,
-                    "There is already a text in input field.\nThis action may change text in it!\nAre you sure you want to continue?",
+                    "There is already a text in input field.\nThis action will change text in it!\nAre you sure you want to continue?",
                     ButtonType.YES, ButtonType.NO);
             alert.setTitle("Putting text in occupied text field");
 
