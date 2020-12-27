@@ -24,8 +24,10 @@ import java.util.ResourceBundle;
 import java.util.Scanner;
 
 public class Controller implements Initializable {
-    public Button tableSizeButton;
-    public Button addButton;
+    @FXML
+    private Button tableSizeButton;
+    @FXML
+    private Button addButton;
     @FXML
     private Label messageLabel;
     @FXML
@@ -39,7 +41,7 @@ public class Controller implements Initializable {
     @FXML
     private Slider speedSlider;
     @FXML
-    private ButtonBar buttonBar;
+    private Group buttonBar;
     @FXML
     private RadioButton stepByStepButton;
     @FXML
@@ -90,6 +92,7 @@ public class Controller implements Initializable {
     private AlgorithmsOperator algorithmsOperator;
     private FileReader fileReader;
     private boolean tableSizeValid = true;
+    private boolean loopFromFile = false;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -171,8 +174,11 @@ public class Controller implements Initializable {
 
         tableSize = baseTableSize;
         tableSizeValid = true;
-
         resizedTimes = 0;
+
+        loopFromFile = false;
+        stepByStep = false;
+
         found = false;
         foundIndex = -1;
 
@@ -329,16 +335,24 @@ public class Controller implements Initializable {
         //currIndexHelper = -1;
         linesOperator.resetLines();
         tablesOperator.refreshTables();
+        showMessage(ActionState.PROCESSING);
         //Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5.0), null))));
     }
 
-    public void add() {
+    private void buttonGroupDisable(boolean disable) {
+        if (loopFromFile) {
+            return;
+        }
+        buttonBar.setDisable(disable);
+    }
+
+    public void add(boolean waitForThread) {
         //ne mora
         inputChange(true);
-        buttonBar.setDisable(true);
+        buttonGroupDisable(true);
         inputField.setEditable(false);
         actionState = ActionState.PROCESSING;
-        new Thread(() -> {
+        Thread t = new Thread(() -> {
             // moze se promeniti na input
             String curr = inputField.getText();
             if (found) {
@@ -347,9 +361,18 @@ public class Controller implements Initializable {
                     inputField.selectEnd();
                     inputField.requestFocus();
                 });
-                buttonBar.setDisable(false);
+                buttonGroupDisable(false);
                 inputField.setEditable(true);
                 showMessage(ActionState.ALREADY_EXISTS);
+
+                try {
+                    if (stepByStep) {
+                        Thread.sleep(currSpeed / 2);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
                 return;
             }
             Platform.runLater(() -> inputField.requestFocus());
@@ -370,6 +393,8 @@ public class Controller implements Initializable {
                         foundIndex = currIndexRight;
                         refreshBackground(true);
                     }
+                    // vidi da li treba ovde ili dole
+                    //input = "";
                     Platform.runLater(() -> {
                         input = "";
                         inputField.setText("");
@@ -384,20 +409,48 @@ public class Controller implements Initializable {
                     //Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null))));
                     showMessage(ActionState.INFINITE_LOOP);
                 }
-                buttonBar.setDisable(false);
+                buttonGroupDisable(false);
                 inputField.setEditable(true);
                 Platform.runLater(() -> {
                     inputField.requestFocus();
                     inputField.selectEnd();
                 });
+
+                try {
+                    if (stepByStep) {
+                        Thread.sleep(currSpeed / 2);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
                 return;
             }
             inputChange(true);
             //Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null))));
             showMessage(ActionState.EMPTY_INPUT);
-            buttonBar.setDisable(false);
+            buttonGroupDisable(false);
             inputField.setEditable(true);
-        }).start();
+
+            try {
+                if (stepByStep) {
+                    Thread.sleep(currSpeed / 2);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            return;
+        });
+
+        t.start();
+        if (waitForThread) {
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private boolean addLeft(String key, int i) {
@@ -436,7 +489,10 @@ public class Controller implements Initializable {
         if (!stepByStep) {
             return;
         }
-        Platform.runLater(() -> {
+        foundIndex = index;
+        ensureVisible(true);
+        Platform.runLater(() ->
+        {
             refreshBackground(!left);
             inputField.setText(s);
             linesOperator.drawLine(left, index);
@@ -449,8 +505,8 @@ public class Controller implements Initializable {
         }
     }
 
-    private boolean ensureVisible(boolean addedRequest) {
-        if (!addedRequest) {
+    private boolean ensureVisible(boolean explicitRequest) {
+        if (!explicitRequest) {
             if (!found) {
                 return false;
             }
@@ -497,7 +553,7 @@ public class Controller implements Initializable {
             case INFINITE_LOOP:
                 Platform.runLater(() -> {
                     messageLabel.setText("Could not be added. Infinite loop occurred!\nPlease expand tables by clicking on button down below.");
-                    messageLabel.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null)));
+                    messageLabel.setBackground(new Background(new BackgroundFill(Color.MISTYROSE, new CornerRadii(5.0), null)));
                 });
                 break;
             case EMPTY_INPUT:
@@ -516,6 +572,24 @@ public class Controller implements Initializable {
                 Platform.runLater(() -> {
                     messageLabel.setText("Unsuccessful deletion!\nThere is no such item!");
                     messageLabel.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null)));
+                });
+                break;
+            case SUCCESSFUL_FIND:
+                Platform.runLater(() -> {
+                    messageLabel.setText("Successfully found!");
+                    messageLabel.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null)));
+                });
+                break;
+            case UNSUCCESSFUL_FIND:
+                Platform.runLater(() -> {
+                    messageLabel.setText("Unsuccessful find!\nThere is no such item!");
+                    messageLabel.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null)));
+                });
+                break;
+            case EXPANDING_TABLES:
+                Platform.runLater(() -> {
+                    messageLabel.setText("Tables are expanded to size: " + tableSize);
+                    messageLabel.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null)));
                 });
                 break;
             default:
@@ -555,7 +629,7 @@ public class Controller implements Initializable {
         File selectedFile = fileChooser.showOpenDialog(null);
 
         if (selectedFile == null) {
-
+            // ispisi nesto
         } else {
             try {
                 Scanner sc = new Scanner(selectedFile);
@@ -571,6 +645,7 @@ public class Controller implements Initializable {
 
     public void expandAction(ActionEvent actionEvent) {
         expandTables(2);
+        showMessage(ActionState.EXPANDING_TABLES);
         Platform.runLater(() -> inputField.end());
     }
 
@@ -596,6 +671,7 @@ public class Controller implements Initializable {
         dropListRight.setDisable(false);
         algorithmLockGroup.setDisable(false);
         algorithmLocked = false;
+        Platform.runLater(this::refreshBackground);
         //postaviti da moze da se menja size i da mogu algoritmi da se biraju
     }
 
@@ -607,7 +683,7 @@ public class Controller implements Initializable {
         if (!lockAlgorithmsChange()) {
             return;
         }
-        add();
+        add(false);
     }
 
     public void deleteAction() {
@@ -634,18 +710,20 @@ public class Controller implements Initializable {
         }
     }
 
-    public void nextWordAction(ActionEvent actionEvent) {
+    public boolean nextWordAction(ActionEvent actionEvent) {
         if (input.length() > 0) {
-            Alert alert = new Alert(
-                    Alert.AlertType.WARNING,
-                    "There is already a text in input field.\nThis action will change text in it!\nAre you sure you want to continue?",
-                    ButtonType.YES, ButtonType.NO);
-            alert.setTitle("Putting text in occupied text field");
+            if (actionEvent != null) {
+                Alert alert = new Alert(
+                        Alert.AlertType.WARNING,
+                        "There is already a text in input field.\nThis action will change text in it!\nAre you sure you want to continue?",
+                        ButtonType.YES, ButtonType.NO);
+                alert.setTitle("Putting text in occupied text field");
 
-            Optional<ButtonType> result = alert.showAndWait();
+                Optional<ButtonType> result = alert.showAndWait();
 
-            if (result.orElse(null) == ButtonType.NO) {
-                return;
+                if (result.orElse(null) == ButtonType.NO) {
+                    return false;
+                }
             }
         }
         String newWord = fileReader.nextWord();
@@ -655,7 +733,9 @@ public class Controller implements Initializable {
                 inputField.setText(newWord);
                 inputChange(true);
             });
+            return true;
         }
+        return false;
     }
 
     public void tableSizeAction(ActionEvent actionEvent) {
@@ -668,7 +748,61 @@ public class Controller implements Initializable {
 
     public void findAction(ActionEvent actionEvent) {
         if (!ensureVisible(false)) {
-            //stavi da izadje porukica
+            if (input.equals("")) {
+                showMessage(ActionState.EMPTY_INPUT);
+                return;
+            }
+            showMessage(ActionState.UNSUCCESSFUL_FIND);
+        } else {
+            showMessage(ActionState.SUCCESSFUL_FIND);
+        }
+    }
+
+    public void startStopAction(ActionEvent actionEvent) {
+        // vidi sta treba da se disable-uje
+        if (!lockAlgorithmsChange()) {
+            return;
+        }
+        loopFromFile = !loopFromFile;
+        if (loopFromFile) {
+            new Thread(() -> {
+                buttonBar.setDisable(true);
+                while (loopFromFile) {
+                    try {
+                        if (nextWordAction(null)) {
+
+                            Thread.sleep(100);
+                            add(true);
+
+                            // wait for add thread to finish
+                            // ispravi ovo da bude dobro
+                            if (actionState == ActionState.INFINITE_LOOP) {
+                                int i = 3;
+                                while (actionState == ActionState.INFINITE_LOOP && i > 0) {
+                                    Thread.sleep(2000);
+                                    expandTables(2);
+                                    showMessage(ActionState.EXPANDING_TABLES);
+                                    // prosiri i pozove add opet
+                                    Thread.sleep(2000);
+                                    add(true);
+                                    i--;
+                                }
+                                if (i == 0) {
+                                    loopFromFile = false;
+                                    // ispisi da je doslo do greske, doslo je do loopa koji ne moze da se resi
+                                }
+                            }
+                        } else {
+                            loopFromFile = false;
+                        }
+                        Thread.sleep(100);
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                buttonBar.setDisable(false);
+            }).start();
         }
     }
 }

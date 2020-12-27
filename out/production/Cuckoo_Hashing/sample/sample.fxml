@@ -3,7 +3,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
@@ -37,7 +36,7 @@
                         <TextArea fx:id="textArea" layoutX="10.0" layoutY="282.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="395.0" wrapText="true" />
                         <Group layoutX="86.0" layoutY="601.0">
                             <Button alignment="CENTER" mnemonicParsing="false" onAction="#nextWordAction" prefWidth="75.0" text="Next" />
-                            <Button alignment="CENTER" layoutX="85.0" mnemonicParsing="false" prefWidth="75.0" text="Start/Stop">
+                            <Button alignment="CENTER" layoutX="85.0" mnemonicParsing="false" onAction="#startStopAction" prefWidth="75.0" text="Start/Stop">
                                 <opaqueInsets>
                                     <Insets />
                                 </opaqueInsets>
@@ -102,14 +101,14 @@
                 </fill>
             </Line>
             <TextField fx:id="inputField" layoutX="858.0" layoutY="467.0" onKeyTyped="#inputChangeAction" pickOnBounds="false" prefHeight="25.0" prefWidth="200.0" translateX="-734.0" />
-            <ButtonBar fx:id="buttonBar" layoutX="816.0" layoutY="501.0" pickOnBounds="false" prefHeight="40.0" prefWidth="200.0" translateX="-734.0">
-                <buttons>
-                    <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#findAction" pickOnBounds="false" prefWidth="75.0" text="Find" />
-                    <Button fx:id="addButton" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#addButtonAction" pickOnBounds="false" prefWidth="75.0" text="Add" />
-                    <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#delete" pickOnBounds="false" prefWidth="75.0" text="Delete" />
-                </buttons>
-            </ButtonBar>
-            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="187.0" layoutY="559.0" mnemonicParsing="false" onAction="#expandAction" pickOnBounds="false" prefWidth="75.0" text="Expand" />
+         <Group fx:id="buttonBar" layoutX="102.0" layoutY="508.0">
+            <children>
+                <Button alignment="CENTER" contentDisplay="CENTER" layoutX="85.0" layoutY="42.0" mnemonicParsing="false" onAction="#expandAction" pickOnBounds="false" prefWidth="75.0" text="Expand" />
+                <Button alignment="CENTER" contentDisplay="CENTER" layoutY="1.0" mnemonicParsing="false" onAction="#findAction" pickOnBounds="false" prefWidth="75.0" text="Find" />
+                <Button fx:id="addButton" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" layoutX="85.0" mnemonicParsing="false" onAction="#addAction" pickOnBounds="false" prefWidth="75.0" text="Add" />
+                <Button alignment="CENTER" contentDisplay="CENTER" layoutX="170.0" layoutY="1.0" mnemonicParsing="false" onAction="#deleteAction" pickOnBounds="false" prefWidth="75.0" text="Delete" />
+            </children>
+         </Group>
         </Pane>
     </AnchorPane>
 </ScrollPane>

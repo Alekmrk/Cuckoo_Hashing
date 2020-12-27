@@ -116,10 +116,11 @@ public class LinesOperator {
     }
 
     public void resetLines() {
+        lockedLeft = true;
+        lockedRight = true;
+        lockedHelper = true;
+
         Platform.runLater(() -> {
-            lockedLeft = true;
-            lockedRight = true;
-            lockedHelper = true;
 
             leftLine.setStartX(leftLine.getEndX());
             leftLine.setStartY(leftLine.getEndY());
