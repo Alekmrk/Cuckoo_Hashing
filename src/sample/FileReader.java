@@ -53,4 +53,10 @@ public class FileReader {
         words = new StringBuilder(textArea.getText());
         changed = false;
     }
+
+    public void clearAll() {
+        textArea.setText("");
+        changed = false;
+        words = new StringBuilder();
+    }
 }

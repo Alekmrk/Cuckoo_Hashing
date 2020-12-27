@@ -25,6 +25,8 @@ import java.util.Scanner;
 
 public class Controller implements Initializable {
     @FXML
+    private Group textAreaButtonsGroup;
+    @FXML
     private Button tableSizeButton;
     @FXML
     private Button addButton;
@@ -41,7 +43,7 @@ public class Controller implements Initializable {
     @FXML
     private Slider speedSlider;
     @FXML
-    private Group buttonBar;
+    private Group actionButtonsGroup;
     @FXML
     private RadioButton stepByStepButton;
     @FXML
@@ -343,7 +345,8 @@ public class Controller implements Initializable {
         if (loopFromFile) {
             return;
         }
-        buttonBar.setDisable(disable);
+        actionButtonsGroup.setDisable(disable);
+        textAreaButtonsGroup.setDisable(disable);
     }
 
     public void add(boolean waitForThread) {
@@ -665,7 +668,7 @@ public class Controller implements Initializable {
                 }
         );
         setToDefault();
-        buttonBar.setDisable(false);
+        actionButtonsGroup.setDisable(false);
         inputField.setEditable(true);
         dropListLeft.setDisable(false);
         dropListRight.setDisable(false);
@@ -766,7 +769,8 @@ public class Controller implements Initializable {
         loopFromFile = !loopFromFile;
         if (loopFromFile) {
             new Thread(() -> {
-                buttonBar.setDisable(true);
+                actionButtonsGroup.setDisable(true);
+                textAreaButtonsGroup.setDisable(true);
                 while (loopFromFile) {
                     try {
                         if (nextWordAction(null)) {
@@ -801,8 +805,29 @@ public class Controller implements Initializable {
                         e.printStackTrace();
                     }
                 }
-                buttonBar.setDisable(false);
+                actionButtonsGroup.setDisable(false);
+                textAreaButtonsGroup.setDisable(false);
             }).start();
         }
+    }
+
+    public void clearTextArea(ActionEvent actionEvent) {
+        fileReader.clearAll();
+    }
+
+    public void nextWordAddAction(ActionEvent actionEvent) {
+        if (!lockAlgorithmsChange()) {
+            return;
+        }
+        new Thread(() -> {
+            if (nextWordAction(null)) {
+                try {
+                    Thread.sleep(100);
+                    add(false);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }
