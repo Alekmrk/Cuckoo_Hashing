@@ -28,9 +28,9 @@
         <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
             <right>
                 <Pane BorderPane.alignment="CENTER">
-                    <children>
+                    
                         <Pane prefHeight="1000.0" prefWidth="400.0">
-                            <children>
+                            
                                 <Label alignment="CENTER" contentDisplay="CENTER" layoutX="185.0" layoutY="243.0" text="Label">
                                     <font>
                                         <Font size="20.0" />
@@ -38,7 +38,7 @@
                                 </Label>
                                 <TextArea fx:id="textArea" layoutX="10.0" layoutY="282.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="395.0" wrapText="true" />
                                 <Group layoutX="86.0" layoutY="601.0">
-                                    <children>
+                                    
                                         <Button alignment="CENTER" mnemonicParsing="false" onAction="#nextWordAction" prefWidth="75.0" text="Next" />
                                         <Button alignment="CENTER" layoutX="85.0" mnemonicParsing="false" prefWidth="75.0" text="Start/Stop">
                                             <opaqueInsets>
@@ -46,17 +46,17 @@
                                             </opaqueInsets>
                                         </Button>
                                         <Button alignment="CENTER" layoutX="170.0" mnemonicParsing="false" prefWidth="75.0" text="Finish" />
-                                    </children>
+                                    
                                 </Group>
-                            </children>
+                            
                         </Pane>
-                    </children>
+                    
                 </Pane>
             </right>
             <left>
                 <Pane prefHeight="1000.0" prefWidth="400.0" BorderPane.alignment="CENTER">
                     <Group fx:id="algorithmLockGroup" layoutX="10.0" layoutY="335.0">
-                        <children>
+                        
                             <ComboBox fx:id="dropListLeft" layoutY="29.0" prefWidth="150.0" />
                             <ComboBox fx:id="dropListRight" layoutX="231.0" layoutY="29.0" prefWidth="150.0" />
                             <TextField fx:id="tableSizeField" layoutX="158.0" layoutY="85.0" prefHeight="25.0" prefWidth="70.0" promptText="Numbers" text="15" />
@@ -64,7 +64,7 @@
                             <Label layoutX="277.0" text="Right table" />
                             <Label layoutX="66.0" layoutY="88.0" text="Initial table size:" />
                             <Button defaultButton="true" layoutX="243.0" layoutY="85.0" mnemonicParsing="false" onAction="#tableSizeAction" text="Apply" textAlignment="CENTER" />
-                        </children>
+                        
                     </Group>
                     <RadioButton fx:id="stepByStepButton" layoutX="163.0" layoutY="539.0" mnemonicParsing="false" onAction="#changeStepByStepAction" text="Step by Step" />
                     <Group fx:id="stepByStepGroup" disable="true" layoutX="92.0" layoutY="569.0">
@@ -74,23 +74,23 @@
                     </Group>
                     <Button defaultButton="true" layoutX="165.0" layoutY="642.0" mnemonicParsing="false" onAction="#resetAction" prefWidth="75.0" text="Reset" textAlignment="CENTER" textFill="RED" />
                     <MenuBar layoutY="2.0">
-                        <menus>
+
                             <Menu mnemonicParsing="false" text="File">
-                                <items>
+
                                     <MenuItem mnemonicParsing="false" onAction="#loadTextAction" text="Load file" />
-                                </items>
+
                             </Menu>
                             <Menu mnemonicParsing="false" text="Edit">
-                                <items>
+
                                     <MenuItem mnemonicParsing="false" text="Delete" />
-                                </items>
+
                             </Menu>
                             <Menu mnemonicParsing="false" text="Help">
-                                <items>
+
                                     <MenuItem mnemonicParsing="false" text="About" />
-                                </items>
+
                             </Menu>
-                        </menus>
+
                     </MenuBar>
                 </Pane>
             </left>
