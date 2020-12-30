@@ -98,6 +98,7 @@ public class Controller implements Initializable {
     private FileReader fileReader;
     private boolean tableSizeValid = true;
     private boolean loopFromFile = false;
+    private int maxIterations = 16;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -386,7 +387,7 @@ public class Controller implements Initializable {
             //refreshBackground();
             if (input.length() > 0) {
                 //mora da se promeni da ne bude 16 nego u zavisnosti od velicine tabele
-                if (addLeft(input, 16)) {
+                if (addLeft(input, maxIterations)) {
                     // ovde baca gresku pri dodavanju, razresi to obaveznoo. index je nekada -1. vise ne valjda
                     if (T1.get(currIndexLeft).equals(curr)) {
                         tablesOperator.highlight(true, currIndexLeft, true);
