@@ -16,7 +16,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.stage.FileChooser;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -829,5 +832,29 @@ public class Controller implements Initializable {
                 }
             }
         }).start();
+    }
+
+    public void exportFileAction(ActionEvent actionEvent) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("{\n");
+        stringBuilder.append("\"StartingTableSize\" : \"").append(baseTableSize).append("\",\n");
+        stringBuilder.append("\"TableSizeMultiplier\" : \"2\",\n");
+        stringBuilder.append("\"LeftHashFunction\" : \"").append(algorithmsOperator.getLeftAlgorithm()).append("\",\n");
+        stringBuilder.append("\"RightHashFunction\" : \"").append(algorithmsOperator.getRightAlgorithm()).append("\",\n");
+        stringBuilder.append(tablesOperator.exportTables());
+        stringBuilder.append("}\n");
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save");
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text and JSON files", "*.json", "*.txt"));
+        File selectedFile = fileChooser.showSaveDialog(null);
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(selectedFile));
+            writer.write(stringBuilder.toString());
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 }

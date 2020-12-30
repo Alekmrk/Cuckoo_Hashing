@@ -68,9 +68,7 @@
                     <MenuBar layoutY="2.0">
                         <Menu mnemonicParsing="false" text="File">
                             <MenuItem mnemonicParsing="false" onAction="#loadTextAction" text="Load file" />
-                        </Menu>
-                        <Menu mnemonicParsing="false" text="Edit">
-                            <MenuItem mnemonicParsing="false" text="Delete" />
+                     <MenuItem mnemonicParsing="false" onAction="#exportFileAction" text="Export file" />
                         </Menu>
                         <Menu mnemonicParsing="false" text="Help">
                             <MenuItem mnemonicParsing="false" text="About" />
@@ -103,12 +101,10 @@
             </Line>
             <TextField fx:id="inputField" layoutX="858.0" layoutY="467.0" onKeyTyped="#inputChangeAction" pickOnBounds="false" prefHeight="25.0" prefWidth="200.0" translateX="-734.0" />
          <Group fx:id="actionButtonsGroup" layoutX="102.0" layoutY="508.0">
-            <children>
-                <Button alignment="CENTER" contentDisplay="CENTER" layoutX="85.0" layoutY="42.0" mnemonicParsing="false" onAction="#expandAction" pickOnBounds="false" prefWidth="75.0" text="Expand" />
-                <Button alignment="CENTER" contentDisplay="CENTER" layoutY="1.0" mnemonicParsing="false" onAction="#findAction" pickOnBounds="false" prefWidth="75.0" text="Find" />
-                <Button fx:id="addButton" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" layoutX="85.0" mnemonicParsing="false" onAction="#addAction" pickOnBounds="false" prefWidth="75.0" text="Add" />
-                <Button alignment="CENTER" contentDisplay="CENTER" layoutX="170.0" layoutY="1.0" mnemonicParsing="false" onAction="#deleteAction" pickOnBounds="false" prefWidth="75.0" text="Delete" />
-            </children>
+             <Button alignment="CENTER" contentDisplay="CENTER" layoutX="85.0" layoutY="42.0" mnemonicParsing="false" onAction="#expandAction" pickOnBounds="false" prefWidth="75.0" text="Expand" />
+             <Button alignment="CENTER" contentDisplay="CENTER" layoutY="1.0" mnemonicParsing="false" onAction="#findAction" pickOnBounds="false" prefWidth="75.0" text="Find" />
+             <Button fx:id="addButton" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" layoutX="85.0" mnemonicParsing="false" onAction="#addAction" pickOnBounds="false" prefWidth="75.0" text="Add" />
+             <Button alignment="CENTER" contentDisplay="CENTER" layoutX="170.0" layoutY="1.0" mnemonicParsing="false" onAction="#deleteAction" pickOnBounds="false" prefWidth="75.0" text="Delete" />
          </Group>
         </Pane>
     </AnchorPane>

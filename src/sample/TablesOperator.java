@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -74,6 +75,7 @@ public class TablesOperator {
                 for (int i : leftTable) {
                     ((Label) vboxLeft.getChildren().get(i)).setBackground(new Background(new BackgroundFill(Color.AZURE, new CornerRadii(5.0), null)));
                 }
+
                 leftTable = new ArrayList<>();
             });
         } else {
@@ -133,5 +135,33 @@ public class TablesOperator {
         label.setContextMenu(contextMenu);
 
         return label;
+    }
+
+    public StringBuilder exportTables() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("\"LeftTable\" : {");
+        int i = 0;
+        for (Node n : vboxLeft.getChildren()) {
+            if (i != 0) {
+                stringBuilder.append(",");
+            }
+            stringBuilder.append("\n\"").append(i).append("\" : \"").append(((Label) n).getText()).append("\"");
+            i++;
+        }
+        stringBuilder.append("\n},\n");
+
+        stringBuilder.append("\"RightTable\" : {");
+        i = 0;
+        for (Node n : vboxRight.getChildren()) {
+            if (i != 0) {
+                stringBuilder.append(",");
+            }
+            stringBuilder.append("\n\"").append(i).append("\" : \"").append(((Label) n).getText()).append("\"");
+            i++;
+        }
+        stringBuilder.append("\n}\n");
+
+        return stringBuilder;
     }
 }

@@ -11,6 +11,8 @@ public class AlgorithmsOperator {
     private final ComboBox<String> dropListLeft;
     private final ComboBox<String> dropListRight;
     private String leftAlgorithm;
+
+
     private String rightAlgorithm;
     private String[] algorithmNames = {"MD2", "MD5", "SHA-1", "SHA-224", "SHA-256", "SHA-384", "SHA-512"};
 
@@ -73,5 +75,13 @@ public class AlgorithmsOperator {
 
     public boolean areSame() {
         return leftAlgorithm.equals(rightAlgorithm);
+    }
+
+    public String getLeftAlgorithm() {
+        return leftAlgorithm;
+    }
+
+    public String getRightAlgorithm() {
+        return rightAlgorithm;
     }
 }
