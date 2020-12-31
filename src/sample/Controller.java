@@ -319,6 +319,7 @@ public class Controller implements Initializable {
             }
         } else {
             //document.getElementById("message").innerHTML = "";
+            found = false;
             currIndexRight = -1;
             currIndexLeft = -1;
             currIndexHelper = -1;
@@ -754,6 +755,7 @@ public class Controller implements Initializable {
     }
 
     public void findAction(ActionEvent actionEvent) {
+        inputChange(true);
         if (!ensureVisible(false)) {
             if (input.equals("")) {
                 showMessage(ActionState.EMPTY_INPUT);
