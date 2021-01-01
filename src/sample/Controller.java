@@ -102,13 +102,13 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // ne znam da li treba ovo ili ne, ali kao za svaki slucaj
+        // Just in case at starting we wait for all components to load for additional 500ms
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
+        // Creating all operator classes
         linesOperator = new LinesOperator(inputField, leftLine, rightLine, helperLine, vboxLeft, vboxRight);
         tablesOperator = new TablesOperator(vboxLeft, vboxRight);
         algorithmsOperator = new AlgorithmsOperator(dropListLeft, dropListRight);
@@ -123,10 +123,9 @@ public class Controller implements Initializable {
         tablesOperator.expandTables(tableSize);
 
         setListeners();
-        //putKey(algorithmsOperator.hash("key1", true, tableSize), "key1", true);
-        //putKey(algorithmsOperator.hash("key2", false, tableSize), "key2", false);
     }
 
+    // Setting listeners
     private void setListeners() {
         scroll.vvalueProperty().addListener((observable, oldValue, newValue) -> {
             linesOperator.drawLineEvent(true, currIndexLeft);
@@ -165,17 +164,17 @@ public class Controller implements Initializable {
                 tableSizeValid = true;
             } catch (NumberFormatException e) {
                 e.printStackTrace();
-                //ispisi negde gresku
             }
 
         });
-        // swapping focus between addButton and tableSizeButton
+        // Swapping focus between addButton and tableSizeButton
         tableSizeField.focusedProperty().addListener((observable, oldValue, newValue) -> {
             addButton.setDefaultButton(!newValue);
             tableSizeButton.setDefaultButton(newValue);
         });
     }
 
+    // Setting all parametars and objects to default values
     private void setToDefault() {
 
         tableSize = baseTableSize;
@@ -194,7 +193,6 @@ public class Controller implements Initializable {
         Platform.runLater(() -> {
             input = "";
             inputField.setText("");
-            //inputField.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5.0), null)));
             inputField.requestFocus();
         });
         showMessage(ActionState.PROCESSING);
@@ -208,6 +206,7 @@ public class Controller implements Initializable {
         }
     }
 
+    // Expanding tables, for now times=2
     public void expandTables(double times) {
 
         for (int i = tableSize; i < tableSize * times; i++) {
@@ -219,7 +218,6 @@ public class Controller implements Initializable {
         tableSize *= times;
         resizedTimes++;
         // Requesting focus in separate Thread because at the time of initialize() controls are not yet ready to handle focus.
-        //Platform.runLater(() -> inputField.requestFocus());
         inputChange(true);
     }
 
@@ -240,24 +238,21 @@ public class Controller implements Initializable {
         refreshBackground();
         if (T1.get(foundIndex).equals(key)) {
             ((Label) vboxLeft.getChildren().get(foundIndex)).setText("");
-            //String res = T1.get(x1);
             T1.set(foundIndex, "");
             return true;
         }
         if (T2.get(foundIndex).equals(key)) {
             ((Label) vboxRight.getChildren().get(foundIndex)).setText("");
-            //String res = T2.get(x2);
             T2.set(foundIndex, "");
             return true;
         }
         return false;
     }
 
-    // process change in input box
+    // Process change in input box
     public void inputChange(boolean useInputField) {
 
-        // ovo nam treba kada dodje do loopa i onda pozovemo inputField set text treba vremena u platformu, i kada se pozove ovo
-        //ta set text u platformu nije izvrsena
+        // Sometimes we set input field and call for this method because we can't wait for text in inputField to update
         if (useInputField) {
             input = inputField.getText();
         }
@@ -279,7 +274,7 @@ public class Controller implements Initializable {
             tablesOperator.highlight(true, x1, (T1.get(x1).equals(input)));
             tablesOperator.highlight(false, x2, (T2.get(x2).equals(input)));
 
-            // ide se redom i ako ga je nasla prva linija druga ne trazi dalje ifound je ispravan
+            // Checking if key is found in left or right table
             found = (T1.get(x1).equals(input));
             if (found) {
                 foundIndex = x1;
@@ -289,7 +284,7 @@ public class Controller implements Initializable {
                     foundIndex = x2;
                 }
             }
-            // ako ni leva ni desna linija nije nasla onda cemo uz pomoc helper da nadjemo
+            // If key isn't found in tables so far we try to find it via helper line and previous table sizes
             if (!found) {
                 int base = baseTableSize;
                 for (int i = 0; i < resizedTimes; i++) {
@@ -318,7 +313,6 @@ public class Controller implements Initializable {
                 }
             }
         } else {
-            //document.getElementById("message").innerHTML = "";
             found = false;
             currIndexRight = -1;
             currIndexLeft = -1;
@@ -330,20 +324,15 @@ public class Controller implements Initializable {
     }
 
     private void refreshBackground(boolean left) {
-        // we are removing helper line, if we have need for one we will draw it
-        //currIndexHelper = -1;
         linesOperator.resetLines(left);
         tablesOperator.refreshTables(left);
-        //Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5.0), null))));
     }
 
     private void refreshBackground() {
         // removing lines so we don`t draw it while scrolling
-        //currIndexHelper = -1;
         linesOperator.resetLines();
         tablesOperator.refreshTables();
         showMessage(ActionState.PROCESSING);
-        //Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5.0), null))));
     }
 
     private void buttonGroupDisable(boolean disable) {
@@ -355,17 +344,15 @@ public class Controller implements Initializable {
     }
 
     public void add(boolean waitForThread) {
-        //ne mora
         inputChange(true);
         buttonGroupDisable(true);
         inputField.setEditable(false);
         actionState = ActionState.PROCESSING;
         Thread t = new Thread(() -> {
-            // moze se promeniti na input
+            // Probably we could write just curr=input;
             String curr = inputField.getText();
             if (found) {
                 Platform.runLater(() -> {
-                    //inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null)));
                     inputField.selectEnd();
                     inputField.requestFocus();
                 });
@@ -380,16 +367,13 @@ public class Controller implements Initializable {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
                 return;
             }
             Platform.runLater(() -> inputField.requestFocus());
 
-            //refreshBackground();
             if (input.length() > 0) {
-                //mora da se promeni da ne bude 16 nego u zavisnosti od velicine tabele
+                // Iterating maxIterations times until we find free spot for new key
                 if (addLeft(input, maxIterations)) {
-                    // ovde baca gresku pri dodavanju, razresi to obaveznoo. index je nekada -1. vise ne valjda
                     if (T1.get(currIndexLeft).equals(curr)) {
                         tablesOperator.highlight(true, currIndexLeft, true);
                         linesOperator.drawLine(true, currIndexLeft);
@@ -401,20 +385,16 @@ public class Controller implements Initializable {
                         foundIndex = currIndexRight;
                         refreshBackground(true);
                     }
-                    // vidi da li treba ovde ili dole
-                    //input = "";
                     Platform.runLater(() -> {
                         input = "";
                         inputField.setText("");
-                        //inputField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null)));
                     });
-                    // must call it via runLater so we make sure that background is refreshed
+                    // Must call it via runLater so we make sure that background is refreshed
                     Platform.runLater(() -> ensureVisible(true));
                     showMessage(ActionState.SUCCESSFUL_ADD);
                 } else {
-                    //neuspesno dodavanje
+                    // Unsuccessful adding
                     inputChange(false);
-                    //Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null))));
                     showMessage(ActionState.INFINITE_LOOP);
                 }
                 buttonGroupDisable(false);
@@ -431,11 +411,9 @@ public class Controller implements Initializable {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
                 return;
             }
             inputChange(true);
-            //Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null))));
             showMessage(ActionState.EMPTY_INPUT);
             buttonGroupDisable(false);
             inputField.setEditable(true);
@@ -477,13 +455,11 @@ public class Controller implements Initializable {
     }
 
     private boolean addRight(String key, int i) {
-        // ne moze da se desi
         if (i < 0) {
             input = key;
             Platform.runLater(() -> inputField.setText(key));
             return false;
         }
-        //ovde treba da se hajlajtuje desno polje i da postoji desna strelica a ostalo da se disejbluje
         int index = algorithmsOperator.hash(key, false, tableSize);
         String s = putKey(index, key, false);
         stepByStep(false, s, index);
@@ -522,13 +498,13 @@ public class Controller implements Initializable {
         double height = scroll.getContent().getBoundsInLocal().getHeight();
         Node node = vboxLeft.getChildren().get(foundIndex);
         double y = node.getBoundsInParent().getMaxY();
-        // height of label is 37 by default
+        // Height of label is 37 by default
         double delta = 37;
 
         if (y / height > 0.5) {
             delta = -delta;
         }
-        // scrolling values range from 0 to 1
+        // Scrolling values range from 0 to 1
         scroll.setVvalue((y - delta) / height);
         Platform.runLater(() -> {
             inputField.requestFocus();
@@ -606,7 +582,6 @@ public class Controller implements Initializable {
     }
 
     private boolean lockAlgorithmsChange() {
-        // ovo sluzi da proveri funkcije hesiranja i nista drugo
         if (!algorithmLocked) {
             if (algorithmsOperator.areSame()) {
                 Alert alert = new Alert(
@@ -636,17 +611,14 @@ public class Controller implements Initializable {
         fileChooser.getExtensionFilters().add(extensionFilter);
         File selectedFile = fileChooser.showOpenDialog(null);
 
-        if (selectedFile == null) {
-            // ispisi nesto
-        } else {
+        if (selectedFile != null) {
             try {
                 Scanner sc = new Scanner(selectedFile);
-                // we just need to use \\Z as delimiter
+                // We just need to use \\Z as delimiter
                 sc.useDelimiter("\\Z");
                 Platform.runLater(() -> textArea.setText(sc.next()));
             } catch (Exception e) {
-                //e.printStackTrace();
-                // do nothing
+                e.printStackTrace();
             }
         }
     }
@@ -659,13 +631,10 @@ public class Controller implements Initializable {
 
     public void changeStepByStepAction(ActionEvent actionEvent) {
         stepByStep = stepByStepButton.isSelected();
-        //stepByStepGroup.setVisible(true);
-        //stepByStepGroup.setVisible(false);
         stepByStepGroup.setDisable(!stepByStep);
     }
 
     public void resetAction(ActionEvent actionEvent) {
-        // i proveriti da neko ne stisne slucajno
         baseTableSize = 15;
         Platform.runLater(() -> {
                     tableSizeField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null)));
@@ -680,7 +649,6 @@ public class Controller implements Initializable {
         algorithmLockGroup.setDisable(false);
         algorithmLocked = false;
         Platform.runLater(this::refreshBackground);
-        //postaviti da moze da se menja size i da mogu algoritmi da se biraju
     }
 
     public void inputChangeAction(KeyEvent keyEvent) {
@@ -695,10 +663,8 @@ public class Controller implements Initializable {
     }
 
     public void deleteAction() {
-        //input = inputField.getText();
         inputChange(true);
         if (!found) {
-            //Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null))));
             showMessage(ActionState.UNSUCCESSFUL_DELETE);
             return;
         }
@@ -706,13 +672,10 @@ public class Controller implements Initializable {
             // This must be done this way because
             // we want to call inputChange() after deletion and also to change background of input field
             boolean keyRemoved = removeKey(input);
-            // ne mora, moze i samo da se promeni pozadina
             inputChange(true);
             if (keyRemoved) {
-                //Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null))));
                 showMessage(ActionState.SUCCESSFUL_DELETE);
             } else {
-                //Platform.runLater(() -> inputField.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null))));
                 showMessage(ActionState.UNSUCCESSFUL_DELETE);
             }
         }
@@ -737,7 +700,6 @@ public class Controller implements Initializable {
         String newWord = fileReader.nextWord();
         if (newWord != null) {
             Platform.runLater(() -> {
-                // ispitati ako se vec nalazi u input polju da li zelimo da idemo nextWord
                 inputField.setText(newWord);
                 inputChange(true);
             });
@@ -749,8 +711,6 @@ public class Controller implements Initializable {
     public void tableSizeAction(ActionEvent actionEvent) {
         if (tableSizeValid) {
             setToDefault();
-        } else {
-            // vrv alert koji mu kaze da ne valja
         }
     }
 
@@ -768,7 +728,6 @@ public class Controller implements Initializable {
     }
 
     public void startStopAction(ActionEvent actionEvent) {
-        // vidi sta treba da se disable-uje
         if (!lockAlgorithmsChange()) {
             return;
         }
@@ -783,23 +742,19 @@ public class Controller implements Initializable {
 
                             Thread.sleep(100);
                             add(true);
-
-                            // wait for add thread to finish
-                            // ispravi ovo da bude dobro
+                            // Wait for add thread to finish
                             if (actionState == ActionState.INFINITE_LOOP) {
                                 int i = 3;
                                 while (actionState == ActionState.INFINITE_LOOP && i > 0) {
                                     Thread.sleep(2000);
                                     expandTables(2);
                                     showMessage(ActionState.EXPANDING_TABLES);
-                                    // prosiri i pozove add opet
                                     Thread.sleep(2000);
                                     add(true);
                                     i--;
                                 }
                                 if (i == 0) {
                                     loopFromFile = false;
-                                    // ispisi da je doslo do greske, doslo je do loopa koji ne moze da se resi
                                 }
                             }
                         } else {

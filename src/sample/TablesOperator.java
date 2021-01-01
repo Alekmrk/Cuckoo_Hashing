@@ -21,7 +21,7 @@ import javafx.scene.text.TextAlignment;
 import java.util.ArrayList;
 
 public class TablesOperator {
-    // everything is called with Platform.runLater();
+    // Everything is called with Platform.runLater();
 
     private final VBox vboxLeft;
     private final VBox vboxRight;
@@ -34,7 +34,7 @@ public class TablesOperator {
         this.vboxRight = vboxRight;
     }
 
-    // da se doda kod brisanja samo ono sto je oznaceno ovde da se lako izdboji i izbrise
+    // We track what is highlighted so we can easily remove later
     public void highlight(boolean leftSide, int index, boolean successful) {
         if (leftSide) {
             Platform.runLater(() -> {
@@ -63,7 +63,6 @@ public class TablesOperator {
         }
     }
 
-    // maybe in Platform.runlater() think is that what we want
     public void refreshTables() {
         refreshTables(true);
         refreshTables(false);
@@ -116,10 +115,10 @@ public class TablesOperator {
         label.setBackground(new Background(new BackgroundFill(Color.AZURE, new CornerRadii(5.0), null)));
         label.setTextAlignment(TextAlignment.CENTER);
 
-        // create a menu
+        // Create a menu
         ContextMenu contextMenu = new ContextMenu();
 
-        // create menuItems
+        // Create menuItems
         MenuItem copy = new MenuItem("Copy");
         MenuItem index = new MenuItem("Index [" + currIndex + "]");
         SeparatorMenuItem separator = new SeparatorMenuItem();
@@ -130,7 +129,7 @@ public class TablesOperator {
             clipboard.setContent(content);
         });
 
-        // add menu items to menu
+        // Add menu items to menu
         contextMenu.getItems().addAll(copy, separator, index);
         label.setContextMenu(contextMenu);
 

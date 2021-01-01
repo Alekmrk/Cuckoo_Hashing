@@ -63,37 +63,24 @@ public class LinesOperator {
     }
 
     public void drawLine(boolean left, int index) {
-        // stavim neku naznaku da ako je iz onog eventa da proverava jos neku vrednost
-        //System.out.println(inputField.getB);
         if (index < 0) return;
-       /* if ((left && currIndexLeft < 0) || (!left && currIndexRight < 0)) {
-            //leftLine.setVisible(false);
-            return;
-        }*/
+
         Platform.runLater(() -> {
 
             if (left) {
                 Bounds b = vboxLeft.localToScreen((vboxLeft.getChildren().get(0)).getBoundsInLocal());
                 b = leftLine.screenToLocal(b);
+
                 leftLine.setStartX(b.getCenterX() + b.getWidth() / 2);
                 leftLine.setStartY(b.getCenterY() + b.getHeight() * index);
-
-                // ne mora valjda ovo
-                //leftLine.setEndX(inputField.getLayoutX() + 5);
-                //leftLine.setEndY(inputField.getLayoutY() + inputField.getPrefHeight() / 2);
                 lockedLeft = false;
-                //System.out.println(leftLine);
             } else {
                 Bounds b = vboxRight.localToScreen((vboxRight.getChildren().get(0)).getBoundsInLocal());
                 b = rightLine.screenToLocal(b);
-                // ne mora valjda ovo jedino ako zabaguje nekad
-                //rightLine.setStartX(inputField.getLayoutX() + inputField.getPrefWidth()-5);
-                //rightLine.setStartY(inputField.getLayoutY()+ inputField.getPrefHeight() / 2);
 
                 rightLine.setEndX(b.getCenterX() - b.getWidth() / 2);
                 rightLine.setEndY(b.getCenterY() + b.getHeight() * index);
                 lockedRight = false;
-                //System.out.println(rightLine);
             }
         });
     }

@@ -27,23 +27,18 @@ public class FileReader {
             try {
                 prvaRec = wordTokens.nextToken();
             } catch (NoSuchElementException e) {
-                //ako nema prva rec znaci da je ostao string space, tab ili new row
                 words.setLength(0);
                 textArea.setText("");
                 return null;
             }
             try {
-                // [rva rec postoji, treba da nadjemo do koliko treba da skratimo string
                 String drugaRec = wordTokens.nextToken();
-                // brisemo od nula do druge reci, moramo da stavimo ovo ->words.indexOf(prvaRec) + 1) ako se desi da su dve reci za redom iste
                 words.delete(0, words.indexOf(drugaRec, words.indexOf(prvaRec) + 1));
                 textArea.setText(words.toString());
             } catch (NoSuchElementException e) {
-                // nema druge reci, znaci skracujemo sve
                 words.setLength(0);
                 textArea.setText("");
             }
-            //vracamo pronadjenu rec
             return prvaRec;
         }
     }
