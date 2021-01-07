@@ -36,10 +36,10 @@
                         <TextArea fx:id="textArea" layoutX="10.0" layoutY="282.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="395.0" wrapText="true" />
                         <Group fx:id="textAreaButtonsGroup" layoutX="86.0" layoutY="601.0">
                             <Button alignment="CENTER" layoutX="-10.0" layoutY="8.0" mnemonicParsing="false" onAction="#nextWordAction" prefWidth="75.0" text="Transfer" />
-                            <Button alignment="CENTER" layoutX="198.0" layoutY="8.0" mnemonicParsing="false" onAction="#clearTextArea" prefWidth="75.0" text="Clear area" />
+                            <Button alignment="CENTER" layoutX="198.0" layoutY="8.0" mnemonicParsing="false" onAction="#clearTextAreaAction" prefWidth="75.0" text="Clear area" />
                      <Button alignment="CENTER" layoutX="80.0" layoutY="8.0" mnemonicParsing="false" onAction="#nextWordAddAction" prefHeight="25.0" prefWidth="103.0" text="Transfer &amp; add" />
                         </Group>
-                         <Button alignment="CENTER" layoutX="180.0" layoutY="668.0" mnemonicParsing="false" onAction="#startStopAction" prefWidth="75.0" text="Start/Stop">
+                         <Button fx:id="startStopButton" alignment="CENTER" layoutX="180.0" layoutY="668.0" mnemonicParsing="false" onAction="#startStopAction" prefWidth="75.0" text="Start">
                              <opaqueInsets>
                                  <Insets />
                              </opaqueInsets>

@@ -28,6 +28,8 @@ import java.util.Scanner;
 
 public class Controller implements Initializable {
     @FXML
+    private Button startStopButton;
+    @FXML
     private Group textAreaButtonsGroup;
     @FXML
     private Button tableSizeButton;
@@ -425,8 +427,6 @@ public class Controller implements Initializable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
-            return;
         });
 
         t.start();
@@ -599,9 +599,12 @@ public class Controller implements Initializable {
             dropListRight.setDisable(true);
             algorithmLockGroup.setDisable(true);
             algorithmLocked = true;
-
         }
         return true;
+    }
+
+    private void changeStartStop(boolean start) {
+        Platform.runLater(() -> startStopButton.setText(start ? "Start" : "Stop"));
     }
 
     public void loadTextAction() {
@@ -648,6 +651,7 @@ public class Controller implements Initializable {
         dropListRight.setDisable(false);
         algorithmLockGroup.setDisable(false);
         algorithmLocked = false;
+        changeStartStop(true);
         Platform.runLater(this::refreshBackground);
     }
 
@@ -732,6 +736,7 @@ public class Controller implements Initializable {
             return;
         }
         loopFromFile = !loopFromFile;
+        changeStartStop(!loopFromFile);
         if (loopFromFile) {
             new Thread(() -> {
                 actionButtonsGroup.setDisable(true);
@@ -755,13 +760,14 @@ public class Controller implements Initializable {
                                 }
                                 if (i == 0) {
                                     loopFromFile = false;
+                                    changeStartStop(true);
                                 }
                             }
                         } else {
                             loopFromFile = false;
+                            changeStartStop(true);
                         }
                         Thread.sleep(100);
-
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -772,7 +778,7 @@ public class Controller implements Initializable {
         }
     }
 
-    public void clearTextArea(ActionEvent actionEvent) {
+    public void clearTextAreaAction(ActionEvent actionEvent) {
         fileReader.clearAll();
     }
 
@@ -812,7 +818,5 @@ public class Controller implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 }
