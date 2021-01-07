@@ -581,7 +581,7 @@ public class Controller implements Initializable {
         }
     }
 
-    private boolean lockAlgorithmsChange() {
+    private boolean checkAndLockParametersButtons() {
         if (!algorithmLocked) {
             if (algorithmsOperator.areSame()) {
                 Alert alert = new Alert(
@@ -592,7 +592,7 @@ public class Controller implements Initializable {
                 Optional<ButtonType> result = alert.showAndWait();
 
                 if (result.orElse(null) == ButtonType.NO) {
-                    return false;
+                    return true;
                 }
             }
             dropListLeft.setDisable(true);
@@ -600,7 +600,7 @@ public class Controller implements Initializable {
             algorithmLockGroup.setDisable(true);
             algorithmLocked = true;
         }
-        return true;
+        return false;
     }
 
     private void changeStartStop(boolean start) {
@@ -660,7 +660,7 @@ public class Controller implements Initializable {
     }
 
     public void addAction(ActionEvent actionEvent) {
-        if (!lockAlgorithmsChange()) {
+        if (checkAndLockParametersButtons()) {
             return;
         }
         add(false);
@@ -732,7 +732,7 @@ public class Controller implements Initializable {
     }
 
     public void startStopAction(ActionEvent actionEvent) {
-        if (!lockAlgorithmsChange()) {
+        if (checkAndLockParametersButtons()) {
             return;
         }
         loopFromFile = !loopFromFile;
@@ -783,7 +783,7 @@ public class Controller implements Initializable {
     }
 
     public void nextWordAddAction(ActionEvent actionEvent) {
-        if (!lockAlgorithmsChange()) {
+        if (checkAndLockParametersButtons()) {
             return;
         }
         new Thread(() -> {
