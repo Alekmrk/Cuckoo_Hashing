@@ -61,7 +61,7 @@
                     <RadioButton fx:id="stepByStepButton" layoutX="163.0" layoutY="539.0" mnemonicParsing="false" onAction="#changeStepByStepAction" text="Step by Step" />
                     <Group fx:id="stepByStepGroup" disable="true" layoutX="92.0" layoutY="569.0">
                         <Slider fx:id="speedSlider" blockIncrement="1.0" layoutX="45.0" layoutY="1.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="33.0" />
-                        <Label layoutY="1.0" text="0.1 sec" />
+                        <Label layoutY="1.0" text="0.02 sec" />
                         <Label layoutX="195.0" layoutY="1.0" text="3 sec" />
                     </Group>
                     <Button alignment="CENTER" layoutX="165.0" layoutY="642.0" mnemonicParsing="false" onAction="#resetAction" prefWidth="75.0" text="Reset" textAlignment="CENTER" textFill="RED" />

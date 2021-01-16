@@ -638,6 +638,18 @@ public class Controller implements Initializable {
     }
 
     public void resetAction(ActionEvent actionEvent) {
+        Alert alert = new Alert(
+                Alert.AlertType.WARNING,
+                "This will reset tables! All work so far will be erased. \nAre you sure you want to continue?",
+                ButtonType.YES, ButtonType.NO);
+        alert.setTitle("Resetting");
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.orElse(null) == ButtonType.NO) {
+            return;
+        }
+        
         baseTableSize = 15;
         Platform.runLater(() -> {
                     tableSizeField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null)));
