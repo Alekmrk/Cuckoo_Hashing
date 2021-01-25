@@ -25,7 +25,7 @@ public class TablesOperator {
 
     private final VBox vboxLeft;
     private final VBox vboxRight;
-
+    // Lists used to track what is highlighted so we can unhighlight it easily
     private ArrayList<Integer> leftTable = new ArrayList<>();
     private ArrayList<Integer> rightTable = new ArrayList<>();
 
@@ -74,7 +74,6 @@ public class TablesOperator {
                 for (int i : leftTable) {
                     ((Label) vboxLeft.getChildren().get(i)).setBackground(new Background(new BackgroundFill(Color.AZURE, new CornerRadii(5.0), null)));
                 }
-
                 leftTable = new ArrayList<>();
             });
         } else {

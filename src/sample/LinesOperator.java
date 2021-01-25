@@ -8,10 +8,8 @@ import javafx.scene.shape.Line;
 
 public class LinesOperator {
 
-    //private int currIndexLeft = 0;
-    // private int currIndexRight = 0;
-    private VBox vboxLeft;
-    private VBox vboxRight;
+    private final VBox vboxLeft;
+    private final VBox vboxRight;
     public Line leftLine;
     public Line rightLine;
     public Line helperLine;
