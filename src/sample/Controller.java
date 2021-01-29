@@ -144,7 +144,6 @@ public class Controller implements Initializable {
         });
 
         tableSizeField.textProperty().addListener((observable, oldValue, newValue) -> {
-
             String number = newValue.replaceAll("[^\\d]", "");
             if (number.equals("")) {
                 Platform.runLater(() -> {
@@ -167,7 +166,6 @@ public class Controller implements Initializable {
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
-
         });
         // Swapping focus between addButton and tableSizeButton
         tableSizeField.focusedProperty().addListener((observable, oldValue, newValue) -> {
@@ -210,16 +208,13 @@ public class Controller implements Initializable {
 
     // Expanding tables, for now times=2
     public void expandTables(double times) {
-
         for (int i = tableSize; i < tableSize * times; i++) {
             T1.add("");
             T2.add("");
         }
-
         tablesOperator.expandTables((int) (tableSize * times - tableSize));
         tableSize *= times;
         resizedTimes++;
-        // Requesting focus in separate Thread because at the time of initialize() controls are not yet ready to handle focus.
         inputChange(true);
     }
 
@@ -236,7 +231,6 @@ public class Controller implements Initializable {
     }
 
     public boolean removeKey(String key) {
-
         refreshBackground();
         if (T1.get(foundIndex).equals(key)) {
             ((Label) vboxLeft.getChildren().get(foundIndex)).setText("");
@@ -649,7 +643,7 @@ public class Controller implements Initializable {
         if (result.orElse(null) == ButtonType.NO) {
             return;
         }
-        
+
         baseTableSize = 15;
         Platform.runLater(() -> {
                     tableSizeField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null)));

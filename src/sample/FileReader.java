@@ -6,15 +6,13 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 public class FileReader {
-    private TextArea textArea;
+    private final TextArea textArea;
     private boolean changed = false;
     StringBuilder words = new StringBuilder();
-
 
     public FileReader(TextArea textArea) {
         this.textArea = textArea;
         textArea.textProperty().addListener((observableValue, s, t1) -> changed = true);
-
     }
 
     public String nextWord() {
@@ -23,23 +21,23 @@ public class FileReader {
             return null;
         } else {
             StringTokenizer wordTokens = new StringTokenizer(textArea.getText());
-            String prvaRec;
+            String firstWord;
             try {
-                prvaRec = wordTokens.nextToken();
+                firstWord = wordTokens.nextToken();
             } catch (NoSuchElementException e) {
                 words.setLength(0);
                 textArea.setText("");
                 return null;
             }
             try {
-                String drugaRec = wordTokens.nextToken();
-                words.delete(0, words.indexOf(drugaRec, words.indexOf(prvaRec) + 1));
+                String secondWord = wordTokens.nextToken();
+                words.delete(0, words.indexOf(secondWord, words.indexOf(firstWord) + 1));
                 textArea.setText(words.toString());
             } catch (NoSuchElementException e) {
                 words.setLength(0);
                 textArea.setText("");
             }
-            return prvaRec;
+            return firstWord;
         }
     }
 

@@ -10,11 +10,9 @@ public class AlgorithmsOperator {
 
     private final ComboBox<String> dropListLeft;
     private final ComboBox<String> dropListRight;
+    private final String[] algorithmNames = {"MD2", "MD5", "SHA-1", "SHA-224", "SHA-256", "SHA-384", "SHA-512"};
     private String leftAlgorithm;
-
-
     private String rightAlgorithm;
-    private String[] algorithmNames = {"MD2", "MD5", "SHA-1", "SHA-224", "SHA-256", "SHA-384", "SHA-512"};
 
     public AlgorithmsOperator(ComboBox<String> dropListLeft, ComboBox<String> dropListRight) {
         this.dropListLeft = dropListLeft;
