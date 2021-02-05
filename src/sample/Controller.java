@@ -158,7 +158,7 @@ public class Controller implements Initializable {
                 Platform.runLater(() ->
                         tableSizeField.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(5.0), null)))
                 );
-                baseTableSize = Math.min(baseTableSize, 1000);
+                baseTableSize = Math.min(baseTableSize, 10000);
                 baseTableSize = Math.max(baseTableSize, 1);
                 Platform.runLater(() -> tableSizeField.setText("" + baseTableSize));
                 Platform.runLater(() -> tableSizeField.end());
