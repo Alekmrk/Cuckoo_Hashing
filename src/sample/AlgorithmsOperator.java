@@ -32,18 +32,17 @@ public class AlgorithmsOperator {
     }
 
     public static String getHash(String inputBytes, String algorithmName) {
-        String hash = null;
+        String transformed = null;
         try {
             MessageDigest messageDigest = MessageDigest.getInstance(algorithmName);
             messageDigest.update(inputBytes.getBytes());
             byte[] digestedbytes = messageDigest.digest();
-            hash = encodeHexString(digestedbytes);
-            // ovo drugo je vrv bolje od prvog, ima vise opcija
-            hash = new String(digestedbytes, StandardCharsets.UTF_8);
+            transformed = encodeHexString(digestedbytes);
+            transformed = new String(digestedbytes, StandardCharsets.UTF_8);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        return hash;
+        return transformed;
     }
 
     private static String encodeHexString(byte[] byteArray) {
